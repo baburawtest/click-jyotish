@@ -1,81 +1,615 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { content, site } from '../data/site';
-const wa = `https://wa.me/${site.phone}?text=${encodeURIComponent('Namaste Deepak Ji, I would like to book a 15-minute consultation (Rs. 600).')}`;
+import { site, workflowStages, features } from '../data/site';
 ---
-<BaseLayout title={`${site.name} | Vedic Astrology, Vastu & Palmistry`}>
+<BaseLayout title={`${site.name} | ${site.tagline}`}>
+  <!-- Soft Blurred Ambient Blobs Background -->
+  <div class="blob-container" aria-hidden="true">
+    <div class="blob b-cyan"></div>
+    <div class="blob b-purple"></div>
+    <div class="blob b-indigo"></div>
+    <div class="blob b-amber"></div>
+  </div>
+
+  <!-- Tech Grid Background Pattern Overlay -->
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Navigation Header -->
   <header class="top wrap">
-    <a class="brand" href="#home"><img src="/images/click-jyotish-logo.jpg" alt="Click Jyotish logo" /><span>{site.name}<small>Vedic guidance</small></span></a>
-    <nav>{content.en.nav.map((item, i) => <a href={['#home','#services','#about','#insights','#contact'][i]} data-nav={i}>{item}</a>)}</nav>
-    <button id="language" aria-label="Switch language">हिंदी</button>
-  </header>
-  <main>
-    <section id="home" class="hero">
-      <div class="stars"></div>
-      <div class="floating-symbols" aria-hidden="true">
-        <span class="sym s1">☉</span><span class="sym s2">☽</span><span class="sym s3">☿</span><span class="sym s4">♀</span><span class="sym s5">♂</span><span class="sym s6">♃</span><span class="sym s7">♄</span>
+    <a class="brand" href="#home">
+      <div class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" stroke="url(#brandGrad)" stroke-width="2.5" />
+          <path d="M16 6L23 23L16 18L9 23L16 6Z" fill="url(#brandGrad)" />
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#3b82f6" />
+              <stop offset="1" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
+        </svg>
       </div>
-      <div class="wrap hero-grid"><div class="hero-copy">
-        <p class="eyebrow" data-text="eyebrow">{content.en.eyebrow}</p><h1 data-text="title">{content.en.title}</h1><p class="intro" data-text="intro">{content.en.intro}</p>
-        <div class="actions"><a class="button gold" href={site.bookingLink} target="_blank" rel="noreferrer" data-text="primary">{content.en.primary}</a><a class="button ghost" href="#services" data-text="secondary">{content.en.secondary}</a></div>
-        <p class="proof" data-text="proof">{content.en.proof}</p>
-      </div><div class="cosmic-card" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="sun">ॐ</div><span class="planet p1"></span><span class="planet p2"></span><span class="planet p3"></span></div></div>
+      <span class="brand-text">{site.name} <span class="badge">{site.version}</span></span>
+    </a>
+    <nav>
+      <a href="#hero">Overview</a>
+      <a href="#workflow">Workflow Slides</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#interactive-demo">Live Demo</a>
+    </nav>
+    <a class="button primary-sm" href={site.docsUrl} target="_blank" rel="noreferrer">Documentation ↗</a>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero wrap">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>Google Antigravity Engine Active</span>
+      </div>
+      <h1>The AI-First Autonomous <br /><span class="gradient-text">Development Platform</span></h1>
+      <p class="hero-intro">
+        Watch how Antigravity autonomously <strong>plans</strong>, <strong>executes</strong>, <strong>builds</strong>, <strong>debugs</strong>, and <strong>tests</strong> complex software projects with total precision.
+      </p>
+      <div class="hero-actions">
+        <a class="button gold-gradient" href="#workflow">Explore Workflow Tour ↓</a>
+        <a class="button outline" href="#interactive-demo">Try Live Terminal Sandbox</a>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="metrics-strip">
+        <div class="metric-item">
+          <span class="m-val">100%</span>
+          <span class="m-lbl">Empirical Log Safety</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="m-val">5 Stages</span>
+          <span class="m-lbl">Plan · Execute · Build · Debug · Test</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="m-val">Multi-Agent</span>
+          <span class="m-lbl">Parallel Subagent Delegation</span>
+        </div>
+      </div>
     </section>
-    <section id="services" class="section wrap"><p class="eyebrow gold-text">Offerings</p><h2 data-text="servicesTitle">{content.en.servicesTitle}</h2><div class="cards">{content.en.services.map((service, i) => <article class="service"><span>0{i+1}</span><h3 data-service-title={i}>{service[0]}</h3><p data-service-copy={i}>{service[1]}</p><a href="#contact">Learn more <b>→</b></a></article>)}</div></section>
-    <section class="process"><div class="wrap"><p class="eyebrow pale">How it works</p><h2 data-text="processTitle">{content.en.processTitle}</h2><div class="steps">{content.en.process.map((step,i) => <div><span>0{i+1}</span><h3 data-process-title={i}>{step[0]}</h3><p data-process-copy={i}>{step[1]}</p></div>)}</div></div></section>
-    <section id="about" class="section wrap about"><div class="portrait"><img src="/images/vedic-astrology-about.jpg" alt="Vedic Astrology manuscripts and traditional tools" /></div><div><p class="eyebrow gold-text">About {site.practitioner}</p><h2 data-text="aboutTitle">{content.en.aboutTitle}</h2><p data-text="about">{content.en.about}</p><blockquote data-text="quote">{content.en.quote}</blockquote></div></section>
-    <section id="insights" class="section wrap"><p class="eyebrow gold-text">Insights</p><h2 data-text="insightsTitle">{content.en.insightsTitle}</h2><div class="posts"><article><a href="/blog/guru-purnima-2026/"><div class="post-image image-0">☾</div><p>JYOTISH NOTES · JULY 2026</p><h3>Guru Purnima 2026: Meaning, Date & a Simple Practice</h3><span>A timely guide for 29 July, written for New Delhi readers.</span></a></article>{content.en.insights.slice(1).map((post,i) => <article><div class={`post-image image-${i+1}`}>✦</div><p>COMING SOON</p><h3 data-insight-title={i+1}>{post[0]}</h3><span data-insight-copy={i+1}>{post[1]}</span></article>)}</div></section>
-    <section id="contact" class="contact"><div class="wrap contact-inner"><div><p class="eyebrow pale">15-minute online consultation · ₹600</p><h2 data-text="contactTitle">{content.en.contactTitle}</h2><p data-text="contact">{content.en.contact}</p></div><div class="contact-actions"><a class="button gold" href={site.bookingLink} target="_blank" rel="noreferrer" data-text="primary">{content.en.primary}</a><a class="email" href={wa} target="_blank" rel="noreferrer" data-text="whatsapp">{content.en.whatsapp}</a><a class="email" href={`mailto:${site.email}`}>{site.email}</a></div></div></section>
+
+    <!-- Interactive Workflow Slides Showcase -->
+    <section id="workflow" class="section wrap">
+      <div class="section-header center">
+        <p class="eyebrow-pill">5-Stage AI Lifecycle</p>
+        <h2>How Antigravity Works</h2>
+        <p class="section-sub">Click through the slides or watch the animated workflow in action.</p>
+      </div>
+
+      <!-- Stage Selection Tabs -->
+      <div class="stage-tabs" role="tablist">
+        {workflowStages.map((stg, i) => (
+          <button 
+            class={`tab-btn ${i === 0 ? 'active' : ''}`}
+            data-stage-index={i}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            <span class="tab-num">{stg.step}</span>
+            <span class="tab-title">{stg.title}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Active Slide Showcase Container -->
+      <div class="slide-card-container">
+        {workflowStages.map((stg, i) => (
+          <div class={`slide-card ${i === 0 ? 'active' : ''}`} data-slide={i}>
+            <div class="slide-grid">
+              
+              <!-- Left: Description & Animated Icon -->
+              <div class="slide-left">
+                <div class="icon-stage-wrapper">
+                  {/* SVG Animated Icons per stage */}
+                  {i === 0 && (
+                    <svg class="anim-icon icon-plan" viewBox="0 0 64 64" fill="none">
+                      <rect x="8" y="8" width="48" height="48" rx="8" stroke="url(#planGrad)" stroke-width="3" />
+                      <line x1="16" y1="20" x2="48" y2="20" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4" />
+                      <line x1="16" y1="32" x2="38" y2="32" stroke="#6366f1" stroke-width="3" />
+                      <line x1="16" y1="44" x2="44" y2="44" stroke="#6366f1" stroke-width="3" />
+                      <circle cx="44" cy="32" r="5" fill="#3b82f6" class="pulse-node" />
+                      <line x1="8" y1="8" x2="56" y2="56" stroke="url(#scanLine)" stroke-width="2" class="scan-beam" />
+                      <defs>
+                        <linearGradient id="planGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#3b82f6"/><stop offset="1" stop-color="#6366f1"/></linearGradient>
+                        <linearGradient id="scanLine" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#60a5fa"/><stop offset="1" stop-color="transparent"/></linearGradient>
+                      </defs>
+                    </svg>
+                  )}
+                  {i === 1 && (
+                    <svg class="anim-icon icon-execute" viewBox="0 0 64 64" fill="none">
+                      <circle cx="32" cy="32" r="26" stroke="url(#execGrad)" stroke-width="3" />
+                      <path d="M34 12L18 36H32L30 52L46 28H32L34 12Z" fill="url(#boltGrad)" class="anim-bolt" />
+                      <circle cx="18" cy="18" r="4" fill="#a855f7" class="agent-dot d1" />
+                      <circle cx="48" cy="18" r="4" fill="#0ea5e9" class="agent-dot d2" />
+                      <circle cx="48" cy="48" r="4" fill="#10b981" class="agent-dot d3" />
+                      <defs>
+                        <linearGradient id="execGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#8b5cf6"/><stop offset="1" stop-color="#ec4899"/></linearGradient>
+                        <linearGradient id="boltGrad" x1="18" y1="12" x2="46" y2="52"><stop stop-color="#eab308"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+                      </defs>
+                    </svg>
+                  )}
+                  {i === 2 && (
+                    <svg class="anim-icon icon-build" viewBox="0 0 64 64" fill="none">
+                      <polygon points="32,8 54,20 54,44 32,56 10,44 10,20" stroke="url(#buildGrad)" stroke-width="3" fill="none" class="anim-cube" />
+                      <polyline points="10,20 32,32 54,20" stroke="url(#buildGrad)" stroke-width="2" />
+                      <line x1="32" y1="32" x2="32" y2="56" stroke="url(#buildGrad)" stroke-width="2" />
+                      <circle cx="32" cy="20" r="4" fill="#10b981" class="build-spark" />
+                      <circle cx="32" cy="32" r="18" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6 6" class="gear-ring" />
+                      <defs>
+                        <linearGradient id="buildGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#10b981"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+                      </defs>
+                    </svg>
+                  )}
+                  {i === 3 && (
+                    <svg class="anim-icon icon-debug" viewBox="0 0 64 64" fill="none">
+                      <circle cx="32" cy="32" r="26" stroke="url(#debugGrad)" stroke-width="3" />
+                      <circle cx="32" cy="32" r="16" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="4 4" class="radar-sweep" />
+                      <path d="M26 26L38 38M38 26L26 38" stroke="#f43f5e" stroke-width="3" stroke-linecap="round" class="bug-cross" />
+                      <circle cx="32" cy="32" r="4" fill="#10b981" class="fix-check" />
+                      <defs>
+                        <linearGradient id="debugGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#f43f5e"/><stop offset="1" stop-color="#fb923c"/></linearGradient>
+                      </defs>
+                    </svg>
+                  )}
+                  {i === 4 && (
+                    <svg class="anim-icon icon-test" viewBox="0 0 64 64" fill="none">
+                      <path d="M20 12H44M24 12V24L12 48C10.5 51 12.5 54 16 54H48C51.5 54 53.5 51 52 48L40 24V12" stroke="url(#testGrad)" stroke-width="3" fill="none" />
+                      <circle cx="28" cy="42" r="3" fill="#60a5fa" class="bubble b1" />
+                      <circle cx="36" cy="46" r="2" fill="#a78bfa" class="bubble b2" />
+                      <circle cx="32" cy="36" r="2.5" fill="#34d399" class="bubble b3" />
+                      <path d="M22 36L28 42L42 28" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" class="test-check" />
+                      <defs>
+                        <linearGradient id="testGrad" x1="0" y1="0" x2="64" y2="64"><stop stop-color="#059669"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+                      </defs>
+                    </svg>
+                  )}
+                </div>
+
+                <span class="slide-badge">{stg.badge}</span>
+                <h3>{stg.step}. {stg.title} — {stg.subtitle}</h3>
+                <p class="slide-desc">{stg.description}</p>
+                <div class="metrics-tags">
+                  {stg.metrics.map(m => <span class="tag">✓ {m}</span>)}
+                </div>
+              </div>
+
+              <!-- Right: Interactive Live Code Simulator -->
+              <div class="slide-right">
+                <div class="code-window">
+                  <div class="code-header">
+                    <div class="window-dots">
+                      <span class="dot red"></span>
+                      <span class="dot yellow"></span>
+                      <span class="dot green"></span>
+                    </div>
+                    <span class="window-title">Antigravity Core Stage Output</span>
+                    <span class="window-lang">ts</span>
+                  </div>
+                  <pre class="code-body"><code>{stg.codeSnippet}</code></pre>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Slide Controls -->
+      <div class="slide-controls">
+        <button id="prevSlide" aria-label="Previous slide">← Previous</button>
+        <div class="slide-dots">
+          {workflowStages.map((_, i) => <span class={`dot-nav ${i === 0 ? 'active' : ''}`} data-dot={i}></span>)}
+        </div>
+        <button id="nextSlide" aria-label="Next slide">Next →</button>
+      </div>
+    </section>
+
+    <!-- Core Capabilities Grid -->
+    <section id="capabilities" class="section wrap alt-bg">
+      <div class="section-header center">
+        <p class="eyebrow-pill">Architectural Pillars</p>
+        <h2>Engineered for Autonomous Accuracy</h2>
+        <p class="section-sub">Designed from the ground up to prevent symptom-patching and hallucinations.</p>
+      </div>
+
+      <div class="feature-grid">
+        {features.map((f, i) => (
+          <article class="feature-card">
+            <div class="feature-icon">
+              {i === 0 && '⚡'}
+              {i === 1 && '📋'}
+              {i === 2 && '🔍'}
+              {i === 3 && '🌐'}
+              {i === 4 && '🔌'}
+              {i === 5 && '🛡️'}
+            </div>
+            <h3>{f.title}</h3>
+            <p>{f.desc}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Interactive Live Terminal Sandbox Demo -->
+    <section id="interactive-demo" class="section wrap">
+      <div class="section-header center">
+        <p class="eyebrow-pill">Interactive Simulator</p>
+        <h2>Experience Antigravity Live</h2>
+        <p class="section-sub">Click an action below to simulate Antigravity performing autonomous engineering tasks.</p>
+      </div>
+
+      <div class="demo-sandbox">
+        <div class="demo-toolbar">
+          <button class="demo-btn active" data-action="plan">Plan New Feature</button>
+          <button class="demo-btn" data-action="execute">Orchestrate Subagents</button>
+          <button class="demo-btn" data-action="build">Build Astro App</button>
+          <button class="demo-btn" data-action="debug">Diagnose Log Error</button>
+          <button class="demo-btn" data-action="test">Run Test Suite</button>
+        </div>
+
+        <div class="terminal-container">
+          <div class="terminal-bar">
+            <span>antigravity-cli ~ task-simulator</span>
+            <span class="term-status">● Live</span>
+          </div>
+          <div class="terminal-screen" id="terminalOutput">
+            <div class="term-line prompt">$ antigravity plan --feature "Multi-Agent Video Renderer"</div>
+            <div class="term-line info">[RESEARCH] Reading workspace codebase graph...</div>
+            <div class="term-line info">[ANALYSIS] 14 components evaluated, 0 circular dependencies.</div>
+            <div class="term-line success">✔ Created C:\...\brain\implementation_plan.md</div>
+            <div class="term-line success">✔ Awaiting user review & feedback...</div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="wrap"><span>© {new Date().getFullYear()} {site.name}</span><span data-text="footer">{content.en.footer}</span><small data-text="note">{content.en.note}</small></footer>
+
+  <footer class="wrap footer">
+    <div class="footer-inner">
+      <div>
+        <span class="footer-logo">Antigravity AI Platform</span>
+        <p>Built for autonomous, resilient, and verifiable software engineering.</p>
+      </div>
+      <div class="footer-links">
+        <a href={site.docsUrl} target="_blank" rel="noreferrer">Documentation</a>
+        <a href={site.githubUrl} target="_blank" rel="noreferrer">GitHub Repository</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} Google Antigravity Team.</span>
+      <small>Autonomous AI Coding Platform.</small>
+    </div>
+  </footer>
 </BaseLayout>
-<script define:vars={{ content }}>
-  let lang = 'en'; const langButton = document.querySelector('#language');
-  const setText = (selector, values) => document.querySelectorAll(selector).forEach((el, i) => el.textContent = Array.isArray(values) ? values[i] : values);
-  langButton?.addEventListener('click', () => { lang = lang === 'en' ? 'hi' : 'en'; const t = content[lang]; document.documentElement.lang = lang; langButton.textContent = lang === 'en' ? 'हिंदी' : 'English';
-    document.querySelectorAll('[data-text]').forEach(el => { const key = el.dataset.text; if (key && t[key]) el.textContent = t[key]; });
-    setText('[data-nav]', t.nav); setText('[data-service-title]', t.services.map(x=>x[0])); setText('[data-service-copy]', t.services.map(x=>x[1])); setText('[data-process-title]', t.process.map(x=>x[0])); setText('[data-process-copy]', t.process.map(x=>x[1])); setText('[data-insight-title]', t.insights.map(x=>x[0])); setText('[data-insight-copy]', t.insights.map(x=>x[1]));
+
+<script>
+  // Slide Carousel Controller
+  let currentSlide = 0;
+  const totalSlides = 5;
+  const tabs = document.querySelectorAll('.tab-btn');
+  const slides = document.querySelectorAll('.slide-card');
+  const dots = document.querySelectorAll('.dot-nav');
+
+  function goToSlide(index) {
+    currentSlide = (index + totalSlides) % totalSlides;
+    tabs.forEach((tab, i) => {
+      tab.classList.toggle('active', i === currentSlide);
+      tab.setAttribute('aria-selected', i === currentSlide ? 'true' : 'false');
+    });
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === currentSlide);
+    });
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const idx = parseInt(tab.getAttribute('data-stage-index') || '0', 10);
+      goToSlide(idx);
+    });
   });
 
-  // Intersection Observer for smooth scroll reveal animations
-  const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.getAttribute('data-dot') || '0', 10);
+      goToSlide(idx);
+    });
+  });
+
+  document.getElementById('prevSlide')?.addEventListener('click', () => goToSlide(currentSlide - 1));
+  document.getElementById('nextSlide')?.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+  // Auto-play slides every 7 seconds
+  let autoTimer = setInterval(() => goToSlide(currentSlide + 1), 7000);
+  document.querySelector('.slide-card-container')?.addEventListener('mouseenter', () => clearInterval(autoTimer));
+
+  // Terminal Simulator Interactive Actions
+  const termLogs = {
+    plan: [
+      { type: 'prompt', text: '$ antigravity plan --feature "Multi-Agent Video Renderer"' },
+      { type: 'info', text: '[RESEARCH] Reading workspace codebase graph...' },
+      { type: 'info', text: '[ANALYSIS] 14 components evaluated, 0 circular dependencies.' },
+      { type: 'success', text: '✔ Created C:\\...\\brain\\implementation_plan.md' },
+      { type: 'success', text: '✔ Awaiting user review & feedback...' }
+    ],
+    execute: [
+      { type: 'prompt', text: '$ antigravity execute --agents 3' },
+      { type: 'info', text: '[SUBAGENT 1] CSS Visual Engineer launched.' },
+      { type: 'info', text: '[SUBAGENT 2] Remotion Composition Architect launched.' },
+      { type: 'success', text: '✔ Multi-file edit applied: src/pages/index.astro (44 insertions)' },
+      { type: 'success', text: '✔ All API contract invariants validated.' }
+    ],
+    build: [
+      { type: 'prompt', text: '$ cmd /c npm run dev' },
+      { type: 'info', text: '> astro dev' },
+      { type: 'info', text: '▶ Astro v5.18 ready in 372 ms' },
+      { type: 'success', text: '┃ Local    http://localhost:4321/' },
+      { type: 'success', text: '✔ watching for file changes...' }
+    ],
+    debug: [
+      { type: 'prompt', text: '$ antigravity debug --inspect-logs' },
+      { type: 'info', text: '[LOG INSPECTION] Fetching un-truncated traceback log...' },
+      { type: 'info', text: '[ROOT CAUSE] Missing peer dependency in package.json' },
+      { type: 'success', text: '✔ Upstream fix applied in package.json' },
+      { type: 'success', text: '✔ Server hot-reload clean with zero errors.' }
+    ],
+    test: [
+      { type: 'prompt', text: '$ npm run test' },
+      { type: 'info', text: '✓ src/components/Workflow.test.ts (14 passed)' },
+      { type: 'info', text: '✓ src/layouts/BaseLayout.test.ts (6 passed)' },
+      { type: 'success', text: 'Test Suites: 2 passed, 2 total' },
+      { type: 'success', text: '✔ All browser visual walkthroughs verified.' }
+    ]
+  };
+
+  const termOutput = document.getElementById('terminalOutput');
+  document.querySelectorAll('.demo-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const action = btn.getAttribute('data-action') || 'plan';
+      const logs = termLogs[action] || termLogs.plan;
+      if (termOutput) {
+        termOutput.innerHTML = '';
+        logs.forEach(l => {
+          const div = document.createElement('div');
+          div.className = `term-line ${l.type}`;
+          div.textContent = l.text;
+          termOutput.appendChild(div);
+        });
       }
     });
-  }, observerOptions);
-
-  document.querySelectorAll('.section, .service, .steps > div, .about, .posts article, .contact-inner').forEach((el, idx) => {
-    el.classList.add('reveal');
-    el.style.transitionDelay = `${(idx % 3) * 0.15}s`;
-    observer.observe(el);
   });
 </script>
+
 <style>
-  .top{height:78px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:10px;align-items:center;font-family:"Playfair Display",serif;font-size:19px;font-weight:700}.brand small{display:block;font-family:"DM Sans",sans-serif;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;font-weight:500}.mark{color:var(--gold);font-size:29px}nav{display:flex;gap:27px;font-size:14px}nav a{transition:color 0.3s ease}nav a:hover{color:var(--gold)}button{border:1px solid var(--line);background:transparent;border-radius:20px;padding:7px 11px;color:var(--ink);cursor:pointer;font:inherit;font-size:13px;transition:all 0.3s ease}button:hover{border-color:var(--gold);color:var(--gold);transform:scale(1.04)}.hero{background:var(--night);color:white;position:relative;overflow:hidden}.hero-grid{min-height:620px;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;position:relative}.hero-copy{z-index:1}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin:0 0 17px;color:#78829b}.hero .eyebrow,.pale{color:#cdd4e9}.hero h1{font-size:clamp(48px,6vw,76px);max-width:700px;margin:0 0 23px}.intro{max-width:570px;font-size:18px;color:#d8dbe5;margin:0 0 31px}.actions{display:flex;gap:12px;flex-wrap:wrap}
-  .button{padding:13px 21px;border-radius:4px;font-size:14px;font-weight:700;display:inline-block;transition:all 0.3s ease}.gold{background:var(--gold);color:#14192c;box-shadow:0 4px 15px rgba(199,145,62,0.3)}.gold:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(199,145,62,0.6)}.ghost{border:1px solid #8c94a9;color:white}.ghost:hover{background:rgba(255,255,255,0.1);border-color:white;transform:translateY(-3px)}.proof{color:#b5bdce;font-size:13px;margin-top:30px}
-  .stars{background-image:radial-gradient(#fff 1px,transparent 1px),radial-gradient(#c7913e 1px,transparent 1px);background-size:53px 53px,97px 97px;background-position:4px 5px,18px 23px;opacity:.23;position:absolute;inset:0;animation:twinkle 6s infinite ease-in-out}
-  .floating-symbols{position:absolute;inset:0;pointer-events:none;z-index:0}.sym{position:absolute;color:var(--gold);font-size:22px;opacity:0.35;animation:floatGlyph 7s infinite ease-in-out}.s1{top:15%;left:8%;animation-delay:0s}.s2{top:70%;left:5%;animation-delay:1.5s}.s3{top:25%;right:48%;animation-delay:3s}.s4{top:82%;right:42%;animation-delay:2s}.s5{top:10%;right:12%;animation-delay:4s}.s6{bottom:15%;right:8%;animation-delay:2.5s}.s7{top:45%;left:40%;animation-delay:5s}
-  .cosmic-card{width:min(390px,75vw);height:390px;border:1px solid #4b5575;border-radius:50%;margin:auto;position:relative;background:radial-gradient(circle,#28365f 0 18%,transparent 19%);box-shadow:0 0 40px rgba(40,54,95,0.5)}.orbit{position:absolute;border:1px solid #6c7590;border-radius:50%;inset:48px;animation:orbitRotate 35s linear infinite}.orbit-b{inset:100px;transform:rotate(60deg);animation:orbitRotateRev 25s linear infinite}.sun{position:absolute;inset:calc(50% - 45px);width:90px;height:90px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-size:42px;color:var(--night);box-shadow:0 0 50px #c7913e;animation:sunPulse 4s infinite ease-in-out}.planet{position:absolute;border-radius:50%;background:#e4c486;width:14px;height:14px}.p1{top:74px;left:92px}.p2{bottom:60px;right:77px;background:#8ebed2}.p3{top:187px;right:16px;width:9px;height:9px}.section{padding:104px 0}.section h2,.process h2,.contact h2{font-size:clamp(36px,4.5vw,53px);margin:0 0 42px;max-width:680px}.gold-text{color:#a86f1e}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
-  .service{border:1px solid var(--line);padding:28px;min-height:275px;display:flex;flex-direction:column;border-radius:6px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);background:white}.service:hover{transform:translateY(-8px);box-shadow:0 16px 35px rgba(199,145,62,0.14);border-color:var(--gold)}.service>span,.steps>div>span{color:var(--gold);font-size:12px;font-weight:700}.service h3{font-size:25px;margin:32px 0 10px;transition:color 0.3s ease}.service:hover h3{color:#9f681a}.service p{color:#626a7b;font-size:14px;margin:0}.service a{margin-top:auto;padding-top:20px;color:#9f681a;font-size:13px;font-weight:700}.service b{margin-left:4px;display:inline-block;transition:transform 0.3s ease}.service:hover a b{transform:translateX(6px)}
-  .process{background:var(--night);color:white;padding:90px 0;position:relative;overflow:hidden}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:52px}.steps h3{font-size:24px;margin:23px 0 8px}.steps p{color:#bdc4d7;margin:0;font-size:14px}.steps>div{transition:transform 0.3s ease}.steps>div:hover{transform:translateY(-4px)}
-  .about{display:grid;grid-template-columns:.85fr 1.15fr;gap:8vw;align-items:center}.about h2{margin-bottom:24px}.about>div>p:not(.eyebrow){color:#535c70;font-size:17px}.portrait{height:430px;background:linear-gradient(145deg,#d9b46e,#34415f);display:grid;place-items:center;overflow:hidden;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.15);transition:transform 0.4s ease, box-shadow 0.4s ease}.portrait:hover{transform:scale(1.02);box-shadow:0 15px 40px rgba(199,145,62,0.3)}.portrait img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 0.6s ease}.portrait:hover img{transform:scale(1.05)}.about blockquote{border-left:3px solid var(--gold);margin:30px 0 0;padding:4px 0 4px 19px;font-family:"Playfair Display",serif;font-size:21px}
-  .posts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.posts article{transition:transform 0.35s ease, box-shadow 0.35s ease;border-radius:6px;overflow:hidden}.posts article:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,0.08)}.post-image{height:190px;background:#e8ded0;display:grid;place-items:center;color:#b78232;font-size:50px;transition:transform 0.4s ease}.posts article:hover .post-image{transform:scale(1.04)}.image-1{background:#dfe4ed;color:#526484}.image-2{background:#e6ddd3;color:#986e39}.posts p{font-size:10px;letter-spacing:1.7px;color:#a86f1e;font-weight:700;margin:17px 0 6px}.posts h3{font-size:25px;margin:0 0 7px}.posts span{color:#60697a;font-size:14px}
-  .contact{background:#21315a;color:white;padding:80px 0}.contact-inner{display:flex;justify-content:space-between;align-items:center;gap:40px}.contact h2{margin-bottom:13px}.contact p:not(.eyebrow){color:#d1d9e9;max-width:550px}.contact-actions{display:flex;flex-direction:column;align-items:flex-start;gap:14px}.email{border-bottom:1px solid #97a3c0;font-size:14px;transition:color 0.3s ease, border-color 0.3s ease}.email:hover{color:var(--gold);border-color:var(--gold)}footer{padding:28px 0;display:grid;grid-template-columns:1fr 1fr 2fr;gap:20px;font-size:13px;color:#60697a}footer small{font-size:10px;line-height:1.45}
-  
-  /* Scroll Reveal Utilities */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1)}.reveal.active{opacity:1;transform:translateY(0)}
-  
-  /* Keyframes */
-  @keyframes orbitRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-  @keyframes orbitRotateRev{from{transform:rotate(60deg)}to{transform:rotate(-300deg)}}
-  @keyframes sunPulse{0%,100%{box-shadow:0 0 35px #c7913e, 0 0 70px rgba(199,145,62,0.35);transform:scale(1)}50%{box-shadow:0 0 65px #ffd27d, 0 0 90px rgba(255,210,125,0.65);transform:scale(1.05)}}
-  @keyframes twinkle{0%,100%{opacity:.23;transform:scale(1)}50%{opacity:.45;transform:scale(1.05)}}
-  @keyframes floatGlyph{0%,100%{transform:translateY(0px) rotate(0deg);opacity:0.35}50%{transform:translateY(-16px) rotate(10deg);opacity:0.65}}
+  :root {
+    --bg-light: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.88);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --primary-blue: #2563eb;
+    --primary-purple: #7c3aed;
+    --accent-cyan: #06b6d4;
+    --border-color: rgba(226, 232, 240, 0.9);
+    --gold: #d97706;
+  }
 
-  @media(max-width:760px){.top{height:66px}nav{display:none}.hero-grid{grid-template-columns:1fr;min-height:720px;padding:70px 0}.cosmic-card{width:285px;height:285px}.hero h1{font-size:48px}.cards,.steps,.posts{grid-template-columns:1fr}.about{grid-template-columns:1fr}.portrait{height:260px}.contact-inner{display:block}.contact-actions{margin-top:25px}footer{grid-template-columns:1fr}.section{padding:72px 0}.process{padding:70px 0}}
-  .brand img{width:46px;height:46px;border-radius:50%;object-fit:cover}.portrait{overflow:hidden;background:#d9b46e;border-radius:8px}.portrait img{width:100%;height:100%;object-fit:cover;object-position:center}
+  body {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Soft Blurred Mesh Background Blobs */
+  .blob-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.45;
+    animation: floatBlob 18s infinite ease-in-out alternate;
+  }
+
+  .b-cyan { width: 480px; height: 480px; background: #38bdf8; top: -100px; left: -100px; }
+  .b-purple { width: 520px; height: 520px; background: #c084fc; top: 20%; right: -120px; animation-delay: -5s; }
+  .b-indigo { width: 450px; height: 450px; background: #818cf8; bottom: 10%; left: 15%; animation-delay: -9s; }
+  .b-amber { width: 380px; height: 380px; background: #fbbf24; top: 60%; right: 20%; animation-delay: -14s; opacity: 0.3; }
+
+  @keyframes floatBlob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    50% { transform: translate(60px, -40px) scale(1.08); }
+    100% { transform: translate(-40px, 50px) scale(0.95); }
+  }
+
+  /* Vector Matrix Grid Overlay */
+  .grid-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: 
+      radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px),
+      linear-gradient(to right, rgba(226, 232, 240, 0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(226, 232, 240, 0.4) 1px, transparent 1px);
+    background-size: 32px 32px, 64px 64px, 64px 64px;
+    opacity: 0.75;
+  }
+
+  .top {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+  }
+
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 20px; color: var(--text-primary); }
+  .brand-logo { display: flex; align-items: center; }
+  .badge { font-size: 11px; background: rgba(99, 102, 241, 0.12); color: var(--primary-purple); padding: 2px 8px; border-radius: 12px; font-weight: 600; margin-left: 6px; }
+
+  nav { display: flex; gap: 28px; font-size: 14px; font-weight: 500; }
+  nav a { color: var(--text-secondary); transition: color 0.25s ease; }
+  nav a:hover { color: var(--primary-blue); }
+
+  .button { padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .primary-sm { background: var(--text-primary); color: white; padding: 8px 16px; font-size: 13px; }
+  .primary-sm:hover { background: #1e293b; transform: translateY(-2px); }
+  .gold-gradient { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35); }
+  .gold-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5); }
+  .outline { border: 1px solid var(--border-color); background: white; color: var(--text-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+  .outline:hover { border-color: var(--primary-blue); color: var(--primary-blue); transform: translateY(-2px); }
+
+  /* Hero Section */
+  .hero { text-align: center; padding: 80px 0 60px; position: relative; z-index: 2; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(99, 102, 241, 0.25); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--primary-purple); margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+  .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulseDot 2s infinite; }
+  @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; } }
+
+  .hero h1 { font-size: clamp(42px, 5.5vw, 68px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 20px; line-height: 1.1; }
+  .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-intro { max-width: 680px; margin: 0 auto 36px; font-size: 19px; color: var(--text-secondary); line-height: 1.6; }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 50px; }
+
+  /* Metrics Strip */
+  .metrics-strip { display: inline-flex; align-items: center; gap: 28px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--border-color); padding: 16px 36px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+  .metric-item { text-align: left; }
+  .m-val { display: block; font-weight: 800; font-size: 18px; color: var(--primary-purple); }
+  .m-lbl { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+  .metric-divider { width: 1px; height: 32px; background: var(--border-color); }
+
+  /* Workflow Showcase Section */
+  .section { padding: 90px 0; position: relative; z-index: 2; }
+  .section-header { margin-bottom: 44px; }
+  .section-header.center { text-align: center; }
+  .eyebrow-pill { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary-purple); background: rgba(124, 58, 237, 0.08); padding: 4px 14px; border-radius: 12px; margin-bottom: 12px; }
+  .section-header h2 { font-size: clamp(32px, 4vw, 46px); font-weight: 800; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .section-sub { font-size: 17px; color: var(--text-secondary); margin: 0; }
+
+  /* Stage Tabs */
+  .stage-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+  .tab-btn { background: rgba(255, 255, 255, 0.7); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
+  .tab-btn:hover { background: white; border-color: var(--primary-blue); color: var(--primary-blue); }
+  .tab-btn.active { background: white; border-color: var(--primary-purple); color: var(--primary-purple); box-shadow: 0 6px 18px rgba(124, 58, 237, 0.15); transform: translateY(-2px); }
+  .tab-num { font-size: 11px; opacity: 0.7; }
+
+  /* Slide Cards Container */
+  .slide-card-container { position: relative; min-height: 440px; }
+  .slide-card { display: none; background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-color); border-radius: 20px; padding: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+  .slide-card.active { display: block; animation: fadeInSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes fadeInSlide { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  .slide-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; }
+  .icon-stage-wrapper { width: 72px; height: 72px; background: rgba(99, 102, 241, 0.08); border-radius: 16px; display: grid; place-items: center; margin-bottom: 20px; border: 1px solid rgba(99, 102, 241, 0.15); }
+  .anim-icon { width: 44px; height: 44px; }
+
+  /* SVG Animations */
+  .scan-beam { animation: scanMove 3s infinite alternate ease-in-out; }
+  @keyframes scanMove { from { transform: translate(-10px, -10px); } to { transform: translate(10px, 10px); } }
+  .pulse-node { animation: pulseNode 1.8s infinite ease-in-out; }
+  @keyframes pulseNode { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+
+  .anim-bolt { animation: boltFlash 2s infinite ease-in-out; }
+  @keyframes boltFlash { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.94); } }
+  .agent-dot { animation: dotFloat 3s infinite ease-in-out alternate; }
+  .d1 { animation-delay: 0s; } .d2 { animation-delay: 1s; } .d3 { animation-delay: 2s; }
+  @keyframes dotFloat { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
+  .anim-cube { animation: cubeRotate 12s linear infinite; transform-origin: center; }
+  @keyframes cubeRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .gear-ring { animation: gearSpin 8s linear infinite reverse; transform-origin: center; }
+  @keyframes gearSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .radar-sweep { animation: radarPulse 2s infinite linear; transform-origin: center; }
+  @keyframes radarPulse { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+
+  .bubble { animation: bubbleUp 3s infinite ease-in-out; }
+  .b1 { animation-delay: 0s; } .b2 { animation-delay: 1s; } .b3 { animation-delay: 2s; }
+  @keyframes bubbleUp { 0% { transform: translateY(0); opacity: 0.3; } 50% { opacity: 1; } 100% { transform: translateY(-12px); opacity: 0; } }
+
+  .slide-badge { font-size: 12px; font-weight: 700; color: var(--primary-purple); background: rgba(124, 58, 237, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 12px; }
+  .slide-left h3 { font-size: 26px; font-weight: 800; margin: 0 0 14px; }
+  .slide-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 24px; }
+  .metrics-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .tag { font-size: 12px; font-weight: 600; background: rgba(16, 185, 129, 0.1); color: #059669; padding: 4px 12px; border-radius: 8px; }
+
+  /* Code Window Simulator */
+  .code-window { background: #0f172a; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.25); border: 1px solid #1e293b; }
+  .code-header { height: 38px; background: #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+  .window-dots { display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .red { background: #ef4444; } .yellow { background: #f59e0b; } .green { background: #10b981; }
+  .window-title { font-size: 12px; color: #94a3b8; font-weight: 500; }
+  .window-lang { font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; }
+  .code-body { margin: 0; padding: 20px; color: #e2e8f0; font-family: 'Fira Code', 'Courier New', monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; max-height: 320px; }
+
+  /* Controls */
+  .slide-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; }
+  .slide-controls button { background: white; border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 10px; font-weight: 600; color: var(--text-primary); cursor: pointer; transition: all 0.25s ease; }
+  .slide-controls button:hover { border-color: var(--primary-blue); color: var(--primary-blue); }
+  .slide-dots { display: flex; gap: 8px; }
+  .dot-nav { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; cursor: pointer; transition: all 0.3s ease; }
+  .dot-nav.active { background: var(--primary-purple); width: 24px; border-radius: 6px; }
+
+  /* Capabilities Feature Grid */
+  .alt-bg { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(12px); border-radius: 24px; border: 1px solid var(--border-color); padding: 70px 40px; margin: 40px auto; }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature-card { background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 28px; transition: all 0.3s ease; }
+  .feature-card:hover { transform: translateY(-6px); border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 16px 36px rgba(99, 102, 241, 0.12); }
+  .feature-icon { font-size: 28px; margin-bottom: 16px; }
+  .feature-card h3 { font-size: 19px; font-weight: 800; margin: 0 0 10px; }
+  .feature-card p { font-size: 14px; color: var(--text-secondary); margin: 0; line-height: 1.6; }
+
+  /* Live Terminal Sandbox */
+  .demo-sandbox { background: white; border: 1px solid var(--border-color); border-radius: 20px; padding: 32px; box-shadow: 0 20px 45px rgba(0,0,0,0.04); }
+  .demo-toolbar { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .demo-btn { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.25s ease; }
+  .demo-btn:hover { background: #e2e8f0; color: var(--text-primary); }
+  .demo-btn.active { background: var(--primary-blue); border-color: var(--primary-blue); color: white; }
+
+  .terminal-container { background: #090d16; border-radius: 12px; border: 1px solid #1e293b; overflow: hidden; }
+  .terminal-bar { height: 36px; background: #131c2e; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 12px; color: #94a3b8; font-weight: 600; border-bottom: 1px solid #1e293b; }
+  .term-status { color: #10b981; }
+  .terminal-screen { padding: 20px; font-family: 'Fira Code', 'Courier New', monospace; font-size: 13px; min-height: 180px; display: flex; flex-direction: column; gap: 10px; }
+  .term-line { line-height: 1.5; }
+  .term-line.prompt { color: #38bdf8; font-weight: 700; }
+  .term-line.info { color: #94a3b8; }
+  .term-line.success { color: #34d399; font-weight: 600; }
+
+  /* Footer */
+  .footer { padding: 50px 0 30px; border-top: 1px solid var(--border-color); margin-top: 80px; position: relative; z-index: 2; }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  .footer-logo { font-weight: 800; font-size: 18px; color: var(--text-primary); display: block; margin-bottom: 6px; }
+  .footer p { margin: 0; color: var(--text-secondary); font-size: 14px; }
+  .footer-links { display: flex; gap: 20px; font-size: 14px; font-weight: 600; color: var(--primary-blue); }
+  .footer-bottom { display: flex; justify-content: space-between; font-size: 13px; color: #94a3b8; padding-top: 20px; border-top: 1px solid #f1f5f9; }
+
+  @media(max-width: 860px) {
+    .top { height: 66px; }
+    nav { display: none; }
+    .slide-grid { grid-template-columns: 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .metrics-strip { flex-direction: column; gap: 16px; width: 100%; text-align: center; }
+    .metric-divider { width: 100%; height: 1px; }
+    .alt-bg { padding: 40px 20px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+  }
 </style>
-
