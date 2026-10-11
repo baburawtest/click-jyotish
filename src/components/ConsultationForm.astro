@@ -292,6 +292,23 @@ const consultationTypes = [
       const language = formData.get('language')?.toString() || 'Hindi';
       const preferredSlot = formData.get('preferredSlot')?.toString() || 'Evening';
       const question = formData.get('question')?.toString().trim() || 'General Kundali Reading';
+      const attribution = (() => {
+        const params = new URLSearchParams(window.location.search);
+        const source = params.get('utm_source');
+        const medium = params.get('utm_medium');
+        const campaign = params.get('utm_campaign');
+        const landing = window.location.pathname || '/';
+
+        if (source) {
+          return `UTM: ${source}${medium ? ` / ${medium}` : ''}${campaign ? ` / ${campaign}` : ''} · ${landing}`;
+        }
+        if (params.get('gclid')) return `Google Ads · ${landing}`;
+        if (document.referrer) {
+          try { return `Referral: ${new URL(document.referrer).hostname} · ${landing}`; }
+          catch { /* Ignore an invalid referrer. */ }
+        }
+        return `Direct · ${landing}`;
+      })();
 
       const leadPayload = {
         timestamp: new Date().toISOString(),
@@ -305,7 +322,7 @@ const consultationTypes = [
         language,
         preferredSlot,
         question,
-        source: 'Click Jyotish Website'
+        source: attribution
       };
 
       // Save centrally to the private Click Jyotish lead inbox.
