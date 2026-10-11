@@ -35,10 +35,22 @@ export const site = {
   ],
   insights: [
     {
-      date: 'FESTIVALS · 2026',
-      title: 'Guru Purnima: Date, Meaning & Practice',
-      summary: 'Why Guru Purnima matters, how Jupiter influences wisdom, and simple observances for spiritual growth.',
-      link: '/blog/guru-purnima-2026'
+      date: 'PALMISTRY · PREPARATION',
+      title: 'Online Palmistry: How to Prepare Your Hand Photos',
+      summary: 'A respectful, practical guide to preparing for an online Palmistry consultation.',
+      link: '/blog/palmistry-online-consultation'
+    },
+    {
+      date: 'VASTU · PRACTICAL GUIDE',
+      title: 'Before a Vastu Consultation: A Simple Home Checklist',
+      summary: 'What to prepare before discussing a home, office or workplace with a Vastu practitioner.',
+      link: '/blog/vastu-consultation-home-checklist'
+    },
+    {
+      date: 'VEDIC ASTROLOGY · PREPARATION',
+      title: 'How to Prepare for Your First Kundali Consultation',
+      summary: 'A clear checklist for birth details, your main question and a focused online consultation.',
+      link: '/blog/how-to-prepare-for-kundali-consultation'
     }
   ]
 };

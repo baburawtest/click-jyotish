@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const formatDate = (date: Date) => date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title="Vedic Astrology, Vastu & Palmistry Articles | Click Jyotish" description="Read practical Click Jyotish articles about Vedic Astrology, festivals, Vastu, Palmistry, consultation preparation and spiritual living.">
+  <header class="header"><div class="wrap inner"><a class="brand" href="/"><img src="/images/click-jyotish-logo.jpg" alt="Click Jyotish" />Click Jyotish</a><a class="book" href="/#book">Book consultation</a></div></header>
+  <main class="wrap page"><p class="eyebrow">READING & INSIGHTS</p><h1>Vedic reflections for everyday life</h1><p class="lead">Clear, respectful articles on Jyotish, Vastu, Palmistry, festivals and preparing for a personal consultation.</p>
+    <div class="grid">{posts.map((post) => <article class="card"><p class="meta">{post.data.category} · {formatDate(post.data.pubDate)}</p><h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2><p>{post.data.description}</p><a class="read" href={`/blog/${post.id}`}>Read article →</a></article>)}</div>
+  </main>
+</BaseLayout>
+<style>
+  .header{border-bottom:1px solid #dedbd1;background:#fcfaf5}.inner{height:76px;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;align-items:center;gap:10px;font-family:"Playfair Display",serif;font-weight:700;font-size:20px}.brand img{width:43px;height:43px;border-radius:50%;object-fit:cover}.book{background:#c7913e;color:#101936;padding:10px 14px;border-radius:5px;font-size:14px;font-weight:800}.page{padding:75px 0 90px}.eyebrow,.meta{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#a86f1e;font-weight:800}.page h1{font-size:clamp(39px,6vw,63px);max-width:700px;margin:8px 0 16px}.lead{font-size:19px;color:#566276;max-width:710px;margin:0 0 44px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.card{background:#fff;border:1px solid #dedbd1;border-radius:10px;padding:28px}.card h2{font-size:26px;margin:9px 0 12px}.card h2 a:hover,.read:hover{text-decoration:underline}.card p{color:#526075}.read{display:inline-block;margin-top:8px;color:#98601b;font-weight:800}@media(max-width:650px){.page{padding:46px 0 70px}.grid{grid-template-columns:1fr}}
+</style>
