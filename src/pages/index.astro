@@ -67,6 +67,9 @@ import ConsultationForm from '../components/ConsultationForm.astro';
             <a class="btn btn-gold btn-hero" href="#book">
               Book 15-Min Call · {site.pricing.quickCall}
             </a>
+            <a class="btn btn-whatsapp" href={site.whatsappUrl} target="_blank" rel="noreferrer">
+              WhatsApp Deepak Ji
+            </a>
             <a class="btn btn-outline" href="#rashifal">
               Check Daily Rashifal & Panchang ↓
             </a>
@@ -406,6 +409,15 @@ import ConsultationForm from '../components/ConsultationForm.astro';
     background: #dba44e;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(199, 145, 62, 0.35);
+  }
+  .btn-whatsapp {
+    background: #25d366;
+    color: #ffffff;
+  }
+  .btn-whatsapp:hover {
+    background: #1ebe5d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
   }
   .btn-outline {
     background: transparent;
