@@ -1,0 +1,27 @@
+---
+import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import { site } from '../data/site';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Vastu Shastra Consultation',
+  description: 'Personal Vastu guidance for homes, workplaces and commercial spaces with Deepak Maheshwari.',
+  provider: { '@type': 'ProfessionalService', name: site.name, url: 'https://clickjyotish.in/' },
+  areaServed: 'India',
+  availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/vastu-consultation' }
+};
+---
+<InfoPageLayout title="Vastu Shastra Consultation for Home & Office | Click Jyotish" description="Request practical Vastu guidance for your home, office or commercial space with Deepak Maheshwari. Start with a private online consultation." eyebrow="VASTU SHASTRA GUIDANCE" {structuredData}>
+  <p class="notice"><strong>Practical Vastu guidance for homes, workplaces and commercial spaces.</strong><br />Share the property type and your main concern to receive the right next-step recommendation.</p>
+  <h2>Thoughtful Vastu, explained clearly</h2>
+  <p>Vastu guidance looks at how you use and experience a space. Deepak Ji offers practical suggestions that respect the realities of an existing home or workplace. The consultation begins by understanding your property, your concern and what is realistically possible.</p>
+  <h2>Common Vastu questions</h2>
+  <ul><li>Home layout, entrance, bedroom, kitchen or study-room concerns</li><li>Office, shop or workplace arrangement</li><li>Direction, placement and daily-use questions</li><li>Moving into a new home, office or commercial property</li><li>Practical changes that do not require unnecessary reconstruction</li></ul>
+  <h2>What to prepare</h2>
+  <p>When you enquire, mention the property type, city, key concern and whether you have a basic floor plan or photos. Do not send sensitive documents or personal financial information. The suitable consultation scope and any additional information needed will be confirmed personally.</p>
+  <h2>Consultation scope and pricing</h2>
+  <p>Vastu requirements vary by property size and the level of review required. Start with a brief online discussion; exact scope, available timing and pricing will be confirmed before any extended service is arranged.</p>
+  <p class="notice"><a href="/#book">Request a Vastu consultation</a> or <a href={site.whatsappUrl} target="_blank" rel="noreferrer">message Deepak Ji on WhatsApp</a>.</p>
+  <p>Vastu is spiritual and personal guidance. It does not replace engineering, architectural, legal, safety or professional building advice.</p>
+</InfoPageLayout>

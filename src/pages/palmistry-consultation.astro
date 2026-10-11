@@ -1,0 +1,27 @@
+---
+import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import { site } from '../data/site';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Palmistry and Hastarekha Consultation',
+  description: 'Personal Palmistry and Hastarekha guidance with Deepak Maheshwari.',
+  provider: { '@type': 'ProfessionalService', name: site.name, url: 'https://clickjyotish.in/' },
+  areaServed: 'India',
+  availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/palmistry-consultation' }
+};
+---
+<InfoPageLayout title="Palmistry & Hastarekha Consultation | Click Jyotish" description="Book a personal online Palmistry and Hastarekha consultation with Deepak Maheshwari. Explore strengths, patterns and life-direction questions." eyebrow="PALMISTRY · HASTAREKHA" {structuredData}>
+  <p class="notice"><strong>15-minute focused online consultation: {site.pricing.quickCall}</strong><br />Share your question first; Deepak Ji will confirm the best way to prepare for a Palmistry consultation.</p>
+  <h2>Understand patterns, strengths and direction</h2>
+  <p>Palmistry, or Hastarekha, is used as a traditional reflective practice to explore personal tendencies, strengths and life themes. A session is kept respectful and focused on the question that matters to you.</p>
+  <h2>What people ask about</h2>
+  <ul><li>Personal strengths and areas for self-development</li><li>Career inclination and working style</li><li>Relationships and communication patterns</li><li>Life direction during a period of change</li><li>How Palmistry can complement a broader Jyotish discussion</li></ul>
+  <h2>How to prepare</h2>
+  <p>Start by booking or messaging your question. You may be asked for clear, well-lit photographs of both palms before the consultation. Please do not send images until the correct preparation is confirmed on WhatsApp.</p>
+  <h2>A personal, confidential conversation</h2>
+  <p>Your request is stored privately for scheduling and consultation support. The aim is useful reflection and personal perspective, not fear-based predictions or guaranteed outcomes.</p>
+  <p class="notice"><a href="/#book">Book your ₹600 Palmistry consultation</a> or <a href={site.whatsappUrl} target="_blank" rel="noreferrer">message Deepak Ji on WhatsApp</a>.</p>
+  <p>Palmistry is spiritual guidance and does not replace medical, legal, financial or mental-health advice.</p>
+</InfoPageLayout>

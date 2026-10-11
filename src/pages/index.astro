@@ -151,8 +151,8 @@ const organizationSchema = {
               <div class="service-icon">{srv.icon}</div>
               <h3>{srv.title}</h3>
               <p>{srv.desc}</p>
-              <a href="#book" class="service-link">
-                Book Consultation ({site.pricing.quickCall}) →
+              <a href={srv.link} class="service-link">
+                Explore this service →
               </a>
             </div>
           ))}

@@ -1,0 +1,27 @@
+---
+import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import { site } from '../data/site';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Vedic Astrology and Kundali Reading',
+  description: 'Personal online Vedic Astrology and Kundali guidance with Deepak Maheshwari.',
+  provider: { '@type': 'ProfessionalService', name: site.name, url: 'https://clickjyotish.in/' },
+  areaServed: 'India',
+  availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/vedic-astrology-consultation' }
+};
+---
+<InfoPageLayout title="Vedic Astrology & Kundali Consultation | Click Jyotish" description="Book a personal online Vedic Astrology and Janam Kundli consultation with Deepak Maheshwari. Guidance for career, relationships, timing and life questions." eyebrow="VEDIC ASTROLOGY · JANAM KUNDLI" {structuredData}>
+  <p class="notice"><strong>15-minute focused online consultation: {site.pricing.quickCall}</strong><br />Choose a slot or send your question on WhatsApp to begin.</p>
+  <h2>Personal guidance for your question</h2>
+  <p>A Vedic Astrology consultation is a focused conversation around the themes you want clarity on. With your Janam Kundli details, Deepak Ji considers relevant planetary periods and timing in a practical, respectful way—not as a generic computer report.</p>
+  <h2>Topics you may bring to the consultation</h2>
+  <ul><li>Career direction, job change or business timing</li><li>Marriage, compatibility and relationship questions</li><li>Education, travel and major life decisions</li><li>Personal cycles, dasha and transit themes</li><li>Simple, suitable spiritual practices or remedies</li></ul>
+  <h2>What to prepare</h2>
+  <p>Please share your date of birth, place of birth and most accurate available birth time. If the exact time is not known, mention it honestly in the booking form. Also write one clear question you would like to discuss.</p>
+  <h2>What happens after you enquire</h2>
+  <ol><li>Submit the private consultation form or choose a calendar slot.</li><li>Receive confirmation and scheduling information on WhatsApp.</li><li>Attend your online call at the confirmed time.</li></ol>
+  <p class="notice"><a href="/#book">Book your ₹600 consultation</a> or <a href={site.whatsappUrl} target="_blank" rel="noreferrer">message Deepak Ji on WhatsApp</a>.</p>
+  <p>Vedic Astrology is spiritual guidance and does not replace medical, legal, financial or mental-health advice. See the <a href="/disclaimer">full disclaimer</a>.</p>
+</InfoPageLayout>

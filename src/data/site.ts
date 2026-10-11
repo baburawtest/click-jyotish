@@ -17,17 +17,20 @@ export const site = {
     {
       icon: '✨',
       title: 'Vedic Astrology & Kundali Reading',
-      desc: 'In-depth analysis of your Janam Kundli, planetary dasha, career, health, finances and relationship timing.'
+      desc: 'In-depth analysis of your Janam Kundli, planetary dasha, career, health, finances and relationship timing.',
+      link: '/vedic-astrology-consultation'
     },
     {
       icon: '🏡',
       title: 'Vastu Shastra Consultation',
-      desc: 'Harmonise your home, office, or commercial space with practical, non-destructive Vastu remedies.'
+      desc: 'Harmonise your home, office, or commercial space with practical, non-destructive Vastu remedies.',
+      link: '/vastu-consultation'
     },
     {
       icon: '✋',
       title: 'Palmistry (Hastarekha)',
-      desc: 'Understand your innate character, life line, fate line, potential health indications and natural strengths.'
+      desc: 'Understand your innate character, life line, fate line, potential health indications and natural strengths.',
+      link: '/palmistry-consultation'
     }
   ],
   insights: [
