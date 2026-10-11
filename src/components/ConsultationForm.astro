@@ -202,13 +202,18 @@ const consultationTypes = [
               ></textarea>
             </div>
 
+            <div class="checkbox-field privacy-consent">
+              <input type="checkbox" id="lead-consent" name="consent" required />
+              <label for="lead-consent">I consent to Click Jyotish securely storing these details so Deepak Ji can respond to my consultation request. <span class="req">*</span></label>
+            </div>
+
             <!-- Submission CTA -->
             <div class="form-submit-container">
               <button type="submit" id="submit-lead-btn" class="btn btn-gold btn-block">
                 <span>Book 15-Minute Consultation ({site.pricing.quickCall}) →</span>
               </button>
               <p class="submit-disclaimer">
-                🔒 By submitting, your details will be prepared for direct WhatsApp confirmation with Deepak Ji. No spam guaranteed.
+                🔒 Your request is saved privately for Deepak Ji, then you can confirm your preferred slot on WhatsApp. No spam guaranteed.
               </p>
             </div>
           </form>
@@ -303,31 +308,21 @@ const consultationTypes = [
         source: 'Click Jyotish Website'
       };
 
-      // 1. Save locally in browser cache
+      // Save centrally to the private Click Jyotish lead inbox.
       try {
-        const existingLeads = JSON.parse(localStorage.getItem('clickjyotish_leads') || '[]');
-        existingLeads.unshift(leadPayload);
-        localStorage.setItem('clickjyotish_leads', JSON.stringify(existingLeads.slice(0, 50)));
+        const response = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadPayload)
+        });
+
+        if (!response.ok) throw new Error('Lead inbox could not save the request');
       } catch (err) {
-        console.warn('LocalStorage error:', err);
+        console.error('Lead save error:', err);
+        alert('We could not save your request at the moment. Please send the WhatsApp message so Deepak Ji can assist you.');
       }
 
-      // 2. Dispatch to optional Webhook (Google Sheets / Automation API if configured)
-      const webhookUrl = 'https://script.google.com/macros/s/AKfycbz_SAMPLE_APP_SCRIPT/exec';
-      try {
-        if (!webhookUrl.includes('SAMPLE')) {
-          fetch(webhookUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(leadPayload)
-          }).catch((err) => console.log('Webhook dispatched in background'));
-        }
-      } catch (err) {
-        console.log('Webhook optional dispatch');
-      }
-
-      // 3. Format WhatsApp Deep-Link Message
+      // Format WhatsApp Deep-Link Message
       const waText = 
 `*Namaste Deepak Ji,* 🙏
 I would like to book a *${service}* (15 Min · ₹600).
@@ -350,7 +345,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
       const astrologerPhone = '917669655530';
       const waUrl = `https://wa.me/${astrologerPhone}?text=${encodeURIComponent(waText)}`;
 
-      // 4. Update and show success modal
+      // Update and show success modal
       const modalName = document.getElementById('modal-client-name');
       const modalService = document.getElementById('modal-service-name');
       const modalBirth = document.getElementById('modal-birth-info');

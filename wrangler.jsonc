@@ -1,8 +1,17 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "click-jyotish",
+  "main": "src/worker.ts",
   "compatibility_date": "2026-10-11",
+  "keep_vars": true,
+  "d1_databases": [
+    {
+      "binding": "LEADS_DB"
+    }
+  ],
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/admin/*"]
   }
 }
