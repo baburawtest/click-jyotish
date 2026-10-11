@@ -4,9 +4,28 @@ import { site } from '../data/site';
 import DailyRashifal from '../components/DailyRashifal.astro';
 import DailyPanchang from '../components/DailyPanchang.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url: 'https://clickjyotish.in/',
+  logo: 'https://clickjyotish.in/images/click-jyotish-logo.jpg',
+  image: 'https://clickjyotish.in/images/deepak-maheshwari-yellow.png',
+  description: 'Personal Vedic Astrology, Vastu and Palmistry consultations with Deepak Maheshwari.',
+  telephone: `+${site.phone}`,
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.city,
+    addressCountry: 'IN'
+  },
+  areaServed: 'India',
+  availableLanguage: ['Hindi', 'English']
+};
 ---
 
-<BaseLayout title={`${site.name} | ${site.tagline}`}>
+<BaseLayout title={`${site.name} | Vedic Astrology, Vastu & Palmistry`} description="Book a personal online Vedic Astrology, Vastu or Palmistry consultation with Deepak Maheshwari. 15-minute guidance for ₹600 in Hindi or English." structuredData={organizationSchema}>
   <!-- Navigation Header -->
   <header class="navbarwrap">
     <div class="top wrap">
@@ -23,6 +42,7 @@ import ConsultationForm from '../components/ConsultationForm.astro';
         <a href="#panchang">Panchang & Muhurat</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
+        <a href="/faq">FAQ</a>
         <a href="#book" class="nav-book-link">Book Consultation</a>
       </nav>
       <div class="nav-right">
@@ -229,6 +249,11 @@ import ConsultationForm from '../components/ConsultationForm.astro';
         <a href="#about">About</a>
         <a href="#book">Book Consultation</a>
         <a href="/blog/guru-purnima-2026">Guru Purnima 2026</a>
+        <a href="/faq">FAQ</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms</a>
+        <a href="/disclaimer">Disclaimer</a>
+        <a href="/refund-and-rescheduling">Booking Policy</a>
       </div>
     </div>
     <div class="wrap footer-bottom">

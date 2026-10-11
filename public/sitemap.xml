@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://clickjyotish.in/</loc></url>
-  <url><loc>https://clickjyotish.in/blog/guru-purnima-2026/</loc></url>
+  <url><loc>https://clickjyotish.in/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/faq/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/privacy-policy/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/terms-and-conditions/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/disclaimer/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/refund-and-rescheduling/</loc><lastmod>2026-10-11</lastmod></url>
+  <url><loc>https://clickjyotish.in/blog/guru-purnima-2026/</loc><lastmod>2026-07-29</lastmod></url>
 </urlset>

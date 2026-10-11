@@ -1,14 +1,44 @@
 ---
-const { title = 'Jyotish Darshan' } = Astro.props;
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title = `${site.name} | ${site.tagline}`,
+  description = 'Personal Vedic Astrology, Vastu and Palmistry consultations with Deepak Maheshwari in New Delhi. Online consultations available in Hindi and English.',
+  image = '/images/deepak-maheshwari-yellow.png',
+  structuredData
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://clickjyotish.in').toString();
+const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toString();
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Personal Vedic Astrology, Vastu and Palmistry consultations." />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="theme-color" content="#101936" />
     <link rel="icon" href="/favicon.svg" />
     <title>{title}</title>
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
   <body><slot /></body>
 </html>

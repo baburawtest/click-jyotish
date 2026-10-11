@@ -1,0 +1,36 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, eyebrow = 'CLICK JYOTISH', structuredData } = Astro.props;
+---
+<BaseLayout {title} {description} {structuredData}>
+  <header class="header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/"><img src="/images/click-jyotish-logo.jpg" alt="Click Jyotish" /> <span>Click Jyotish</span></a>
+      <a class="book" href="/#book">Book 15 min · {site.pricing.quickCall}</a>
+    </div>
+  </header>
+  <main class="wrap page">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1>{title}</h1>
+    <p class="lead">{description}</p>
+    <article class="content"><slot /></article>
+  </main>
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© {new Date().getFullYear()} Click Jyotish</span>
+      <nav><a href="/faq">FAQ</a><a href="/privacy-policy">Privacy</a><a href="/terms-and-conditions">Terms</a><a href="/disclaimer">Disclaimer</a><a href="/refund-and-rescheduling">Booking policy</a></nav>
+    </div>
+  </footer>
+</BaseLayout>
+<style>
+  .header{background:#fcfaf5;border-bottom:1px solid #dedbd1}.header-inner{height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:10px;font-family:"Playfair Display",serif;font-weight:700;font-size:20px}.brand img{width:43px;height:43px;object-fit:cover;border-radius:50%}.book{background:#c7913e;color:#101936;padding:10px 14px;border-radius:5px;font-size:14px;font-weight:800}.page{max-width:820px;padding:74px 0 88px}.eyebrow{font-size:12px;letter-spacing:1.7px;color:#a86f1e;font-weight:800;margin:0 0 12px}.page h1{font-size:clamp(38px,6vw,58px);margin:0 0 18px}.lead{font-size:19px;color:#536076;margin:0 0 42px}.content :global(h2){font-size:29px;margin:42px 0 10px}.content :global(h3){font-size:21px;margin:28px 0 8px}.content :global(p),.content :global(li){font-size:16px;color:#4d566a}.content :global(li){margin:9px 0}.content :global(a){color:#9b631a;text-decoration:underline}.content :global(.notice){background:#f5ead4;border-left:4px solid #c7913e;padding:18px 20px;margin:25px 0;color:#493116}.content :global(.faq-item){border-top:1px solid #dedbd1;padding:21px 0}.content :global(.faq-item:last-child){border-bottom:1px solid #dedbd1}footer{background:#0b1126;color:#b4becd;padding:26px 0}.footer-inner{display:flex;gap:20px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:13px}footer nav{display:flex;flex-wrap:wrap;gap:14px}footer a:hover{color:#dca34e}@media(max-width:580px){.page{padding:46px 0 65px}.book{font-size:12px}.brand{font-size:18px}}
+</style>
