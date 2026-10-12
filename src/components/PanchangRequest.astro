@@ -1,0 +1,28 @@
+---
+import { site } from '../data/site';
+
+const message = encodeURIComponent('Namaste Deepak, I need verified Panchang or Muhurat guidance for a specific date and location.');
+---
+
+<section id="panchang" class="panchang-request">
+  <div class="wrap request-grid">
+    <div>
+      <p class="eyebrow">VEDIC CALENDAR · पंचांग व मुहूर्त</p>
+      <h2>Verified Panchang for your date and location</h2>
+      <p>Accurate Tithi, Nakshatra, Choghadiya and Muhurat depend on the exact date, time and location. For an important decision, they should be checked from a reliable local Panchang—not estimated by a generic website tool.</p>
+    </div>
+    <div class="request-card">
+      <strong>Need a specific Muhurat?</strong>
+      <p>Share the purpose, date range and city. Deepak will guide you on the suitable consultation or verified Panchang check.</p>
+      <div class="actions">
+        <a class="gold" href={`https://wa.me/${site.phone}?text=${message}`} target="_blank" rel="noreferrer">Ask on WhatsApp</a>
+        <a class="outline" href="#book">Request consultation</a>
+      </div>
+      <small>For Griha Pravesh, marriage, naming ceremony, property, business or other important occasions.</small>
+    </div>
+  </div>
+</section>
+
+<style>
+  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.request-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.panchang-request h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.panchang-request p{color:#566276;font-size:17px;line-height:1.65}.request-card{padding:26px;border:1px solid #e0c995;border-radius:12px;background:#fffdf7;box-shadow:0 8px 28px #3828090b}.request-card strong{font-size:20px;color:#18213d}.request-card p{font-size:15px;margin:9px 0 18px}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a{padding:11px 15px;border-radius:6px;font-weight:800;text-decoration:none}.gold{background:#c7913e;color:#18213d}.outline{border:1px solid #18213d;color:#18213d}.request-card small{display:block;margin-top:16px;color:#6c7280;line-height:1.45}@media(max-width:760px){.panchang-request{padding:54px 0}.request-grid{grid-template-columns:1fr;gap:22px}}
+</style>

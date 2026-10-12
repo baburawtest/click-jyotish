@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
 import DailyRashifal from '../components/DailyRashifal.astro';
-import DailyPanchang from '../components/DailyPanchang.astro';
+import PanchangRequest from '../components/PanchangRequest.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 
 const organizationSchema = {
@@ -135,7 +135,7 @@ const organizationSchema = {
     <DailyRashifal />
 
     <!-- Daily Panchang & Shubh Muhurat Component -->
-    <DailyPanchang />
+    <PanchangRequest />
 
     <!-- Services Section -->
     <section id="services" class="section services-section">
