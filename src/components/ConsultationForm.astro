@@ -117,7 +117,8 @@ const consultationTypes = [
               />
             </div>
 
-            <!-- Step 2: Birth Details for Vedic Kundali -->
+            <!-- Birth details are required only for Kundali-based consultations. -->
+            <div id="lead-birth-details">
             <div class="form-subheading">
               <span>VEDIC BIRTH DETAILS (जन्म विवरण)</span>
             </div>
@@ -159,6 +160,7 @@ const consultationTypes = [
               <input type="checkbox" id="lead-tob-unknown" name="tobUnknown" />
               <label for="lead-tob-unknown">I do not know my exact birth time (use Prashna Kundali / Palmistry)</label>
             </div>
+            </div>
 
             <!-- Step 3: Service Selection -->
             <div class="form-subheading">
@@ -175,6 +177,7 @@ const consultationTypes = [
                 ))}
               </select>
             </div>
+            <p id="service-guidance" class="service-guidance" aria-live="polite"></p>
 
             <div class="form-group-grid">
               <div class="input-field">
@@ -199,7 +202,7 @@ const consultationTypes = [
 
             <!-- Step 4: Specific Question -->
             <div class="input-field">
-              <label for="lead-question">What specific question or life concern would you like clarity on?</label>
+              <label id="lead-question-label" for="lead-question">What specific question or life concern would you like clarity on?</label>
               <textarea
                 id="lead-question"
                 name="question"
@@ -278,8 +281,41 @@ const consultationTypes = [
     const modal = document.getElementById('booking-success-modal') as HTMLElement;
     const closeModalBtn = document.getElementById('close-modal-btn') as HTMLButtonElement;
     const submitBtn = document.getElementById('submit-lead-btn') as HTMLButtonElement;
+    const serviceSelect = document.getElementById('lead-service') as HTMLSelectElement;
+    const birthDetails = document.getElementById('lead-birth-details') as HTMLElement;
+    const dobInput = document.getElementById('lead-dob') as HTMLInputElement;
+    const pobInput = document.getElementById('lead-pob') as HTMLInputElement;
+    const questionInput = document.getElementById('lead-question') as HTMLTextAreaElement;
+    const questionLabel = document.getElementById('lead-question-label') as HTMLLabelElement;
+    const serviceGuidance = document.getElementById('service-guidance') as HTMLElement;
 
     if (!form) return;
+
+    const updateServiceFields = () => {
+      const service = serviceSelect?.value || '';
+      const isVastu = service.includes('Vastu');
+      const isPalmistry = service.includes('Palmistry');
+      const needsBirthDetails = !isVastu && !isPalmistry;
+      if (birthDetails) birthDetails.hidden = !needsBirthDetails;
+      if (dobInput) dobInput.required = needsBirthDetails;
+      if (pobInput) pobInput.required = needsBirthDetails;
+      if (questionInput) questionInput.required = isVastu || isPalmistry;
+      if (isVastu) {
+        questionLabel.textContent = 'Property type, city/area and your main Vastu concern *';
+        questionInput.placeholder = 'e.g., 3BHK flat in Noida, residential, entrance and bedroom concern. Mention online discussion or site visit.';
+        serviceGuidance.textContent = 'Birth details are not needed for Vastu. Please share your property type, city/area and main concern.';
+      } else if (isPalmistry) {
+        questionLabel.textContent = 'What would you like clarity on? *';
+        questionInput.placeholder = 'Write your main question. Clear photos of both palms can be requested after personal confirmation.';
+        serviceGuidance.textContent = 'Birth details are not needed for Palmistry. Clear hand photographs can be requested after confirmation.';
+      } else {
+        questionLabel.textContent = 'What specific question or life concern would you like clarity on?';
+        questionInput.placeholder = 'e.g., Job promotion timing, business partnership or relationship question.';
+        serviceGuidance.textContent = 'For Kundali-based consultations, date and place of birth are required. Your exact birth time is helpful but optional.';
+      }
+    };
+    serviceSelect?.addEventListener('change', updateServiceFields);
+    updateServiceFields();
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -580,6 +616,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     margin: 0;
   }
   .form-header p a { color: #9a651b; font-weight: 700; }
+  .service-guidance { margin: -5px 0 2px; color: #667085; font-size: 13px; line-height: 1.45; }
 
   /* Form Fields */
   .astro-lead-form {

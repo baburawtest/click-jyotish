@@ -7,8 +7,9 @@ import { site } from '../data/site';
   <div class="wrap">
     <div class="section-header text-center">
       <p class="eyebrow-text">DAILY HOROSCOPE · दैनिक राशिफल</p>
-      <h2>Today's Vedic Zodiac Insights</h2>
-      <p class="section-desc">Planetary alignments, practical guidance, and Vedic remedies for all 12 Rashis.</p>
+      <h2>Today's Chandra Rashi Insights</h2>
+      <p class="section-desc">Daily guidance for all 12 Rashis, viewed through your Janma Rashi (Moon sign).</p>
+      <p class="moon-sign-note"><strong>Choose your Moon sign, not your Sun sign.</strong> In Vedic Jyotish, daily Rashifal is generally read from the Rashi occupied by Chandra (the Moon) at the time of birth. Your date-of-birth Sun-sign range is not used here.</p>
     </div>
 
     <!-- Zodiac Sign Grid Selector -->
@@ -28,7 +29,7 @@ import { site } from '../data/site';
             <span class="z-en">{z.nameEn}</span>
             <span class="z-hi">{z.nameHi}</span>
           </div>
-          <span class="z-date">{z.dates}</span>
+          <span class="z-date">Janma Rashi · Moon Sign</span>
         </button>
       ))}
     </div>
@@ -56,7 +57,7 @@ import { site } from '../data/site';
                   <span class="badge badge-dark">Ruler: {z.rulingPlanet} ({z.rulingPlanetHi})</span>
                 </div>
                 <h3>{z.nameEn} ({z.nameHi} - {z.sanskrit})</h3>
-                <p class="z-date-range">{z.dates}</p>
+                <p class="z-date-range">Read this guidance from your Janma Rashi (Moon sign).</p>
               </div>
             </div>
 
@@ -192,6 +193,17 @@ import { site } from '../data/site';
     text-align: center;
     max-width: 680px;
     margin: 0 auto 40px;
+  }
+  .moon-sign-note {
+    margin: 18px auto 0;
+    max-width: 760px;
+    padding: 12px 16px;
+    border: 1px solid #dfc792;
+    border-radius: 8px;
+    background: #fff9eb;
+    color: #5d4a26;
+    font-size: 14px;
+    line-height: 1.55;
   }
 
   /* Zodiac Grid Chips */

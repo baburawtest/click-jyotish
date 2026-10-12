@@ -84,7 +84,9 @@ async function submitLead(request: Request, env: Env, ctx: ExecutionContext) {
     preferredSlot: clean(input.preferredSlot, 100), question: clean(input.question, 2000),
     source: clean(input.source, 80) || 'Click Jyotish Website'
   };
-  if (!lead.name || !lead.phone || !lead.email || !lead.dob || !lead.pob || !lead.service) {
+  const needsBirthDetails = !/Vastu|Palmistry/i.test(lead.service);
+  const needsServiceQuestion = /Vastu|Palmistry/i.test(lead.service);
+  if (!lead.name || !lead.phone || !lead.email || !lead.service || (needsBirthDetails && (!lead.dob || !lead.pob)) || (needsServiceQuestion && !lead.question)) {
     return json({ error: 'Please complete all required details.' }, 400);
   }
   if (!/^\S+@\S+\.\S+$/.test(lead.email)) return json({ error: 'Enter a valid email address.' }, 400);
