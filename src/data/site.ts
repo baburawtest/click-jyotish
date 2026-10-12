@@ -35,6 +35,12 @@ export const site = {
   ],
   insights: [
     {
+      date: 'DIWALI 2026 · VASTU',
+      title: 'Diwali Vastu Checklist: Prepare Your Home With Intention',
+      summary: 'A practical and respectful checklist for preparing your home or workplace before Deepavali.',
+      link: '/blog/diwali-vastu-home-preparation-2026'
+    },
+    {
       date: 'PALMISTRY · PREPARATION',
       title: 'Online Palmistry: How to Prepare Your Hand Photos',
       summary: 'A respectful, practical guide to preparing for an online Palmistry consultation.',
@@ -45,12 +51,6 @@ export const site = {
       title: 'Before a Vastu Consultation: A Simple Home Checklist',
       summary: 'What to prepare before discussing a home, office or workplace with a Vastu practitioner.',
       link: '/blog/vastu-consultation-home-checklist'
-    },
-    {
-      date: 'VEDIC ASTROLOGY · PREPARATION',
-      title: 'How to Prepare for Your First Kundali Consultation',
-      summary: 'A clear checklist for birth details, your main question and a focused online consultation.',
-      link: '/blog/how-to-prepare-for-kundali-consultation'
     }
   ]
 };
