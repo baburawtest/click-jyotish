@@ -51,11 +51,17 @@ const consultationTypes = [
           <div class="perk-item">
             <span class="p-icon">⚡</span>
             <div>
-              <strong>Instant WhatsApp Confirmation</strong>
-              <p>Get immediate confirmation and calendar slot over WhatsApp.</p>
+              <strong>Personal Confirmation</strong>
+              <p>Choose a calendar slot or receive personal confirmation on WhatsApp.</p>
             </div>
           </div>
         </div>
+
+        <a href={site.bookingLink} target="_blank" rel="noreferrer" class="calendar-choice">
+          <span>🗓️</span>
+          <span><strong>Prefer to choose a time now?</strong><small>View available 15-minute slots</small></span>
+          <b>→</b>
+        </a>
 
         <div class="sidebar-contact-info">
           <span>Need immediate assistance?</span>
@@ -68,7 +74,7 @@ const consultationTypes = [
         <div class="form-card">
           <div class="form-header">
             <h3>Share Your Birth & Consultation Details</h3>
-            <p>Accurate birth details ensure precise Janam Kundli and Dasha calculations.</p>
+            <p>Accurate birth details ensure precise Janam Kundli and Dasha calculations. Prefer to select a time first? <a href={site.bookingLink} target="_blank" rel="noreferrer">View available calendar slots</a>.</p>
           </div>
 
           <form id="consultation-form" class="astro-lead-form">
@@ -250,6 +256,9 @@ const consultationTypes = [
       <div class="modal-cta-buttons">
         <a id="modal-wa-btn" href="#" target="_blank" rel="noreferrer" class="btn btn-gold btn-block">
           Open WhatsApp to Confirm Slot with Deepak Ji 💬
+        </a>
+        <a href={site.bookingLink} target="_blank" rel="noreferrer" class="btn btn-outline btn-block">
+          View Available Calendar Slots
         </a>
         <button type="button" id="close-modal-btn" class="btn btn-outline btn-block">
           Done & Close
@@ -511,6 +520,25 @@ _Please let me know the available time slot and payment details. Thank you._`;
     margin: 0;
     line-height: 1.5;
   }
+  .calendar-choice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    margin: 0 0 24px;
+    color: #ffffff;
+    text-decoration: none;
+    border: 1px solid rgba(199, 145, 62, 0.5);
+    border-radius: 8px;
+    background: rgba(199, 145, 62, 0.1);
+  }
+  .calendar-choice:hover { background: rgba(199, 145, 62, 0.2); }
+  .calendar-choice span:first-child { font-size: 20px; }
+  .calendar-choice span:nth-child(2) { flex: 1; }
+  .calendar-choice strong, .calendar-choice small { display: block; }
+  .calendar-choice strong { font-size: 13px; }
+  .calendar-choice small { margin-top: 2px; color: #cbd5e1; font-size: 12px; }
+  .calendar-choice b { color: #e5b45f; font-size: 18px; }
 
   /* Direct Phone Link */
   .sidebar-contact-info {
@@ -551,6 +579,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     color: #64748b;
     margin: 0;
   }
+  .form-header p a { color: #9a651b; font-weight: 700; }
 
   /* Form Fields */
   .astro-lead-form {
