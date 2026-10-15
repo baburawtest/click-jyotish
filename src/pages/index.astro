@@ -89,10 +89,10 @@ const organizationSchema = {
               Book 15-Min Call · {site.pricing.quickCall}
             </a>
             <a class="btn btn-whatsapp" href={site.whatsappUrl} target="_blank" rel="noreferrer">
-              WhatsApp Deepak Ji
+              Chat on WhatsApp
             </a>
-            <a class="btn btn-outline" href="#rashifal">
-              Check Daily Rashifal & Panchang ↓
+            <a class="btn btn-outline" href="#services">
+              Explore services ↓
             </a>
           </div>
 
@@ -119,8 +119,8 @@ const organizationSchema = {
             <div class="orbit-ring ring-mid"></div>
             <div class="orbit-ring ring-inner"></div>
 
-            <div class="central-sun">
-              <span class="om-symbol">ॐ</span>
+            <div class="central-sun" title="Chandra · Moon">
+              <span class="om-symbol">☾</span>
             </div>
 
             <div class="planet planet-gold"></div>
@@ -157,6 +157,22 @@ const organizationSchema = {
               </a>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section consultation-expectations">
+      <div class="wrap expectations-grid">
+        <div class="expectations-intro">
+          <p class="eyebrow-text">A CLEAR CONSULTATION EXPERIENCE</p>
+          <h2>Personal guidance, without unnecessary complexity.</h2>
+          <p>Choose the service that fits your question. We collect only the details that are relevant, confirm the suitable time, and keep the conversation focused on practical clarity.</p>
+          <a href="#book" class="text-cta">Start your consultation request →</a>
+        </div>
+        <div class="expectations-list">
+          <article><span>01</span><div><h3>Choose your focus</h3><p>Kundali, career, relationships, Palmistry, Vastu or Muhurat.</p></div></article>
+          <article><span>02</span><div><h3>Share only relevant details</h3><p>Birth details for Kundali work; property information for Vastu; your question for Palmistry.</p></div></article>
+          <article><span>03</span><div><h3>Confirm your session personally</h3><p>Choose a calendar slot or confirm the best time directly on WhatsApp.</p></div></article>
         </div>
       </div>
     </section>
@@ -495,8 +511,8 @@ const organizationSchema = {
     width: 90px;
     height: 90px;
     border-radius: 50%;
-    background: radial-gradient(circle, #d99a38 0%, #b87c2a 100%);
-    box-shadow: 0 0 35px rgba(217, 154, 56, 0.45);
+    background: radial-gradient(circle at 35% 30%, #fffdf1 0%, #e8d9aa 48%, #c7913e 100%);
+    box-shadow: 0 0 35px rgba(232, 217, 170, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -505,7 +521,7 @@ const organizationSchema = {
   .om-symbol {
     font-family: "Noto Serif Devanagari", serif;
     font-size: 38px;
-    color: #101936;
+    color: #18213d;
     font-weight: 700;
   }
   .planet { position: absolute; border-radius: 50%; }
@@ -549,6 +565,18 @@ const organizationSchema = {
   .service-card h3 { font-size: 21px; color: #18213d; margin: 0 0 12px; }
   .service-card p { font-size: 14.5px; color: #475569; line-height: 1.6; margin-bottom: 20px; }
   .service-link { font-size: 14px; font-weight: 700; color: #c7913e; text-decoration: none; }
+
+  /* Consultation expectations */
+  .consultation-expectations { background: #101936; color: #ffffff; }
+  .expectations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .expectations-intro h2 { margin: 0 0 18px; font-size: clamp(32px, 4vw, 47px); line-height: 1.12; }
+  .expectations-intro > p:not(.eyebrow-text) { margin: 0 0 22px; color: #cbd5e1; font-size: 17px; line-height: 1.65; }
+  .text-cta { color: #f1c16b; font-weight: 800; text-decoration: none; }
+  .expectations-list { border-top: 1px solid #ffffff26; }
+  .expectations-list article { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 20px 0; border-bottom: 1px solid #ffffff26; }
+  .expectations-list article > span { color: #e5b45f; font-weight: 800; font-size: 13px; letter-spacing: 1px; }
+  .expectations-list h3 { margin: 0 0 6px; font-size: 18px; }
+  .expectations-list p { margin: 0; color: #cbd5e1; line-height: 1.55; font-size: 14px; }
 
   /* About Section */
   .about-section { background: #edf0f6; }
@@ -658,6 +686,7 @@ const organizationSchema = {
     .hero-lead { margin: 0 auto 32px; }
     .hero-cta-group, .hero-badges-row { justify-content: center; }
     .about-grid { grid-template-columns: 1fr; }
+    .expectations-grid { grid-template-columns: 1fr; gap: 35px; }
     .nav-links { display: none; }
     .floating-mobile-bar { display: flex; }
     body { padding-bottom: 65px; }
