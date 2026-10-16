@@ -5,6 +5,8 @@ pubDate: 2026-09-29
 category: "Vastu"
 tags: ["Vastu", "home", "workplace"]
 featured: true
+featuredImage: "/images/vastu-home-consultation-checklist.png"
+featuredImageAlt: "A clean and welcoming Indian home entrance with a plant and warm light"
 ---
 
 A useful Vastu consultation starts with a clear view of how you use the space. You do not need an elaborate report before your first discussion, but these basics can help.

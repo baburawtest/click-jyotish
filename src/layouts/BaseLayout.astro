@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import SiteHeader from '../components/SiteHeader.astro';
 
 interface Props {
   title?: string;
@@ -40,7 +41,7 @@ const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toSt
     <title>{title}</title>
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
-  <body><slot /></body>
+  <body><SiteHeader /><slot /></body>
 </html>
 <style is:global>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');

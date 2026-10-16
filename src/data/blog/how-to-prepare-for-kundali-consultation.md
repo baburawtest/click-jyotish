@@ -5,6 +5,8 @@ pubDate: 2026-09-18
 category: "Vedic Astrology"
 tags: ["Kundali", "Janam Kundli", "consultation"]
 featured: true
+featuredImage: "/images/kundali-consultation-preparation.png"
+featuredImageAlt: "An open Kundali preparation notebook with pencil, brass compass and chai on a study desk"
 ---
 
 A clear question and accurate birth details make a personal Jyotish consultation more useful. You do not need to know every astrological term before your session; a little preparation is enough.

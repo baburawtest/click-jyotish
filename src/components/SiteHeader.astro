@@ -1,0 +1,57 @@
+---
+import { site } from '../data/site';
+
+const links = [
+  { label: 'Home', href: '/' },
+  { label: 'Daily Rashifal', href: '/#rashifal' },
+  { label: 'Panchang', href: '/#panchang' },
+  { label: 'Services', href: '/#services' },
+  { label: 'About', href: '/#about' },
+  { label: 'Articles', href: '/blog' },
+  { label: 'FAQ', href: '/faq' }
+];
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-brand" href="/" aria-label={`${site.name} home`}>
+      <img src="/images/click-jyotish-logo.jpg" alt="Click Jyotish" />
+      <span><strong>{site.name}</strong><small>{site.subtitle}</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+    <a class="header-cta" href="/#book">Start consultation</a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation" hidden>
+    {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    <a class="mobile-cta" href="/#book">Start consultation</a>
+  </nav>
+</header>
+
+<script>
+  const menu = document.querySelector('#mobile-navigation') as HTMLElement | null;
+  const toggle = document.querySelector('.menu-toggle') as HTMLButtonElement | null;
+  toggle?.addEventListener('click', () => {
+    if (!menu || !toggle) return;
+    const open = menu.hidden;
+    menu.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+  });
+</script>
+
+<style>
+  .site-header{position:sticky;top:0;z-index:100;background:#fcfaf5;border-bottom:1px solid #dedbd1;box-shadow:0 2px 12px #18213d08}
+  .site-header-inner{width:min(1400px,calc(100% - 40px));min-height:80px;margin:auto;display:flex;align-items:center;gap:24px}
+  .site-brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}.site-brand img{width:48px;height:48px;border:1px solid #c7913e;border-radius:50%;object-fit:cover}.site-brand span{display:grid;gap:2px}.site-brand strong{font:700 24px/1.05 "Playfair Display",serif;color:#18213d;white-space:nowrap}.site-brand small{font-size:9px;letter-spacing:1.3px;text-transform:uppercase;font-weight:800;color:#c7913e;white-space:nowrap}
+  .site-nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,1.65vw,27px);margin-left:auto}.site-nav a{font-size:14px;font-weight:650;color:#18213d;white-space:nowrap}.site-nav a:hover{color:#a86f1e}
+  .header-cta,.mobile-cta{flex:0 0 auto;border-radius:6px;background:#c7913e;color:#101936;font-size:14px;font-weight:800;padding:12px 16px;white-space:nowrap}.header-cta:hover,.mobile-cta:hover{background:#d9a34d}
+  .menu-toggle{display:none;margin-left:auto;width:42px;height:42px;border:1px solid #dedbd1;border-radius:6px;background:#fff;padding:10px;cursor:pointer}.menu-toggle span{display:block;height:2px;background:#18213d;margin:4px 0}
+  .mobile-nav{border-top:1px solid #dedbd1;padding:12px 20px 18px;background:#fcfaf5}.mobile-nav a{display:block;padding:11px 0;font-size:15px;font-weight:650}.mobile-nav .mobile-cta{display:block;margin-top:8px;padding:12px;text-align:center;color:#101936}
+  @media(max-width:1150px){.site-nav,.header-cta{display:none}.menu-toggle{display:block}}
+  @media(max-width:560px){.site-header-inner{width:min(100% - 28px,1400px);min-height:70px}.site-brand img{width:42px;height:42px}.site-brand strong{font-size:20px}.site-brand small{font-size:8px;letter-spacing:1px}.mobile-nav{padding:10px 14px 16px}}
+</style>

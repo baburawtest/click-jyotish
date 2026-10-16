@@ -5,6 +5,8 @@ pubDate: 2026-10-12
 category: "Festivals & Vastu"
 tags: ["Diwali 2026", "Vastu", "Deepavali", "home preparation"]
 featured: true
+featuredImage: "/images/diwali-vastu-home-preparation.png"
+featuredImageAlt: "A clean Indian home entrance with rangoli, diyas and marigolds for Diwali"
 ---
 
 Diwali, or Deepavali, falls on **8 November 2026** in India. It is a meaningful time to refresh the home, complete pending practical tasks and welcome the festival with a clear mind. Exact puja timing can vary by city and family tradition, so confirm it from a reliable local Panchang before planning a ceremony.

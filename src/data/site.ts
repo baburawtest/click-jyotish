@@ -10,9 +10,6 @@ export const site = {
   city: 'New Delhi',
   bookingLink: 'https://cal.id/clickjyotish/15-minute-consultation',
   whatsappUrl: 'https://wa.me/917669655530?text=Namaste%20Deepak%20Ji%2C%20I%20would%20like%20to%20book%20a%20consultation.',
-  pricing: {
-    quickCall: '₹600',
-  },
   services: [
     {
       icon: '✨',
@@ -61,8 +58,8 @@ export const content = {
     eyebrow: 'Vedic wisdom for modern life',
     title: 'Find clarity. Move forward with confidence.',
     intro: 'Personal guidance in Vedic Astrology, Vastu and Palmistry with Deepak Maheshwari—offered with care, confidentiality and practical perspective.',
-    primary: 'Book 15 minutes · ₹600', secondary: 'Explore services',
-    proof: '15-minute call • ₹600 • Online consultation',
+    primary: 'Start a consultation', secondary: 'Explore services',
+    proof: 'Personal • Confidential • Online consultation',
     servicesTitle: 'Guidance for what matters most',
     services: [
       ['Vedic Astrology', 'Kundali reading, career, relationships, timing and life direction.'],

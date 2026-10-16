@@ -5,6 +5,8 @@ pubDate: 2026-07-26
 category: "Festivals"
 tags: ["Guru Purnima", "Vedic festivals", "Jupiter"]
 featured: false
+featuredImage: "/images/guru-purnima-reflection.png"
+featuredImageAlt: "A peaceful study space with a book, mala, brass lamp and fading full moon"
 ---
 
 Guru Purnima is observed on Ashadha Purnima and is also known as Vyasa Purnima. It is a meaningful pause to remember the teachers, elders and experiences that have shaped our path.

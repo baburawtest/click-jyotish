@@ -2,10 +2,10 @@
 import { site } from '../data/site';
 
 const consultationTypes = [
-  { id: 'kundali', name: 'Vedic Kundali & Dasha Analysis (15 Min - ₹600)', price: '₹600', icon: '✨' },
+  { id: 'kundali', name: 'Vedic Kundali & Dasha Analysis', price: '₹600', icon: '✨' },
   { id: 'career', name: 'Career, Job Change & Business Timing', price: '₹600', icon: '💼' },
   { id: 'marriage', name: 'Kundali Milan & Relationship Harmony', price: '₹600', icon: '💍' },
-  { id: 'vastu', name: 'Home & Workplace Vastu Shastra', price: 'Custom', icon: '🏡' },
+  { id: 'vastu', name: 'Home & Workplace Vastu Shastra', price: 'Custom quote', icon: '🏡' },
   { id: 'palmistry', name: 'Palmistry & Hand Analysis (Hastarekha)', price: '₹600', icon: '✋' },
   { id: 'muhurat', name: 'Shubh Muhurat Selection (Griha Pravesh / Marriage)', price: '₹600', icon: '🗓️' }
 ];
@@ -44,7 +44,7 @@ const consultationTypes = [
           <div class="perk-item">
             <span class="p-icon">⏱️</span>
             <div>
-              <strong>Focused 15-Minute Calls · {site.pricing.quickCall}</strong>
+              <strong>Focused 15-Minute Online Calls</strong>
               <p>No generic computer reports. Direct, live conversation tailored to your query.</p>
             </div>
           </div>
@@ -171,13 +171,14 @@ const consultationTypes = [
               <label for="lead-service">Consultation Focus <span class="req">*</span></label>
               <select id="lead-service" name="service" required>
                 {consultationTypes.map((t, idx) => (
-                  <option value={t.name} selected={idx === 0}>
+                  <option value={t.name} data-price={t.price} selected={idx === 0}>
                     {t.icon} {t.name}
                   </option>
                 ))}
               </select>
             </div>
             <p id="service-guidance" class="service-guidance" aria-live="polite"></p>
+            <div id="service-price" class="service-price" aria-live="polite"><span>Consultation fee</span><strong id="service-price-value"></strong><small id="service-price-note"></small></div>
 
             <div class="form-group-grid">
               <div class="input-field">
@@ -219,7 +220,7 @@ const consultationTypes = [
             <!-- Submission CTA -->
             <div class="form-submit-container">
               <button type="submit" id="submit-lead-btn" class="btn btn-gold btn-block">
-                <span>Book 15-Minute Consultation ({site.pricing.quickCall}) →</span>
+                <span>Send consultation request →</span>
               </button>
               <p class="submit-disclaimer">
                 🔒 Your request is saved privately for Deepak Ji, then you can confirm your preferred slot on WhatsApp. No spam guaranteed.
@@ -248,7 +249,7 @@ const consultationTypes = [
         </div>
         <div class="ms-row">
           <span>Consultation Fee:</span>
-          <strong>{site.pricing.quickCall} (15 Min Call)</strong>
+          <strong id="modal-price"></strong>
         </div>
         <div class="ms-row">
           <span>Birth Details:</span>
@@ -288,6 +289,9 @@ const consultationTypes = [
     const questionInput = document.getElementById('lead-question') as HTMLTextAreaElement;
     const questionLabel = document.getElementById('lead-question-label') as HTMLLabelElement;
     const serviceGuidance = document.getElementById('service-guidance') as HTMLElement;
+    const servicePrice = document.getElementById('service-price') as HTMLElement;
+    const servicePriceValue = document.getElementById('service-price-value') as HTMLElement;
+    const servicePriceNote = document.getElementById('service-price-note') as HTMLElement;
 
     if (!form) return;
 
@@ -296,6 +300,11 @@ const consultationTypes = [
       const isVastu = service.includes('Vastu');
       const isPalmistry = service.includes('Palmistry');
       const needsBirthDetails = !isVastu && !isPalmistry;
+      const selectedOption = serviceSelect?.selectedOptions[0];
+      const price = selectedOption?.dataset.price || '';
+      if (servicePrice) servicePrice.hidden = !price;
+      if (servicePriceValue) servicePriceValue.textContent = price;
+      if (servicePriceNote) servicePriceNote.textContent = isVastu ? 'A personal quote is shared after property type, city and visit requirement are reviewed.' : '15-minute online consultation';
       if (birthDetails) birthDetails.hidden = !needsBirthDetails;
       if (dobInput) dobInput.required = needsBirthDetails;
       if (pobInput) pobInput.required = needsBirthDetails;
@@ -387,7 +396,7 @@ const consultationTypes = [
       // Format WhatsApp Deep-Link Message
       const waText = 
 `*Namaste Deepak Ji,* 🙏
-I would like to book a *${service}* (15 Min · ₹600).
+I would like to enquire about *${service}*.
 
 *Consultation Details:*
 • *Name:* ${name}
@@ -412,10 +421,15 @@ _Please let me know the available time slot and payment details. Thank you._`;
       const modalService = document.getElementById('modal-service-name');
       const modalBirth = document.getElementById('modal-birth-info');
       const modalWaBtn = document.getElementById('modal-wa-btn') as HTMLAnchorElement;
+      const modalPrice = document.getElementById('modal-price') as HTMLElement;
 
       if (modalName) modalName.textContent = name;
       if (modalService) modalService.textContent = service;
       if (modalBirth) modalBirth.textContent = `${dob} | ${leadPayload.tob} | ${pob}`;
+      if (modalPrice) {
+        const selectedPrice = serviceSelect?.selectedOptions[0]?.dataset.price || '';
+        modalPrice.textContent = selectedPrice === 'Custom quote' ? 'Custom quote after review' : `${selectedPrice} · 15-minute online consultation`;
+      }
       if (modalWaBtn) modalWaBtn.href = waUrl;
 
       if (modal) {
@@ -428,7 +442,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
 
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>Book 15-Minute Consultation (₹600) →</span>';
+        submitBtn.innerHTML = '<span>Send consultation request →</span>';
       }
     });
 
@@ -616,6 +630,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     margin: 0;
   }
   .form-header p a { color: #9a651b; font-weight: 700; }
+  .service-price{margin:14px 0 4px;padding:12px 14px;border:1px solid #e2c793;border-radius:7px;background:#fff8e9;display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center}.service-price span{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#8a5514}.service-price strong{font-size:18px;color:#18213d}.service-price small{grid-column:1/-1;margin-top:3px;color:#687385;font-size:12px}
   .service-guidance { margin: -5px 0 2px; color: #667085; font-size: 13px; line-height: 1.45; }
 
   /* Form Fields */
