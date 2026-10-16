@@ -1,0 +1,45 @@
+name: Create weekly Click Jyotish blog draft
+
+on:
+  schedule:
+    # Monday 9:00 AM India Standard Time (03:30 UTC)
+    - cron: '30 3 * * 1'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: Optional article topic. Leave blank to use current topic signals.
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate article draft
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4o-mini
+          BLOG_TOPIC: ${{ inputs.topic }}
+        run: node scripts/generate-blog-draft.mjs
+      - name: Commit draft to review branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'click-jyotish-automation[bot]'
+          git config user.email 'click-jyotish-automation[bot]@users.noreply.github.com'
+          git checkout -B automation/weekly-blog-draft
+          git add src/data/blog
+          git diff --cached --quiet && exit 0
+          git commit -m 'Create weekly blog draft'
+          git push --force origin automation/weekly-blog-draft
+          gh pr create --base main --head automation/weekly-blog-draft --title 'Draft: weekly Click Jyotish article' --body 'This is a review draft and is not published on clickjyotish.in. Verify every factual, festival, Panchang, Muhurat, transit and remedy statement. To publish, change `draft: true` to `draft: false`, then merge this request.' || true
