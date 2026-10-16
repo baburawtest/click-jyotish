@@ -53,6 +53,17 @@ function setupRequired() {
   return json({ error: 'Lead inbox is being set up. Please use WhatsApp to contact Deepak Ji.' }, 503);
 }
 
+function removedLegacyShopResponse() {
+  return new Response('This legacy shop page has been permanently removed.', {
+    status: 410,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Cache-Control': 'public, max-age=86400',
+      'X-Robots-Tag': 'noindex'
+    }
+  });
+}
+
 function dashboardHtml() {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -119,6 +130,12 @@ async function updateLead(request: Request, env: Env, id: number) {
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    // These paths belonged to the former WooCommerce furniture store, not Click Jyotish.
+    // A 410 helps search engines retire their many old filtered-product URLs without
+    // misleading visitors by redirecting them to the astrology homepage.
+    if (/^\/(shop|product|product-category|cart|checkout|my-account)(?:\/|$)/.test(url.pathname)) {
+      return removedLegacyShopResponse();
+    }
     if (url.pathname === '/api/leads' && request.method === 'POST') return submitLead(request, env, ctx);
     if (url.pathname === '/api/leads' && request.method === 'GET') {
       const denied = requireAdmin(request, env); return denied ?? listLeads(request, env);
