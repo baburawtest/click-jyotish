@@ -171,7 +171,9 @@ async function fetchShubh(path: string, params: URLSearchParams, apiKey: string)
 async function dailyPanchang(env: Env) {
   if (!env.SHUBH_API_KEY) return json({ error: 'Daily Panchang is being configured. Please check back shortly.' }, 503);
   const { year, month, day, iso } = getIstDateParts();
-  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache?date=${iso}&city=new-delhi`);
+  // Bump this version whenever the normalisation code changes so Cloudflare does
+  // not serve an older, incomplete daily result after a Worker deployment.
+  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache-v2?date=${iso}&city=new-delhi`);
   const cached = await caches.default.match(cacheKey);
   if (cached) return cached;
 
