@@ -99,8 +99,8 @@ function formatIstTime(value: unknown) {
 function periodText(value: unknown): string | null {
   if (typeof value === 'string') return value;
   if (!isRecord(value)) return null;
-  const start = formatIstTime(value.start ?? value.startAt ?? value.start_time ?? value.from);
-  const end = formatIstTime(value.end ?? value.endsAt ?? value.end_time ?? value.to);
+  const start = formatIstTime(value.start ?? value.startAt ?? value.startsAt ?? value.startTime ?? value.start_time ?? value.start_at ?? value.from);
+  const end = formatIstTime(value.end ?? value.endsAt ?? value.ends_at ?? value.endTime ?? value.end_time ?? value.end_at ?? value.to);
   if (start && end) return `${start} – ${end}`;
   return formatIstTime(value.time ?? value.value);
 }
@@ -114,6 +114,13 @@ function findPeriod(value: unknown, aliases: string[]): string | null {
       return null;
     }
     if (!isRecord(entry)) return null;
+    const label = [entry.name, entry.label, entry.title, entry.type, entry.period]
+      .filter((item): item is string => typeof item === 'string')
+      .join(' ').replace(/[^a-z]/gi, '').toLowerCase();
+    if (names.some((name) => label.includes(name))) {
+      const text = periodText(entry);
+      if (text) return text;
+    }
     for (const [key, child] of Object.entries(entry)) {
       const normalised = key.replace(/[^a-z]/gi, '').toLowerCase();
       if (names.some((name) => normalised.includes(name))) {
