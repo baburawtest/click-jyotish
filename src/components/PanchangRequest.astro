@@ -1,28 +1,93 @@
----
-import { site } from '../data/site';
-
-const message = encodeURIComponent('Namaste Deepak, I need verified Panchang or Muhurat guidance for a specific date and location.');
----
-
-<section id="panchang" class="panchang-request">
-  <div class="wrap request-grid">
-    <div>
-      <p class="eyebrow">VEDIC CALENDAR · पंचांग व मुहूर्त</p>
-      <h2>Verified Panchang for your date and location</h2>
-      <p>Accurate Tithi, Nakshatra, Choghadiya and Muhurat depend on the exact date, time and location. For an important decision, they should be checked from a reliable local Panchang—not estimated by a generic website tool.</p>
+<section id="panchang" class="panchang-request" aria-labelledby="panchang-title">
+  <div class="wrap">
+    <div class="section-heading">
+      <p class="eyebrow">DAINIK PANCHANG · दैनिक पंचांग</p>
+      <h2 id="panchang-title">Today’s Panchang for New Delhi</h2>
+      <p>Free daily information based on New Delhi (IST). Tithi and timings change by place, so choose your city before relying on a Panchang for an important ritual.</p>
     </div>
-    <div class="request-card">
-      <strong>Need a specific Muhurat?</strong>
-      <p>Share the purpose, date range and city. Deepak will guide you on the suitable consultation or verified Panchang check.</p>
-      <div class="actions">
-        <a class="gold" href={`https://wa.me/${site.phone}?text=${message}`} target="_blank" rel="noreferrer">Ask on WhatsApp</a>
-        <a class="outline" href="#book">Request consultation</a>
-      </div>
-      <small>For Griha Pravesh, marriage, naming ceremony, property, business or other important occasions.</small>
+
+    <div class="panchang-status" id="panchang-loading" role="status">Loading today’s verified Panchang…</div>
+    <div class="panchang-error" id="panchang-error" role="alert" hidden></div>
+
+    <div class="panchang-grid" id="panchang-data" hidden>
+      <article class="calendar-card featured">
+        <span class="card-icon">🌙</span>
+        <p class="card-label">TITHI · तिथि</p>
+        <h3 id="panchang-tithi">—</h3>
+        <p class="detail" id="panchang-paksha">—</p>
+        <small id="panchang-tithi-ends"></small>
+      </article>
+      <article class="calendar-card">
+        <span class="card-icon">🪔</span>
+        <p class="card-label">RAHU KAAL · राहु काल</p>
+        <h3 id="panchang-rahu">—</h3>
+        <p class="detail">Traditionally avoided for new beginnings.</p>
+      </article>
+      <article class="calendar-card">
+        <span class="card-icon">✨</span>
+        <p class="card-label">ABHIJIT MUHURAT · अभिजित मुहूर्त</p>
+        <h3 id="panchang-abhijit">—</h3>
+        <p class="detail">A daily midday Muhurat window.</p>
+      </article>
+      <article class="calendar-card festival-card">
+        <span class="card-icon">🪷</span>
+        <p class="card-label">TODAY’S FESTIVAL / OBSERVANCE</p>
+        <h3 id="panchang-festival">—</h3>
+        <p class="detail" id="panchang-nakshatra"></p>
+      </article>
+    </div>
+
+    <div class="panchang-footnote" id="panchang-footnote" hidden>
+      <span id="panchang-date"></span><span aria-hidden="true">·</span><span id="panchang-location"></span><span aria-hidden="true">·</span><span id="panchang-sun"></span>
+      <small>For informational use. Local customs and family traditions may vary.</small>
     </div>
   </div>
 </section>
 
+<script>
+  const setText = (id: string, value: unknown) => {
+    const target = document.getElementById(id);
+    if (target) target.textContent = typeof value === 'string' && value.trim() ? value : '—';
+  };
+
+  const formatDate = (iso: string) => {
+    const date = new Date(`${iso}T12:00:00+05:30`);
+    return new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(date);
+  };
+
+  async function loadDailyPanchang() {
+    const loading = document.getElementById('panchang-loading');
+    const error = document.getElementById('panchang-error');
+    const dataArea = document.getElementById('panchang-data');
+    const footnote = document.getElementById('panchang-footnote');
+    try {
+      const response = await fetch('/api/panchang');
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Panchang is unavailable.');
+      setText('panchang-tithi', data.tithi?.name);
+      setText('panchang-paksha', data.tithi?.paksha);
+      setText('panchang-tithi-ends', data.tithi?.endsAt ? `Ends at ${data.tithi.endsAt}` : '');
+      setText('panchang-rahu', data.rahuKaal);
+      setText('panchang-abhijit', data.abhijitMuhurat);
+      setText('panchang-festival', Array.isArray(data.festivals) ? data.festivals.join(' · ') : data.festivals);
+      setText('panchang-nakshatra', data.nakshatra?.name ? `Nakshatra: ${data.nakshatra.name}${data.nakshatra.endsAt ? ` · ends at ${data.nakshatra.endsAt}` : ''}` : '');
+      setText('panchang-date', data.date ? formatDate(data.date) : 'Today');
+      setText('panchang-location', data.location);
+      const sun = [data.sunrise && `Sunrise ${data.sunrise}`, data.sunset && `Sunset ${data.sunset}`].filter(Boolean).join(' · ');
+      setText('panchang-sun', sun);
+      loading?.setAttribute('hidden', '');
+      dataArea?.removeAttribute('hidden');
+      footnote?.removeAttribute('hidden');
+    } catch (problem) {
+      if (loading) loading.hidden = true;
+      if (error) { error.hidden = false; error.textContent = problem instanceof Error ? problem.message : 'Panchang is unavailable. Please refresh shortly.'; }
+    }
+  }
+
+  loadDailyPanchang();
+  document.addEventListener('astro:page-load', loadDailyPanchang);
+</script>
+
 <style>
-  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.request-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.panchang-request h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.panchang-request p{color:#566276;font-size:17px;line-height:1.65}.request-card{padding:26px;border:1px solid #e0c995;border-radius:12px;background:#fffdf7;box-shadow:0 8px 28px #3828090b}.request-card strong{font-size:20px;color:#18213d}.request-card p{font-size:15px;margin:9px 0 18px}.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a{padding:11px 15px;border-radius:6px;font-weight:800;text-decoration:none}.gold{background:#c7913e;color:#18213d}.outline{border:1px solid #18213d;color:#18213d}.request-card small{display:block;margin-top:16px;color:#6c7280;line-height:1.45}@media(max-width:760px){.panchang-request{padding:54px 0}.request-grid{grid-template-columns:1fr;gap:22px}}
+  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.section-heading{max-width:700px;margin:0 auto 32px;text-align:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.section-heading h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.section-heading p{margin:0;color:#566276;font-size:16px;line-height:1.65}.panchang-status,.panchang-error{max-width:620px;margin:0 auto;padding:16px 18px;text-align:center;border-radius:10px;background:#fffdf7;border:1px solid #e0c995;color:#4e5e73}.panchang-error{background:#fff5f3;border-color:#ecc5bb;color:#8d2d20}.panchang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.calendar-card{min-height:214px;padding:24px 20px;border:1px solid #e2ded5;border-radius:12px;background:#fffdf9;box-shadow:0 8px 24px #3828090b}.calendar-card.featured{background:#18213d;border-color:#18213d;color:#fff}.card-icon{font-size:25px;display:block;margin-bottom:18px}.card-label{margin:0 0 8px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.featured .card-label{color:#e5b364}.calendar-card h3{margin:0 0 9px;color:#18213d;font-size:22px;line-height:1.25}.featured h3{color:#fff}.detail{margin:0;color:#687385;line-height:1.5;font-size:14px}.featured .detail{color:#dbe4f2}.calendar-card small{display:block;margin-top:12px;color:#9cabc1;font-weight:700}.festival-card h3{font-size:19px}.panchang-footnote{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;color:#607087;font-size:13px;text-align:center}.panchang-footnote small{flex-basis:100%;margin-top:3px;color:#7e8792}@media(max-width:900px){.panchang-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.panchang-request{padding:54px 0}.panchang-grid{grid-template-columns:1fr}.calendar-card{min-height:0}}
 </style>

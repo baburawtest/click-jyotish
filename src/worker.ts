@@ -4,6 +4,7 @@ interface Env {
   ADMIN_USERNAME?: string;
   ADMIN_PASSWORD?: string;
   LEAD_WEBHOOK_URL?: string;
+  SHUBH_API_KEY?: string;
 }
 
 type LeadInput = {
@@ -62,6 +63,142 @@ function removedLegacyShopResponse() {
       'X-Robots-Tag': 'noindex'
     }
   });
+}
+
+type UnknownRecord = Record<string, unknown>;
+
+const isRecord = (value: unknown): value is UnknownRecord => typeof value === 'object' && value !== null && !Array.isArray(value);
+
+function getIstDateParts() {
+  const values = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(new Date());
+  const get = (type: string) => values.find((part) => part.type === type)?.value ?? '';
+  const year = get('year');
+  const month = get('month');
+  const day = get('day');
+  return { year: Number(year), month: Number(month), day: Number(day), iso: `${year}-${month}-${day}` };
+}
+
+function unwrap(value: unknown): UnknownRecord {
+  if (!isRecord(value)) return {};
+  if (isRecord(value.output)) return value.output;
+  if (isRecord(value.data)) return value.data;
+  return value;
+}
+
+function formatIstTime(value: unknown) {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', hour12: true
+  }).format(parsed);
+}
+
+function periodText(value: unknown): string | null {
+  if (typeof value === 'string') return value;
+  if (!isRecord(value)) return null;
+  const start = formatIstTime(value.start ?? value.startAt ?? value.start_time ?? value.from);
+  const end = formatIstTime(value.end ?? value.endsAt ?? value.end_time ?? value.to);
+  if (start && end) return `${start} – ${end}`;
+  return formatIstTime(value.time ?? value.value);
+}
+
+function findPeriod(value: unknown, aliases: string[]): string | null {
+  const names = aliases.map((alias) => alias.replace(/[^a-z]/gi, '').toLowerCase());
+  const visit = (entry: unknown, depth = 0): string | null => {
+    if (depth > 7 || !entry) return null;
+    if (Array.isArray(entry)) {
+      for (const item of entry) { const found = visit(item, depth + 1); if (found) return found; }
+      return null;
+    }
+    if (!isRecord(entry)) return null;
+    for (const [key, child] of Object.entries(entry)) {
+      const normalised = key.replace(/[^a-z]/gi, '').toLowerCase();
+      if (names.some((name) => normalised.includes(name))) {
+        const text = periodText(child);
+        if (text) return text;
+      }
+    }
+    for (const child of Object.values(entry)) { const found = visit(child, depth + 1); if (found) return found; }
+    return null;
+  };
+  return visit(value);
+}
+
+function festivalNames(value: unknown, date: string): string[] {
+  const found = new Set<string>();
+  const visit = (entry: unknown, depth = 0) => {
+    if (depth > 8 || !entry) return;
+    if (Array.isArray(entry)) { entry.forEach((item) => visit(item, depth + 1)); return; }
+    if (!isRecord(entry)) return;
+    const dates = [entry.date, entry.observanceDate, entry.observance_date, entry.startDate].filter((item): item is string => typeof item === 'string');
+    if (dates.some((item) => item.slice(0, 10) === date)) {
+      const name = [entry.name, entry.festival, entry.title, entry.label].find((item): item is string => typeof item === 'string' && item.trim().length > 0);
+      if (name) found.add(name.trim());
+    }
+    Object.values(entry).forEach((child) => visit(child, depth + 1));
+  };
+  visit(value);
+  return [...found].slice(0, 3);
+}
+
+function tithiObservance(tithi: UnknownRecord) {
+  const number = Number(tithi.number);
+  const paksha = typeof tithi.paksha === 'string' ? tithi.paksha : '';
+  if (number === 11) return `${paksha ? `${paksha} ` : ''}Ekadashi`;
+  if (number === 15 && /shukla/i.test(paksha)) return 'Purnima';
+  if (number === 15 && /krishna/i.test(paksha)) return 'Amavasya';
+  return null;
+}
+
+async function fetchShubh(path: string, params: URLSearchParams, apiKey: string) {
+  const response = await fetch(`https://shubh.live/api/v1/${path}?${params.toString()}`, {
+    headers: { 'X-API-Key': apiKey, Accept: 'application/json' }
+  });
+  if (!response.ok) throw new Error(`Panchang provider returned ${response.status}`);
+  return response.json();
+}
+
+async function dailyPanchang(env: Env) {
+  if (!env.SHUBH_API_KEY) return json({ error: 'Daily Panchang is being configured. Please check back shortly.' }, 503);
+  const { year, month, day, iso } = getIstDateParts();
+  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache?date=${iso}&city=new-delhi`);
+  const cached = await caches.default.match(cacheKey);
+  if (cached) return cached;
+
+  const location = new URLSearchParams({ lat: '28.6139', lon: '77.2090', date: iso });
+  const festivals = new URLSearchParams({ lat: '28.6139', lon: '77.2090', year: String(year) });
+  try {
+    const [rawPanchang, rawPeriods, rawFestivals] = await Promise.all([
+      fetchShubh('panchang', location, env.SHUBH_API_KEY),
+      fetchShubh('day-periods', location, env.SHUBH_API_KEY),
+      fetchShubh('panchang/festivals', festivals, env.SHUBH_API_KEY)
+    ]);
+    const panchang = unwrap(rawPanchang);
+    const tithi = isRecord(panchang.tithi) ? panchang.tithi : {};
+    const nakshatra = isRecord(panchang.nakshatra) ? panchang.nakshatra : {};
+    const listedFestivals = festivalNames(rawFestivals, iso);
+    const observance = listedFestivals.length ? listedFestivals : [tithiObservance(tithi) ?? 'No major festival listed for New Delhi today'];
+    const response = json({
+      date: iso,
+      location: 'New Delhi, India (IST)',
+      tithi: { name: tithi.name ?? '—', paksha: tithi.paksha ?? '', endsAt: formatIstTime(tithi.endsAt ?? tithi.end) },
+      nakshatra: { name: nakshatra.name ?? '—', endsAt: formatIstTime(nakshatra.endsAt ?? nakshatra.end) },
+      rahuKaal: findPeriod(rawPeriods, ['rahu kaal', 'rahu kalam', 'rahu']),
+      abhijitMuhurat: findPeriod(rawPeriods, ['abhijit muhurat', 'abhijit']),
+      sunrise: formatIstTime(panchang.sunrise),
+      sunset: formatIstTime(panchang.sunset),
+      festivals: observance,
+      source: 'ShubhAI Panchang'
+    }, 200);
+    response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=21600');
+    await caches.default.put(cacheKey, response.clone());
+    return response;
+  } catch {
+    return json({ error: 'Today’s Panchang is temporarily unavailable. Please refresh shortly.' }, 502);
+  }
 }
 
 function dashboardHtml() {
@@ -136,6 +273,7 @@ export default {
     if (/^\/(shop|product|product-category|cart|checkout|my-account)(?:\/|$)/.test(url.pathname)) {
       return removedLegacyShopResponse();
     }
+    if (url.pathname === '/api/panchang' && request.method === 'GET') return dailyPanchang(env);
     if (url.pathname === '/api/leads' && request.method === 'POST') return submitLead(request, env, ctx);
     if (url.pathname === '/api/leads' && request.method === 'GET') {
       const denied = requireAdmin(request, env); return denied ?? listLeads(request, env);
