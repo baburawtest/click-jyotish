@@ -3,7 +3,46 @@
     <div class="section-heading">
       <p class="eyebrow">DAINIK PANCHANG · दैनिक पंचांग</p>
       <h2 id="panchang-title">Today’s Panchang for New Delhi</h2>
-      <p>Free daily information based on New Delhi (IST). Tithi and timings change by place, so choose your city before relying on a Panchang for an important ritual.</p>
+      <p>Free daily information. Tithi and timings change by place, so select your city before relying on a Panchang for an important ritual.</p>
+      <label class="city-picker" for="panchang-city">
+        <span>Location · स्थान</span>
+        <select id="panchang-city" name="city">
+          <optgroup label="North India">
+            <option value="delhi">New Delhi</option>
+            <option value="gurugram">Gurugram</option>
+            <option value="noida">Noida</option>
+            <option value="ghaziabad">Ghaziabad</option>
+            <option value="chandigarh">Chandigarh</option>
+            <option value="jaipur">Jaipur</option>
+            <option value="lucknow">Lucknow</option>
+            <option value="varanasi">Varanasi</option>
+            <option value="dehradun">Dehradun</option>
+          </optgroup>
+          <optgroup label="West & Central India">
+            <option value="mumbai">Mumbai</option>
+            <option value="pune">Pune</option>
+            <option value="nagpur">Nagpur</option>
+            <option value="ahmedabad">Ahmedabad</option>
+            <option value="surat">Surat</option>
+            <option value="indore">Indore</option>
+            <option value="bhopal">Bhopal</option>
+          </optgroup>
+          <optgroup label="South India">
+            <option value="bengaluru">Bengaluru</option>
+            <option value="chennai">Chennai</option>
+            <option value="hyderabad">Hyderabad</option>
+            <option value="kochi">Kochi</option>
+            <option value="thiruvananthapuram">Thiruvananthapuram</option>
+          </optgroup>
+          <optgroup label="East & North-East India">
+            <option value="kolkata">Kolkata</option>
+            <option value="bhubaneswar">Bhubaneswar</option>
+            <option value="patna">Patna</option>
+            <option value="ranchi">Ranchi</option>
+            <option value="guwahati">Guwahati</option>
+          </optgroup>
+        </select>
+      </label>
     </div>
 
     <div class="panchang-status" id="panchang-loading" role="status">Loading today’s verified Panchang…</div>
@@ -55,13 +94,18 @@
     return new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(date);
   };
 
-  async function loadDailyPanchang() {
+  async function loadDailyPanchang(cityId?: string) {
     const loading = document.getElementById('panchang-loading');
     const error = document.getElementById('panchang-error');
     const dataArea = document.getElementById('panchang-data');
     const footnote = document.getElementById('panchang-footnote');
+    const title = document.getElementById('panchang-title');
+    const cityPicker = document.getElementById('panchang-city') as HTMLSelectElement | null;
+    const selectedCity = cityId || cityPicker?.value || 'delhi';
+    if (loading) { loading.hidden = false; loading.textContent = 'Loading today’s verified Panchang…'; }
+    if (error) error.hidden = true;
     try {
-      const response = await fetch('/api/panchang');
+      const response = await fetch(`/api/panchang?city=${encodeURIComponent(selectedCity)}`);
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Panchang is unavailable.');
       setText('panchang-tithi', data.tithi?.name);
@@ -73,6 +117,7 @@
       setText('panchang-nakshatra', data.nakshatra?.name ? `Nakshatra: ${data.nakshatra.name}${data.nakshatra.endsAt ? ` · ends at ${data.nakshatra.endsAt}` : ''}` : '');
       setText('panchang-date', data.date ? formatDate(data.date) : 'Today');
       setText('panchang-location', data.location);
+      if (title && data.location) title.textContent = `Today’s Panchang for ${String(data.location).replace(', India (IST)', '')}`;
       const sun = [data.sunrise && `Sunrise ${data.sunrise}`, data.sunset && `Sunset ${data.sunset}`].filter(Boolean).join(' · ');
       setText('panchang-sun', sun);
       loading?.setAttribute('hidden', '');
@@ -84,10 +129,23 @@
     }
   }
 
-  loadDailyPanchang();
-  document.addEventListener('astro:page-load', loadDailyPanchang);
+  function setupPanchangPicker() {
+    const cityPicker = document.getElementById('panchang-city') as HTMLSelectElement | null;
+    if (!cityPicker || cityPicker.dataset.ready === 'true') return;
+    const rememberedCity = localStorage.getItem('click-jyotish-panchang-city');
+    if (rememberedCity && [...cityPicker.options].some((option) => option.value === rememberedCity)) cityPicker.value = rememberedCity;
+    cityPicker.dataset.ready = 'true';
+    cityPicker.addEventListener('change', () => {
+      localStorage.setItem('click-jyotish-panchang-city', cityPicker.value);
+      loadDailyPanchang(cityPicker.value);
+    });
+    loadDailyPanchang(cityPicker.value);
+  }
+
+  setupPanchangPicker();
+  document.addEventListener('astro:page-load', setupPanchangPicker);
 </script>
 
 <style>
-  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.section-heading{max-width:700px;margin:0 auto 32px;text-align:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.section-heading h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.section-heading p{margin:0;color:#566276;font-size:16px;line-height:1.65}.panchang-status,.panchang-error{max-width:620px;margin:0 auto;padding:16px 18px;text-align:center;border-radius:10px;background:#fffdf7;border:1px solid #e0c995;color:#4e5e73}.panchang-error{background:#fff5f3;border-color:#ecc5bb;color:#8d2d20}.panchang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.calendar-card{min-height:214px;padding:24px 20px;border:1px solid #e2ded5;border-radius:12px;background:#fffdf9;box-shadow:0 8px 24px #3828090b}.calendar-card.featured{background:#18213d;border-color:#18213d;color:#fff}.card-icon{font-size:25px;display:block;margin-bottom:18px}.card-label{margin:0 0 8px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.featured .card-label{color:#e5b364}.calendar-card h3{margin:0 0 9px;color:#18213d;font-size:22px;line-height:1.25}.featured h3{color:#fff}.detail{margin:0;color:#687385;line-height:1.5;font-size:14px}.featured .detail{color:#dbe4f2}.calendar-card small{display:block;margin-top:12px;color:#9cabc1;font-weight:700}.festival-card h3{font-size:19px}.panchang-footnote{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;color:#607087;font-size:13px;text-align:center}.panchang-footnote small{flex-basis:100%;margin-top:3px;color:#7e8792}@media(max-width:900px){.panchang-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.panchang-request{padding:54px 0}.panchang-grid{grid-template-columns:1fr}.calendar-card{min-height:0}}
+  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.section-heading{max-width:700px;margin:0 auto 32px;text-align:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.section-heading h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.section-heading p{margin:0;color:#566276;font-size:16px;line-height:1.65}.city-picker{display:inline-flex;align-items:center;gap:9px;margin-top:20px;padding:8px 10px 8px 13px;border:1px solid #dedbd1;border-radius:999px;background:#fffdf9;color:#526178;font-size:13px;font-weight:800}.city-picker select{border:0;border-left:1px solid #dedbd1;padding:2px 26px 2px 11px;background:transparent;color:#18213d;font:inherit;font-weight:800;cursor:pointer}.panchang-status,.panchang-error{max-width:620px;margin:0 auto;padding:16px 18px;text-align:center;border-radius:10px;background:#fffdf7;border:1px solid #e0c995;color:#4e5e73}.panchang-error{background:#fff5f3;border-color:#ecc5bb;color:#8d2d20}.panchang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.calendar-card{min-height:214px;padding:24px 20px;border:1px solid #e2ded5;border-radius:12px;background:#fffdf9;box-shadow:0 8px 24px #3828090b}.calendar-card.featured{background:#18213d;border-color:#18213d;color:#fff}.card-icon{font-size:25px;display:block;margin-bottom:18px}.card-label{margin:0 0 8px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.featured .card-label{color:#e5b364}.calendar-card h3{margin:0 0 9px;color:#18213d;font-size:22px;line-height:1.25}.featured h3{color:#fff}.detail{margin:0;color:#687385;line-height:1.5;font-size:14px}.featured .detail{color:#dbe4f2}.calendar-card small{display:block;margin-top:12px;color:#9cabc1;font-weight:700}.festival-card h3{font-size:19px}.panchang-footnote{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;color:#607087;font-size:13px;text-align:center}.panchang-footnote small{flex-basis:100%;margin-top:3px;color:#7e8792}@media(max-width:900px){.panchang-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.panchang-request{padding:54px 0}.panchang-grid{grid-template-columns:1fr}.calendar-card{min-height:0}.city-picker{display:flex;width:100%;justify-content:space-between}}
 </style>

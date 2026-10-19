@@ -67,6 +67,41 @@ function removedLegacyShopResponse() {
 
 type UnknownRecord = Record<string, unknown>;
 
+type PanchangCity = { id: string; name: string; latitude: string; longitude: string };
+
+const panchangCities: PanchangCity[] = [
+  // North India
+  { id: 'delhi', name: 'New Delhi', latitude: '28.6139', longitude: '77.2090' },
+  { id: 'gurugram', name: 'Gurugram', latitude: '28.4595', longitude: '77.0266' },
+  { id: 'noida', name: 'Noida', latitude: '28.5355', longitude: '77.3910' },
+  { id: 'ghaziabad', name: 'Ghaziabad', latitude: '28.6692', longitude: '77.4538' },
+  { id: 'chandigarh', name: 'Chandigarh', latitude: '30.7333', longitude: '76.7794' },
+  { id: 'jaipur', name: 'Jaipur', latitude: '26.9124', longitude: '75.7873' },
+  { id: 'lucknow', name: 'Lucknow', latitude: '26.8467', longitude: '80.9462' },
+  { id: 'varanasi', name: 'Varanasi', latitude: '25.3176', longitude: '82.9739' },
+  { id: 'dehradun', name: 'Dehradun', latitude: '30.3165', longitude: '78.0322' },
+  // West and Central India
+  { id: 'mumbai', name: 'Mumbai', latitude: '19.0760', longitude: '72.8777' },
+  { id: 'pune', name: 'Pune', latitude: '18.5204', longitude: '73.8567' },
+  { id: 'nagpur', name: 'Nagpur', latitude: '21.1458', longitude: '79.0882' },
+  { id: 'ahmedabad', name: 'Ahmedabad', latitude: '23.0225', longitude: '72.5714' },
+  { id: 'surat', name: 'Surat', latitude: '21.1702', longitude: '72.8311' },
+  { id: 'indore', name: 'Indore', latitude: '22.7196', longitude: '75.8577' },
+  { id: 'bhopal', name: 'Bhopal', latitude: '23.2599', longitude: '77.4126' },
+  // South India
+  { id: 'bengaluru', name: 'Bengaluru', latitude: '12.9716', longitude: '77.5946' },
+  { id: 'chennai', name: 'Chennai', latitude: '13.0827', longitude: '80.2707' },
+  { id: 'hyderabad', name: 'Hyderabad', latitude: '17.3850', longitude: '78.4867' },
+  { id: 'kochi', name: 'Kochi', latitude: '9.9312', longitude: '76.2673' },
+  { id: 'thiruvananthapuram', name: 'Thiruvananthapuram', latitude: '8.5241', longitude: '76.9366' },
+  // East and North-East India
+  { id: 'kolkata', name: 'Kolkata', latitude: '22.5726', longitude: '88.3639' },
+  { id: 'bhubaneswar', name: 'Bhubaneswar', latitude: '20.2961', longitude: '85.8245' },
+  { id: 'patna', name: 'Patna', latitude: '25.5941', longitude: '85.1376' },
+  { id: 'ranchi', name: 'Ranchi', latitude: '23.3441', longitude: '85.3096' },
+  { id: 'guwahati', name: 'Guwahati', latitude: '26.1445', longitude: '91.7362' }
+];
+
 const isRecord = (value: unknown): value is UnknownRecord => typeof value === 'object' && value !== null && !Array.isArray(value);
 
 function getIstDateParts() {
@@ -88,12 +123,30 @@ function unwrap(value: unknown): UnknownRecord {
 }
 
 function formatIstTime(value: unknown) {
-  if (typeof value !== 'string' || !value.trim()) return null;
-  const parsed = new Date(value);
+  if (typeof value !== 'string' && !(value instanceof Date)) return null;
+  if (typeof value === 'string' && !value.trim()) return null;
+  const parsed = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(parsed.getTime())) return value;
   return new Intl.DateTimeFormat('en-IN', {
     timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', hour12: true
   }).format(parsed);
+}
+
+function standardDayPeriods(sunrise: unknown, sunset: unknown, date: string) {
+  if (typeof sunrise !== 'string' || typeof sunset !== 'string') return { rahuKaal: null, abhijitMuhurat: null };
+  const rise = new Date(sunrise);
+  const set = new Date(sunset);
+  const daylight = set.getTime() - rise.getTime();
+  if (Number.isNaN(rise.getTime()) || Number.isNaN(set.getTime()) || daylight <= 0) return { rahuKaal: null, abhijitMuhurat: null };
+  // Sunday through Saturday. Rahu Kaal divides local daylight into eight equal portions.
+  const rahuSegment = [7, 1, 6, 4, 5, 3, 2][new Date(`${date}T12:00:00+05:30`).getUTCDay()];
+  const eighth = daylight / 8;
+  const fifteenth = daylight / 15;
+  const range = (from: number, to: number) => `${formatIstTime(new Date(rise.getTime() + from))} – ${formatIstTime(new Date(rise.getTime() + to))}`;
+  return {
+    rahuKaal: range(rahuSegment * eighth, (rahuSegment + 1) * eighth),
+    abhijitMuhurat: range(7 * fifteenth, 8 * fifteenth)
+  };
 }
 
 function periodText(value: unknown): string | null {
@@ -168,17 +221,18 @@ async function fetchShubh(path: string, params: URLSearchParams, apiKey: string)
   return response.json();
 }
 
-async function dailyPanchang(env: Env) {
+async function dailyPanchang(env: Env, cityId: string | null) {
   if (!env.SHUBH_API_KEY) return json({ error: 'Daily Panchang is being configured. Please check back shortly.' }, 503);
-  const { year, month, day, iso } = getIstDateParts();
+  const city = panchangCities.find((candidate) => candidate.id === cityId) ?? panchangCities[0];
+  const { year, iso } = getIstDateParts();
   // Bump this version whenever the normalisation code changes so Cloudflare does
   // not serve an older, incomplete daily result after a Worker deployment.
-  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache-v2?date=${iso}&city=new-delhi`);
+  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache-v3?date=${iso}&city=${city.id}`);
   const cached = await caches.default.match(cacheKey);
   if (cached) return cached;
 
-  const location = new URLSearchParams({ lat: '28.6139', lon: '77.2090', date: iso });
-  const festivals = new URLSearchParams({ lat: '28.6139', lon: '77.2090', year: String(year) });
+  const location = new URLSearchParams({ lat: city.latitude, lon: city.longitude, date: iso });
+  const festivals = new URLSearchParams({ lat: city.latitude, lon: city.longitude, year: String(year) });
   try {
     const [rawPanchang, rawPeriods, rawFestivals] = await Promise.all([
       fetchShubh('panchang', location, env.SHUBH_API_KEY),
@@ -188,15 +242,16 @@ async function dailyPanchang(env: Env) {
     const panchang = unwrap(rawPanchang);
     const tithi = isRecord(panchang.tithi) ? panchang.tithi : {};
     const nakshatra = isRecord(panchang.nakshatra) ? panchang.nakshatra : {};
+    const fallbackTimings = standardDayPeriods(panchang.sunrise, panchang.sunset, iso);
     const listedFestivals = festivalNames(rawFestivals, iso);
     const observance = listedFestivals.length ? listedFestivals : [tithiObservance(tithi) ?? 'No major festival listed for New Delhi today'];
     const response = json({
       date: iso,
-      location: 'New Delhi, India (IST)',
+      location: `${city.name}, India (IST)`,
       tithi: { name: tithi.name ?? '—', paksha: tithi.paksha ?? '', endsAt: formatIstTime(tithi.endsAt ?? tithi.end) },
       nakshatra: { name: nakshatra.name ?? '—', endsAt: formatIstTime(nakshatra.endsAt ?? nakshatra.end) },
-      rahuKaal: findPeriod(rawPeriods, ['rahu kaal', 'rahu kalam', 'rahu']),
-      abhijitMuhurat: findPeriod(rawPeriods, ['abhijit muhurat', 'abhijit']),
+      rahuKaal: findPeriod(rawPeriods, ['rahu kaal', 'rahu kalam', 'rahu']) ?? fallbackTimings.rahuKaal,
+      abhijitMuhurat: findPeriod(rawPeriods, ['abhijit muhurat', 'abhijit']) ?? fallbackTimings.abhijitMuhurat,
       sunrise: formatIstTime(panchang.sunrise),
       sunset: formatIstTime(panchang.sunset),
       festivals: observance,
@@ -282,7 +337,7 @@ export default {
     if (/^\/(shop|product|product-category|cart|checkout|my-account)(?:\/|$)/.test(url.pathname)) {
       return removedLegacyShopResponse();
     }
-    if (url.pathname === '/api/panchang' && request.method === 'GET') return dailyPanchang(env);
+    if (url.pathname === '/api/panchang' && request.method === 'GET') return dailyPanchang(env, url.searchParams.get('city'));
     if (url.pathname === '/api/leads' && request.method === 'POST') return submitLead(request, env, ctx);
     if (url.pathname === '/api/leads' && request.method === 'GET') {
       const denied = requireAdmin(request, env); return denied ?? listLeads(request, env);
