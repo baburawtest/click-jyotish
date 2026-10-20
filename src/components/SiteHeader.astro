@@ -79,8 +79,12 @@ const links = [
     const menu = document.querySelector('#mobile-navigation') as HTMLElement | null;
     const menuToggle = document.querySelector('.menu-toggle') as HTMLButtonElement | null;
     const languageToggle = document.querySelector('[data-language-toggle]') as HTMLButtonElement | null;
+    const routeLocale = document.body.dataset.pageLocale;
+    const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
     const storedLanguage = localStorage.getItem('click-jyotish-language');
-    applyLanguage(storedLanguage === 'hi' ? 'hi' : 'en');
+    const initialLanguage = routeLocale === 'hi' || requestedLanguage === 'hi' || storedLanguage === 'hi' ? 'hi' : 'en';
+    localStorage.setItem('click-jyotish-language', initialLanguage);
+    applyLanguage(initialLanguage);
 
     if (menuToggle && !menuToggle.dataset.initialised) {
       menuToggle.dataset.initialised = 'true';
@@ -98,6 +102,11 @@ const links = [
       languageToggle.addEventListener('click', () => {
         const nextLanguage = document.documentElement.lang === 'hi' ? 'en' : 'hi';
         localStorage.setItem('click-jyotish-language', nextLanguage);
+        const destination = nextLanguage === 'hi' ? document.body.dataset.hindiPath : document.body.dataset.englishPath;
+        if (destination) {
+          window.location.href = destination;
+          return;
+        }
         applyLanguage(nextLanguage);
       });
     }

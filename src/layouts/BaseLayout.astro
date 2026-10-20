@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  locale?: 'en' | 'hi';
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -13,13 +14,20 @@ const {
   title = `${site.name} | ${site.tagline}`,
   description = 'Personal Vedic Astrology, Vastu and Palmistry consultations with Deepak Maheshwari in New Delhi. Online consultations available in Hindi and English.',
   image = '/images/deepak-maheshwari-yellow.png',
+  locale = 'en',
   structuredData
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://clickjyotish.in').toString();
 const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toString();
+const translatedPages = new Set(['/', '/vedic-astrology-consultation/', '/vastu-consultation/', '/palmistry-consultation/', '/faq/']);
+const englishPath = locale === 'hi' ? (Astro.url.pathname.replace(/^\/hi(?=\/|$)/, '') || '/') : Astro.url.pathname;
+const hasHindiTranslation = translatedPages.has(englishPath);
+const englishUrl = new URL(englishPath, Astro.site ?? 'https://clickjyotish.in').toString();
+const hindiPath = englishPath === '/' ? '/hi/' : `/hi${englishPath}`;
+const hindiUrl = new URL(hindiPath, Astro.site ?? 'https://clickjyotish.in').toString();
 ---
 <!doctype html>
-<html lang="en">
+<html lang={locale} data-locale={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,6 +35,11 @@ const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toSt
     <meta name="robots" content="index, follow" />
     <meta name="msvalidate.01" content="E97D728D000CC632424730F63D5E4734" />
     <link rel="canonical" href={canonical} />
+    {hasHindiTranslation && <>
+      <link rel="alternate" hreflang="en" href={englishUrl} />
+      <link rel="alternate" hreflang="hi" href={hindiUrl} />
+      <link rel="alternate" hreflang="x-default" href={englishUrl} />
+    </>}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
@@ -42,7 +55,7 @@ const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toSt
     <title>{title}</title>
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
-  <body><SiteHeader /><slot /></body>
+  <body data-page-locale={locale} data-hindi-path={hasHindiTranslation ? hindiPath : undefined} data-english-path={hasHindiTranslation ? englishPath : undefined}><SiteHeader /><slot /></body>
 </html>
 <style is:global>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');
