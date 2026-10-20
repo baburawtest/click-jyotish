@@ -25,7 +25,7 @@ Notice which rooms are used most, where people work, sleep, cook or receive gues
 
 ## Ask before sending photos
 
-If photographs are needed, Deepak Ji will explain what to share. Avoid sending documents that contain bank details, identity numbers or other sensitive information.
+If photographs are needed, Deepak will explain what to share. Avoid sending documents that contain bank details, identity numbers or other sensitive information.
 
 ## Keep expectations practical
 

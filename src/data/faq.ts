@@ -1,7 +1,7 @@
 export const faqs = [
   {
     question: 'How does the 15-minute online consultation work?',
-    answer: 'Complete the consultation form or choose a calendar slot. Deepak Ji will review your request and confirm the available time and payment details on WhatsApp. The consultation is conducted online at the confirmed time.'
+    answer: 'Complete the consultation form or choose a calendar slot. Deepak will review your request and confirm the available time and payment details on WhatsApp. The consultation is conducted online at the confirmed time.'
   },
   {
     question: 'What birth details should I share?',

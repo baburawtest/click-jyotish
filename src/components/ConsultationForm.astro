@@ -105,12 +105,11 @@ const consultationTypes = [
             </div>
 
             <div class="input-field">
-              <label for="lead-email">Email Address (ईमेल) <span class="req">*</span></label>
+              <label for="lead-email">Email Address (ईमेल) <span class="optional-label">Optional</span></label>
               <input
                 type="email"
                 id="lead-email"
                 name="email"
-                required
                 placeholder="e.g. rahul.sharma@gmail.com"
                 autocomplete="email"
               />
@@ -209,7 +208,7 @@ const consultationTypes = [
 
             <div class="checkbox-field privacy-consent">
               <input type="checkbox" id="lead-consent" name="consent" required />
-              <label for="lead-consent">I consent to Click Jyotish securely storing these details so Deepak Ji can respond to my consultation request. <span class="req">*</span></label>
+              <label for="lead-consent">I consent to Click Jyotish securely storing these details so Deepak can respond to my consultation request. <span class="req">*</span></label>
             </div>
 
             <!-- Submission CTA -->
@@ -218,7 +217,7 @@ const consultationTypes = [
                 <span>Send consultation request →</span>
               </button>
               <p class="submit-disclaimer">
-                🔒 Your request is saved privately for Deepak Ji, then you can confirm your preferred slot on WhatsApp. No spam guaranteed.
+                🔒 Your request is saved privately for Deepak, then you can confirm your preferred slot on WhatsApp. No spam guaranteed.
               </p>
             </div>
           </form>
@@ -291,7 +290,7 @@ const consultationTypes = [
       help: 'Need immediate assistance?',
       title: 'Request a consultation',
       intro: 'Choose your consultation type first. We will confirm the suitable time on WhatsApp.',
-      name: 'Full Name (पूरा नाम)', phone: 'WhatsApp Number (व्हाट्सएप नंबर)', email: 'Email Address (ईमेल)',
+      name: 'Full Name (पूरा नाम)', phone: 'WhatsApp Number (व्हाट्सएप नंबर)', email: 'Email Address',
       service: 'Consultation Type (परामर्श का प्रकार)', birth: 'VEDIC BIRTH DETAILS (जन्म विवरण)',
       dob: 'Date of Birth (जन्म तिथि)', tob: 'Time of Birth (जन्म समय)', pob: 'Place of Birth (जन्म स्थान)',
       unknownTime: 'I do not know my exact birth time (use Prashna Kundali / Palmistry)',
@@ -384,6 +383,10 @@ const consultationTypes = [
       const element = section?.querySelector<HTMLElement>(selector);
       if (element) element.innerHTML = `${value} <span class="req">*</span>`;
     };
+    const setOptionalLabel = (selector: string, value: string) => {
+      const element = section?.querySelector<HTMLElement>(selector);
+      if (element) element.innerHTML = `${value} <span class="optional-label">${currentLanguage === 'hi' ? 'वैकल्पिक' : 'Optional'}</span>`;
+    };
     const setPerk = (index: number, title: string, description: string) => {
       const perk = section?.querySelectorAll<HTMLElement>('.perk-item')[index];
       const heading = perk?.querySelector<HTMLElement>('strong');
@@ -434,7 +437,7 @@ const consultationTypes = [
       setText('.form-header p', text.intro);
       setRequiredLabel('label[for="lead-name"]', text.name);
       setRequiredLabel('label[for="lead-phone"]', text.phone);
-      setRequiredLabel('label[for="lead-email"]', text.email);
+      setOptionalLabel('label[for="lead-email"]', text.email);
       setRequiredLabel('label[for="lead-service"]', text.service);
       setText('.form-subheading span', text.birth);
       setRequiredLabel('label[for="lead-dob"]', text.dob);
@@ -565,18 +568,18 @@ const consultationTypes = [
         if (!response.ok) throw new Error('Lead inbox could not save the request');
       } catch (err) {
         console.error('Lead save error:', err);
-        alert('We could not save your request at the moment. Please send the WhatsApp message so Deepak Ji can assist you.');
+        alert('We could not save your request at the moment. Please send the WhatsApp message so Deepak can assist you.');
       }
 
       // Format WhatsApp Deep-Link Message
       const waText = 
-`*Namaste Deepak Ji,* 🙏
+`*Namaste Deepak,* 🙏
 I would like to enquire about *${service}*.
 
 *Consultation Details:*
 • *Name:* ${name}
 • *Phone:* ${phone}
-• *Email:* ${email}
+${email ? `• *Email:* ${email}\n` : ''}• *Date of Birth:* ${dob}
 • *Date of Birth:* ${dob}
 • *Time of Birth:* ${leadPayload.tob}
 • *Place of Birth:* ${pob}
@@ -835,6 +838,11 @@ _Please let me know the available time slot and payment details. Thank you._`;
   }
   .req {
     color: #dc2626;
+  }
+  .optional-label {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
   }
   .input-field input,
   .input-field select,

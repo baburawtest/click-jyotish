@@ -29,4 +29,4 @@ Vedic Astrology is best used for reflection, timing and personal perspective. It
 
 ## Book your consultation
 
-When you are ready, submit the private consultation form with your preferred language and time. Deepak Ji will confirm the available slot and next step on WhatsApp.
+When you are ready, submit the private consultation form with your preferred language and time. Deepak will confirm the available slot and next step on WhatsApp.

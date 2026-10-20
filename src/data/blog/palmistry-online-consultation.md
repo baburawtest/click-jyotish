@@ -21,7 +21,7 @@ If photographs of your palms are requested, take them in clear natural light. Ke
 
 ## Wait for the preparation guidance
 
-Do not send pictures to an unverified number or share private documents. After your booking enquiry, Deepak Ji will confirm how and where to send any required images.
+Do not send pictures to an unverified number or share private documents. After your booking enquiry, Deepak will confirm how and where to send any required images.
 
 ## Use the consultation thoughtfully
 

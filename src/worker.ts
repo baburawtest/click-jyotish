@@ -51,7 +51,7 @@ function requireAdmin(request: Request, env: Env) {
 }
 
 function setupRequired() {
-  return json({ error: 'Lead inbox is being set up. Please use WhatsApp to contact Deepak Ji.' }, 503);
+  return json({ error: 'Lead inbox is being set up. Please use WhatsApp to contact Deepak.' }, 503);
 }
 
 function removedLegacyShopResponse() {
@@ -298,10 +298,10 @@ async function submitLead(request: Request, env: Env, ctx: ExecutionContext) {
   };
   const needsBirthDetails = !/Vastu|Palmistry/i.test(lead.service);
   const needsServiceQuestion = /Vastu|Palmistry/i.test(lead.service);
-  if (!lead.name || !lead.phone || !lead.email || !lead.service || (needsBirthDetails && (!lead.dob || !lead.pob)) || (needsServiceQuestion && !lead.question)) {
+  if (!lead.name || !lead.phone || !lead.service || (needsBirthDetails && (!lead.dob || !lead.pob)) || (needsServiceQuestion && !lead.question)) {
     return json({ error: 'Please complete all required details.' }, 400);
   }
-  if (!/^\S+@\S+\.\S+$/.test(lead.email)) return json({ error: 'Enter a valid email address.' }, 400);
+  if (lead.email && !/^\S+@\S+\.\S+$/.test(lead.email)) return json({ error: 'Enter a valid email address.' }, 400);
   const result = await env.LEADS_DB.prepare(`INSERT INTO leads (name, phone, email, dob, tob, pob, service, language, preferred_slot, question, source, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')`).bind(lead.name, lead.phone, lead.email, lead.dob, lead.tob, lead.pob, lead.service, lead.language, lead.preferredSlot, lead.question, lead.source).run();
   const id = Number(result.meta.last_row_id);
   if (env.LEAD_WEBHOOK_URL) {
