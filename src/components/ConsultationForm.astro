@@ -72,8 +72,8 @@ const consultationTypes = [
       <div class="booking-form-wrapper">
         <div class="form-card">
           <div class="form-header">
-            <h3>Share Your Birth & Consultation Details</h3>
-            <p>Accurate birth details ensure precise Janam Kundli and Dasha calculations. Prefer to select a time first? <a href={site.bookingLink} target="_blank" rel="noreferrer">View available calendar slots</a>.</p>
+            <h3>Request a consultation</h3>
+            <p>Choose your consultation type first. We will confirm the suitable time on WhatsApp.</p>
           </div>
 
           <form id="consultation-form" class="astro-lead-form">
@@ -114,6 +114,20 @@ const consultationTypes = [
                 placeholder="e.g. rahul.sharma@gmail.com"
                 autocomplete="email"
               />
+            </div>
+
+            <div class="consultation-choice">
+              <div class="input-field">
+                <label for="lead-service">Consultation Type (परामर्श का प्रकार) <span class="req">*</span></label>
+                <select id="lead-service" name="service" required>
+                  {consultationTypes.map((t, idx) => (
+                    <option value={t.name} data-price={t.price} selected={idx === 0}>
+                      {t.icon} {t.name} — {t.price}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <p id="service-guidance" class="service-guidance" aria-live="polite"></p>
             </div>
 
             <!-- Birth details are required only for Kundali-based consultations. -->
@@ -160,24 +174,6 @@ const consultationTypes = [
               <label for="lead-tob-unknown">I do not know my exact birth time (use Prashna Kundali / Palmistry)</label>
             </div>
             </div>
-
-            <!-- Step 3: Service Selection -->
-            <div class="form-subheading">
-              <span>SELECT CONSULTATION TYPE (परामर्श का प्रकार)</span>
-            </div>
-
-            <div class="input-field">
-              <label for="lead-service">Consultation Focus <span class="req">*</span></label>
-              <select id="lead-service" name="service" required>
-                {consultationTypes.map((t, idx) => (
-                  <option value={t.name} data-price={t.price} selected={idx === 0}>
-                    {t.icon} {t.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <p id="service-guidance" class="service-guidance" aria-live="polite"></p>
-            <div id="service-price" class="service-price" aria-live="polite"><span>Consultation fee</span><strong id="service-price-value"></strong><small id="service-price-note"></small></div>
 
             <div class="form-group-grid">
               <div class="input-field">
@@ -288,9 +284,6 @@ const consultationTypes = [
     const questionInput = document.getElementById('lead-question') as HTMLTextAreaElement;
     const questionLabel = document.getElementById('lead-question-label') as HTMLLabelElement;
     const serviceGuidance = document.getElementById('service-guidance') as HTMLElement;
-    const servicePrice = document.getElementById('service-price') as HTMLElement;
-    const servicePriceValue = document.getElementById('service-price-value') as HTMLElement;
-    const servicePriceNote = document.getElementById('service-price-note') as HTMLElement;
 
     if (!form) return;
 
@@ -299,11 +292,6 @@ const consultationTypes = [
       const isVastu = service.includes('Vastu');
       const isPalmistry = service.includes('Palmistry');
       const needsBirthDetails = !isVastu && !isPalmistry;
-      const selectedOption = serviceSelect?.selectedOptions[0];
-      const price = selectedOption?.dataset.price || '';
-      if (servicePrice) servicePrice.hidden = !price;
-      if (servicePriceValue) servicePriceValue.textContent = price;
-      if (servicePriceNote) servicePriceNote.textContent = isVastu ? 'A personal quote is shared after property type, city and visit requirement are reviewed.' : '15-minute online consultation';
       if (birthDetails) birthDetails.hidden = !needsBirthDetails;
       if (dobInput) dobInput.required = needsBirthDetails;
       if (pobInput) pobInput.required = needsBirthDetails;
@@ -621,16 +609,16 @@ _Please let me know the available time slot and payment details. Thank you._`;
     background: #ffffff;
     color: #18213d;
     border-radius: 12px;
-    padding: 36px 32px;
+    padding: 28px 30px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
   }
   .form-header {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     border-bottom: 1px solid #f0ece1;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
   }
   .form-header h3 {
-    font-size: 24px;
+    font-size: 23px;
     color: #18213d;
     margin: 0 0 6px;
   }
@@ -640,19 +628,19 @@ _Please let me know the available time slot and payment details. Thank you._`;
     margin: 0;
   }
   .form-header p a { color: #9a651b; font-weight: 700; }
-  .service-price{margin:14px 0 4px;padding:12px 14px;border:1px solid #e2c793;border-radius:7px;background:#fff8e9;display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center}.service-price span{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#8a5514}.service-price strong{font-size:18px;color:#18213d}.service-price small{grid-column:1/-1;margin-top:3px;color:#687385;font-size:12px}
-  .service-guidance { margin: -5px 0 2px; color: #667085; font-size: 13px; line-height: 1.45; }
+  .consultation-choice { padding: 12px; border: 1px solid #eadcc0; border-radius: 8px; background: #fffaf0; }
+  .service-guidance { margin: 7px 0 0; color: #667085; font-size: 12.5px; line-height: 1.4; }
 
   /* Form Fields */
   .astro-lead-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 13px;
   }
   .form-group-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 13px;
   }
   .form-group-grid.three-col {
     grid-template-columns: repeat(3, 1fr);
@@ -674,7 +662,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
   .input-field input,
   .input-field select,
   .input-field textarea {
-    padding: 11px 14px;
+    padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
     font-size: 14px;
@@ -691,8 +679,8 @@ _Please let me know the available time slot and payment details. Thank you._`;
     box-shadow: 0 0 0 3px rgba(199, 145, 62, 0.15);
   }
   .form-subheading {
-    margin-top: 6px;
-    padding-top: 10px;
+    margin-top: 2px;
+    padding-top: 8px;
     border-top: 1px dashed #e2e8f0;
   }
   .form-subheading span {
@@ -720,7 +708,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
 
   /* Submit Button */
   .form-submit-container {
-    margin-top: 10px;
+    margin-top: 4px;
   }
   .btn-block {
     width: 100%;
