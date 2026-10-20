@@ -322,6 +322,17 @@ const consultationTypes = [
         serviceGuidance.textContent = 'For Kundali-based consultations, date and place of birth are required. Your exact birth time is helpful but optional.';
       }
     };
+    const requestedService = new URLSearchParams(window.location.search).get('service');
+    const serviceLookup: Record<string, string> = {
+      kundali: 'Vedic Kundali & Dasha Analysis',
+      career: 'Career, Job Change & Business Timing',
+      marriage: 'Kundali Milan & Relationship Harmony',
+      vastu: 'Home & Workplace Vastu Shastra',
+      palmistry: 'Palmistry & Hand Analysis (Hastarekha)'
+    };
+    if (requestedService && serviceLookup[requestedService] && serviceSelect) {
+      serviceSelect.value = serviceLookup[requestedService];
+    }
     serviceSelect?.addEventListener('change', updateServiceFields);
     updateServiceFields();
 
