@@ -16,32 +16,94 @@ const links = [
   <div class="site-header-inner">
     <a class="site-brand" href="/" aria-label={`${site.name} home`}>
       <img src="/images/click-jyotish-logo.jpg" alt="Click Jyotish" />
-      <span><strong>{site.name}</strong><small>{site.subtitle}</small></span>
+      <span><strong>{site.name}</strong><small data-i18n="subtitle">{site.subtitle}</small></span>
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
-      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      {links.map((link) => <a href={link.href} data-i18n={`nav-${link.label}`}>{link.label}</a>)}
     </nav>
-    <a class="header-cta" href="/#book">Start consultation</a>
+    <a class="header-cta" href="/#book" data-i18n="consultation">Start consultation</a>
+    <button class="language-toggle" type="button" data-language-toggle aria-label="Switch website language to Hindi" title="Switch language">
+      <span class="language-en">EN</span><span class="language-divider">|</span><span class="language-hi">हिंदी</span>
+    </button>
     <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-navigation">
       <span></span><span></span><span></span>
     </button>
   </div>
   <nav id="mobile-navigation" class="mobile-nav" aria-label="Mobile navigation" hidden>
-    {links.map((link) => <a href={link.href}>{link.label}</a>)}
-    <a class="mobile-cta" href="/#book">Start consultation</a>
+    {links.map((link) => <a href={link.href} data-i18n={`nav-${link.label}`}>{link.label}</a>)}
+    <a class="mobile-cta" href="/#book" data-i18n="consultation">Start consultation</a>
   </nav>
 </header>
 
 <script>
-  const menu = document.querySelector('#mobile-navigation') as HTMLElement | null;
-  const toggle = document.querySelector('.menu-toggle') as HTMLButtonElement | null;
-  toggle?.addEventListener('click', () => {
-    if (!menu || !toggle) return;
-    const open = menu.hidden;
-    menu.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
-  });
+  const translations: Record<string, string> = {
+    subtitle: 'वैदिक ज्योतिष · वास्तु · हस्तरेखा',
+    'nav-Home': 'होम',
+    'nav-Daily Rashifal': 'दैनिक राशिफल',
+    'nav-Panchang': 'पंचांग',
+    'nav-Services': 'सेवाएँ',
+    'nav-About': 'परिचय',
+    'nav-Articles': 'लेख',
+    'nav-FAQ': 'प्रश्न',
+    consultation: 'परामर्श शुरू करें'
+  };
+
+  const english: Record<string, string> = {
+    subtitle: 'Vedic Astrology · Vastu · Palmistry',
+    'nav-Home': 'Home',
+    'nav-Daily Rashifal': 'Daily Rashifal',
+    'nav-Panchang': 'Panchang',
+    'nav-Services': 'Services',
+    'nav-About': 'About',
+    'nav-Articles': 'Articles',
+    'nav-FAQ': 'FAQ',
+    consultation: 'Start consultation'
+  };
+
+  const applyLanguage = (language: 'en' | 'hi') => {
+    const dictionary = language === 'hi' ? translations : english;
+    document.documentElement.lang = language;
+    document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((element) => {
+      const key = element.dataset.i18n;
+      if (key && dictionary[key]) element.textContent = dictionary[key];
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-language-toggle]').forEach((button) => {
+      button.classList.toggle('is-hindi', language === 'hi');
+      button.setAttribute('aria-label', language === 'hi' ? 'Switch website language to English' : 'Switch website language to Hindi');
+      button.title = language === 'hi' ? 'Switch to English' : 'हिंदी में बदलें';
+    });
+  };
+
+  const initialiseHeader = () => {
+    const menu = document.querySelector('#mobile-navigation') as HTMLElement | null;
+    const menuToggle = document.querySelector('.menu-toggle') as HTMLButtonElement | null;
+    const languageToggle = document.querySelector('[data-language-toggle]') as HTMLButtonElement | null;
+    const storedLanguage = localStorage.getItem('click-jyotish-language');
+    applyLanguage(storedLanguage === 'hi' ? 'hi' : 'en');
+
+    if (menuToggle && !menuToggle.dataset.initialised) {
+      menuToggle.dataset.initialised = 'true';
+      menuToggle.addEventListener('click', () => {
+        if (!menu || !menuToggle) return;
+        const open = menu.hidden;
+        menu.hidden = !open;
+        menuToggle.setAttribute('aria-expanded', String(open));
+        menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+      });
+    }
+
+    if (languageToggle && !languageToggle.dataset.initialised) {
+      languageToggle.dataset.initialised = 'true';
+      languageToggle.addEventListener('click', () => {
+        const nextLanguage = document.documentElement.lang === 'hi' ? 'en' : 'hi';
+        localStorage.setItem('click-jyotish-language', nextLanguage);
+        applyLanguage(nextLanguage);
+      });
+    }
+  };
+
+  initialiseHeader();
+  document.addEventListener('astro:page-load', initialiseHeader);
 </script>
 
 <style>
@@ -50,8 +112,9 @@ const links = [
   .site-brand{display:flex;align-items:center;gap:11px;flex:0 0 auto}.site-brand img{width:48px;height:48px;border:1px solid #c7913e;border-radius:50%;object-fit:cover}.site-brand span{display:grid;gap:2px}.site-brand strong{font:700 24px/1.05 "Playfair Display",serif;color:#18213d;white-space:nowrap}.site-brand small{font-size:9px;letter-spacing:1.3px;text-transform:uppercase;font-weight:800;color:#c7913e;white-space:nowrap}
   .site-nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(14px,1.65vw,27px);margin-left:auto}.site-nav a{font-size:14px;font-weight:650;color:#18213d;white-space:nowrap}.site-nav a:hover{color:#a86f1e}
   .header-cta,.mobile-cta{flex:0 0 auto;border-radius:6px;background:#c7913e;color:#101936;font-size:14px;font-weight:800;padding:12px 16px;white-space:nowrap}.header-cta:hover,.mobile-cta:hover{background:#d9a34d}
+  .language-toggle{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;min-height:42px;border:1px solid #c7913e;border-radius:6px;background:#fffaf0;color:#18213d;padding:8px 10px;font:800 12px/1 "DM Sans","Noto Serif Devanagari",sans-serif;letter-spacing:.2px;cursor:pointer}.language-toggle:hover{background:#f7e7c7}.language-toggle .language-en,.language-toggle .language-hi{opacity:.55}.language-toggle:not(.is-hindi) .language-en,.language-toggle.is-hindi .language-hi{opacity:1;color:#a86f1e}.language-divider{color:#c5bda9;font-weight:500}
   .menu-toggle{display:none;margin-left:auto;width:42px;height:42px;border:1px solid #dedbd1;border-radius:6px;background:#fff;padding:10px;cursor:pointer}.menu-toggle span{display:block;height:2px;background:#18213d;margin:4px 0}
   .mobile-nav{border-top:1px solid #dedbd1;padding:12px 20px 18px;background:#fcfaf5}.mobile-nav a{display:block;padding:11px 0;font-size:15px;font-weight:650}.mobile-nav .mobile-cta{display:block;margin-top:8px;padding:12px;text-align:center;color:#101936}
-  @media(max-width:1150px){.site-nav,.header-cta{display:none}.menu-toggle{display:block}}
-  @media(max-width:560px){.site-header-inner{width:min(100% - 28px,1400px);min-height:70px}.site-brand img{width:42px;height:42px}.site-brand strong{font-size:20px}.site-brand small{font-size:8px;letter-spacing:1px}.mobile-nav{padding:10px 14px 16px}}
+  @media(max-width:1150px){.site-nav,.header-cta{display:none}.language-toggle{margin-left:auto}.menu-toggle{display:block;margin-left:0}}
+  @media(max-width:560px){.site-header-inner{width:min(100% - 28px,1400px);min-height:70px;gap:10px}.site-brand img{width:42px;height:42px}.site-brand strong{font-size:20px}.site-brand small{font-size:8px;letter-spacing:1px}.language-toggle{min-height:38px;padding:7px 8px;font-size:11px}.menu-toggle{width:38px;height:38px;padding:8px}.mobile-nav{padding:10px 14px 16px}}
 </style>
