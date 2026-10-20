@@ -252,6 +252,158 @@ const organizationSchema = {
   </footer>
 </BaseLayout>
 
+<script>
+  type HomeLanguage = 'en' | 'hi';
+
+  const homeCopy = {
+    en: {
+      trust: 'ONLINE CONSULTATIONS · HINDI & ENGLISH',
+      hero: 'Find clarity.<br>Move forward<br>with confidence.',
+      lead: 'Personal guidance in Vedic Astrology, Vastu Shastra and Palmistry with Deepak Maheshwari—offered with sincere care, confidentiality and practical perspective.',
+      choose: 'Choose consultation', chat: 'Chat on WhatsApp', explore: 'Explore services ↓',
+      badges: ['100% Confidential', '1-on-1 Direct Call', 'Practical Remedies'],
+      servicesEyebrow: 'OUR CONSULTATION DOMAINS', servicesTitle: 'Personalized Guidance & Remedies', servicesLead: 'Grounded in classical Parashari & Jaimini Vedic texts, delivered with modern clarity.',
+      services: [
+        ['Vedic Astrology & Kundali Reading', 'In-depth analysis of your Janam Kundli, planetary dasha, career, health, finances and relationship timing.'],
+        ['Vastu Shastra Consultation', 'Harmonise your home, office, or commercial space with practical, non-destructive Vastu remedies.'],
+        ['Palmistry (Hastarekha)', 'Understand your innate character, life line, fate line, potential health indications and natural strengths.']
+      ],
+      serviceLink: 'Explore this service →',
+      experienceEyebrow: 'A CLEAR CONSULTATION EXPERIENCE', experienceTitle: 'Personal guidance, without unnecessary complexity.',
+      experienceLead: 'Choose the service that fits your question. We collect only the details that are relevant, confirm the suitable time, and keep the conversation focused on practical clarity.',
+      experienceCta: 'Start your consultation request →',
+      steps: [
+        ['Choose your focus', 'Kundali, career, relationships, Palmistry or Vastu.'],
+        ['Share only relevant details', 'Birth details for Kundali work; property information for Vastu; your question for Palmistry.'],
+        ['Confirm your session personally', 'Choose a calendar slot or confirm the best time directly on WhatsApp.']
+      ],
+      aboutEyebrow: 'MEET THE PRACTITIONER', aboutTitle: 'Clear, Compassionate & Actionable Advice',
+      about: [
+        'Astrology is not about fatalism or creating fear. It is a time-tested Vedic science of self-awareness and planetary timing, helping you understand your inherent potentials, challenge cycles (Dasha), and upcoming auspicious windows.',
+        'With disciplined practice in Janam Kundli analysis, Vastu principles, and Palmistry, Deepak Maheshwari provides confidential, direct, and practical consultations focused on empowering your life decisions.'
+      ],
+      practitioner: 'Vedic Astrologer & Vastu Practitioner', stats: ['Confidential & Direct', 'Focused online calls', 'WhatsApp Booking'],
+      insightsEyebrow: 'READING & INSIGHTS', insightsTitle: 'Articles & Vedic Reflections',
+      insights: [
+        ['DIWALI 2026 · VASTU', 'Diwali Vastu Checklist: Prepare Your Home With Intention', 'A practical and respectful checklist for preparing your home or workplace before Deepavali.'],
+        ['PALMISTRY · PREPARATION', 'Online Palmistry: How to Prepare Your Hand Photos', 'A respectful, practical guide to preparing for an online Palmistry consultation.'],
+        ['VASTU · PRACTICAL GUIDE', 'Before a Vastu Consultation: A Simple Home Checklist', 'What to prepare before discussing a home, office or workplace with a Vastu practitioner.']
+      ],
+      read: 'Read full article →', mobile: 'Start consultation', footer: 'Vedic Astrology, Vastu & Palmistry by Deepak Maheshwari',
+      footerLinks: ['Home', 'Daily Rashifal', 'Panchang & Muhurat', 'Services', 'About', 'Book Consultation', 'Articles & Insights', 'FAQ', 'Privacy Policy', 'Terms', 'Disclaimer', 'Booking Policy'],
+      legal: 'All rights reserved. Astrology is a spiritual guidance practice and is not a substitute for medical, legal, or financial professional advice.'
+    },
+    hi: {
+      trust: 'ऑनलाइन परामर्श · हिंदी और अंग्रेज़ी',
+      hero: 'स्पष्टता पाएँ।<br>आत्मविश्वास के साथ<br>आगे बढ़ें।',
+      lead: 'दीपक महेश्वरी के साथ वैदिक ज्योतिष, वास्तु शास्त्र और हस्तरेखा पर व्यक्तिगत मार्गदर्शन—सच्ची देखभाल, गोपनीयता और व्यावहारिक दृष्टिकोण के साथ।',
+      choose: 'परामर्श चुनें', chat: 'WhatsApp पर बात करें', explore: 'सेवाएँ देखें ↓',
+      badges: ['100% गोपनीय', 'सीधी व्यक्तिगत कॉल', 'व्यावहारिक उपाय'],
+      servicesEyebrow: 'परामर्श के प्रमुख क्षेत्र', servicesTitle: 'व्यक्तिगत मार्गदर्शन एवं उपाय', servicesLead: 'पराशरी और जैमिनी के शास्त्रीय वैदिक ग्रंथों पर आधारित, आधुनिक स्पष्टता के साथ।',
+      services: [
+        ['वैदिक ज्योतिष एवं कुंडली विश्लेषण', 'जन्म कुंडली, ग्रह दशा, करियर, स्वास्थ्य, धन और संबंधों के समय का गहन विश्लेषण।'],
+        ['वास्तु शास्त्र परामर्श', 'व्यावहारिक और बिना तोड़फोड़ वाले वास्तु उपायों से घर, कार्यालय या व्यावसायिक स्थान में सामंजस्य।'],
+        ['हस्तरेखा विश्लेषण', 'अपने स्वभाव, जीवन रेखा, भाग्य रेखा, स्वास्थ्य के संकेतों और सहज शक्तियों को समझें।']
+      ],
+      serviceLink: 'इस सेवा को जानें →',
+      experienceEyebrow: 'सरल परामर्श अनुभव', experienceTitle: 'बिना अनावश्यक जटिलता के व्यक्तिगत मार्गदर्शन।',
+      experienceLead: 'अपने प्रश्न के अनुसार सेवा चुनें। हम केवल आवश्यक जानकारी लेते हैं, सही समय की पुष्टि करते हैं और बातचीत को व्यावहारिक स्पष्टता पर केंद्रित रखते हैं।',
+      experienceCta: 'परामर्श अनुरोध शुरू करें →',
+      steps: [
+        ['अपना विषय चुनें', 'कुंडली, करियर, संबंध, हस्तरेखा या वास्तु।'],
+        ['केवल आवश्यक जानकारी दें', 'कुंडली के लिए जन्म विवरण; वास्तु के लिए संपत्ति जानकारी; हस्तरेखा के लिए अपना प्रश्न।'],
+        ['व्यक्तिगत रूप से सत्र पक्का करें', 'कैलेंडर स्लॉट चुनें या WhatsApp पर सीधे सही समय पक्का करें।']
+      ],
+      aboutEyebrow: 'विशेषज्ञ से मिलें', aboutTitle: 'स्पष्ट, संवेदनशील और व्यावहारिक सलाह',
+      about: [
+        'ज्योतिष भाग्यवाद या भय पैदा करने के बारे में नहीं है। यह आत्म-समझ और ग्रहों के समय का एक अनुभवी वैदिक विज्ञान है, जो आपकी क्षमताओं, चुनौतीपूर्ण दशाओं और आने वाले शुभ अवसरों को समझने में मदद करता है।',
+        'जन्म कुंडली विश्लेषण, वास्तु सिद्धांतों और हस्तरेखा के अनुशासित अभ्यास के साथ दीपक महेश्वरी आपके जीवन के निर्णयों को सशक्त बनाने के लिए गोपनीय, सीधे और व्यावहारिक परामर्श देते हैं।'
+      ],
+      practitioner: 'वैदिक ज्योतिषी एवं वास्तु सलाहकार', stats: ['गोपनीय और व्यक्तिगत', 'केंद्रित ऑनलाइन कॉल', 'WhatsApp बुकिंग'],
+      insightsEyebrow: 'लेख एवं विचार', insightsTitle: 'लेख और वैदिक चिंतन',
+      insights: [
+        ['दिवाली 2026 · वास्तु', 'दिवाली वास्तु चेकलिस्ट: अपने घर को सही भाव से तैयार करें', 'दीपावली से पहले घर या कार्यस्थल की तैयारी के लिए एक व्यावहारिक और सम्मानजनक सूची।'],
+        ['हस्तरेखा · तैयारी', 'ऑनलाइन हस्तरेखा: हाथों की तस्वीरें कैसे तैयार करें', 'ऑनलाइन हस्तरेखा परामर्श की तैयारी के लिए एक व्यावहारिक मार्गदर्शिका।'],
+        ['वास्तु · व्यावहारिक मार्गदर्शिका', 'वास्तु परामर्श से पहले: घर के लिए एक सरल चेकलिस्ट', 'वास्तु विशेषज्ञ से घर, कार्यालय या कार्यस्थल पर बात करने से पहले क्या तैयार करें।']
+      ],
+      read: 'पूरा लेख पढ़ें →', mobile: 'परामर्श शुरू करें', footer: 'दीपक महेश्वरी द्वारा वैदिक ज्योतिष, वास्तु एवं हस्तरेखा',
+      footerLinks: ['होम', 'दैनिक राशिफल', 'पंचांग एवं मुहूर्त', 'सेवाएँ', 'परिचय', 'परामर्श बुक करें', 'लेख एवं विचार', 'प्रश्नोत्तर', 'गोपनीयता नीति', 'नियम एवं शर्तें', 'अस्वीकरण', 'बुकिंग नीति'],
+      legal: 'सर्वाधिकार सुरक्षित। ज्योतिष आध्यात्मिक मार्गदर्शन की विधि है और यह चिकित्सा, कानूनी या वित्तीय विशेषज्ञ सलाह का विकल्प नहीं है।'
+    }
+  } as const;
+
+  const setHomeText = (selector: string, value: string) => {
+    const element = document.querySelector<HTMLElement>(selector);
+    if (element) element.textContent = value;
+  };
+  const setHomeHtml = (selector: string, value: string) => {
+    const element = document.querySelector<HTMLElement>(selector);
+    if (element) element.innerHTML = value;
+  };
+  const applyHomeLanguage = (language: HomeLanguage) => {
+    const text = homeCopy[language];
+    setHomeText('.hero-trust-pill span:last-child', text.trust);
+    setHomeHtml('.hero-heading', text.hero);
+    setHomeText('.hero-lead', text.lead);
+    const heroActions = document.querySelectorAll<HTMLElement>('.hero-cta-group a');
+    [text.choose, text.chat, text.explore].forEach((value, index) => { if (heroActions[index]) heroActions[index].textContent = value; });
+    const badges = document.querySelectorAll<HTMLElement>('.hero-badges-row .h-badge-item span:last-child');
+    text.badges.forEach((value, index) => { if (badges[index]) badges[index].textContent = value; });
+
+    setHomeText('#services .eyebrow-text', text.servicesEyebrow);
+    setHomeText('#services h2', text.servicesTitle);
+    setHomeText('#services .section-desc', text.servicesLead);
+    const serviceCards = document.querySelectorAll<HTMLElement>('.service-card');
+    text.services.forEach((service, index) => {
+      const card = serviceCards[index];
+      if (!card) return;
+      const title = card.querySelector<HTMLElement>('h3'); const description = card.querySelector<HTMLElement>('p'); const link = card.querySelector<HTMLElement>('a');
+      if (title) title.textContent = service[0]; if (description) description.textContent = service[1]; if (link) link.textContent = text.serviceLink;
+    });
+
+    setHomeText('.expectations-intro .eyebrow-text', text.experienceEyebrow);
+    setHomeText('.expectations-intro h2', text.experienceTitle);
+    setHomeText('.expectations-intro > p:not(.eyebrow-text)', text.experienceLead);
+    setHomeText('.expectations-intro .text-cta', text.experienceCta);
+    const steps = document.querySelectorAll<HTMLElement>('.expectations-list article');
+    text.steps.forEach((step, index) => {
+      const item = steps[index]; const heading = item?.querySelector<HTMLElement>('h3'); const copy = item?.querySelector<HTMLElement>('p');
+      if (heading) heading.textContent = step[0]; if (copy) copy.textContent = step[1];
+    });
+
+    setHomeText('.about-badge small', text.practitioner);
+    setHomeText('#about .eyebrow-text', text.aboutEyebrow);
+    setHomeText('.about-content h2', text.aboutTitle);
+    const aboutParagraphs = document.querySelectorAll<HTMLElement>('.about-content > p:not(.eyebrow-text)');
+    text.about.forEach((paragraph, index) => { if (aboutParagraphs[index]) aboutParagraphs[index].textContent = paragraph; });
+    const statLabels = document.querySelectorAll<HTMLElement>('.stat-lbl');
+    text.stats.forEach((value, index) => { if (statLabels[index]) statLabels[index].textContent = value; });
+
+    setHomeText('#insights .eyebrow-text', text.insightsEyebrow);
+    setHomeText('#insights h2', text.insightsTitle);
+    const insights = document.querySelectorAll<HTMLElement>('.insight-card');
+    text.insights.forEach((article, index) => {
+      const card = insights[index];
+      if (!card) return;
+      const date = card.querySelector<HTMLElement>('.insight-date'); const title = card.querySelector<HTMLElement>('h3'); const summary = card.querySelector<HTMLElement>('p'); const link = card.querySelector<HTMLElement>('a');
+      if (date) date.textContent = article[0]; if (title) title.textContent = article[1]; if (summary) summary.textContent = article[2]; if (link) link.textContent = text.read;
+    });
+    setHomeText('.f-book-btn span', text.mobile);
+    setHomeText('.footer-brand > p:first-of-type', text.footer);
+    const footerLinks = document.querySelectorAll<HTMLElement>('.footer-links a');
+    text.footerLinks.forEach((value, index) => { if (footerLinks[index]) footerLinks[index].textContent = value; });
+    const legal = document.querySelector<HTMLElement>('.footer-bottom p');
+    if (legal) legal.textContent = `© ${new Date().getFullYear()} Click Jyotish. ${text.legal}`;
+  };
+
+  const currentHomeLanguage: HomeLanguage = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+  applyHomeLanguage(currentHomeLanguage);
+  document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+    const language = (event as CustomEvent<{ language?: HomeLanguage }>).detail?.language;
+    applyHomeLanguage(language === 'hi' ? 'hi' : 'en');
+  }) as EventListener);
+</script>
+
 <style>
   /* Header Nav */
   .navbarwrap {
