@@ -1,25 +1,43 @@
 <section class="moon-rashi-finder" aria-labelledby="moon-rashi-title">
-  <div class="wrap">
-    <div class="moon-rashi-card">
-      <div class="moon-rashi-copy">
-        <p class="moon-rashi-eyebrow">CHANDRA RASHI · जन्म राशि</p>
-        <h2 id="moon-rashi-title">Do you know your Moon sign?</h2>
-        <p>Your daily Rashifal is read from your <strong>Janma Rashi</strong>—the sign occupied by Chandra (the Moon) at your birth—not from your Western Sun sign.</p>
-        <div class="moon-rashi-details" aria-label="Details needed to calculate Moon sign">
-          <span>📅 Date of birth</span><span>🕰️ Birth time</span><span>📍 Birth place</span>
-        </div>
-      </div>
-      <div class="moon-rashi-actions">
-        <a class="moon-rashi-primary" href="https://www.drikpanchang.com/utilities/horoscope/hindu-moonsign-calculator.html" target="_blank" rel="noreferrer">
-          Find my Chandra Rashi <span aria-hidden="true">↗</span>
-        </a>
-        <a class="moon-rashi-secondary" href="#rashifal">I already know it—read my Rashifal ↓</a>
-        <small>Opens a free Moon-sign calculator in a new tab. Your birth details are not collected by Click Jyotish.</small>
-      </div>
+  <div class="wrap"><div class="moon-rashi-card">
+    <div class="moon-rashi-copy">
+      <p class="moon-rashi-eyebrow">CHANDRA RASHI · जन्म राशि</p>
+      <h2 id="moon-rashi-title">Do you know your Moon sign?</h2>
+      <p>Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.</p>
+      <p class="moon-rashi-privacy">🔒 Your details are calculated only in this browser. Click Jyotish does not save them.</p>
     </div>
-  </div>
+    <form id="moon-rashi-form" class="moon-rashi-form">
+      <label for="moon-rashi-date"><span>Date of birth</span><input id="moon-rashi-date" name="birthDate" type="date" required /></label>
+      <label for="moon-rashi-time"><span>Time of birth</span><input id="moon-rashi-time" name="birthTime" type="time" required /></label>
+      <label for="moon-rashi-place"><span>Place of birth (India)</span><input id="moon-rashi-place" name="birthPlace" type="text" placeholder="e.g. New Delhi" autocomplete="address-level2" required /></label>
+      <button type="submit">Know my Chandra Rashi →</button>
+      <small>For births outside India or an uncertain birth time, request a personal check below.</small>
+    </form>
+    <div id="moon-rashi-result" class="moon-rashi-result" hidden aria-live="polite">
+      <p class="moon-result-label">YOUR JANMA RASHI · आपकी जन्म राशि</p>
+      <h3 id="moon-rashi-result-title"></h3><p id="moon-rashi-result-copy"></p>
+      <a id="moon-rashi-read-link" href="#rashifal">Read my Rashifal ↓</a>
+    </div>
+    <details class="moon-rashi-name-help"><summary>Birth time not known? Ask through your birth name</summary><p>A name alone cannot calculate an exact Moon Rashi. If your name was chosen through <em>Namkaran</em>, it can be a traditional clue to the birth Nakshatra. Deepak can review it personally.</p><div><input id="moon-rashi-name" type="text" placeholder="Name used at Namkaran" autocomplete="name" /><a id="moon-rashi-name-link" href="https://wa.me/917669655530" target="_blank" rel="noreferrer">Ask Deepak on WhatsApp</a></div></details>
+  </div></div>
 </section>
 
+<script>
+  import { EclipticGeoMoon } from 'astronomy-engine';
+  const rashis = [
+    { id: 'aries', name: 'Mesha', hi: 'मेष', english: 'Aries' }, { id: 'taurus', name: 'Vrishabha', hi: 'वृषभ', english: 'Taurus' }, { id: 'gemini', name: 'Mithuna', hi: 'मिथुन', english: 'Gemini' }, { id: 'cancer', name: 'Karka', hi: 'कर्क', english: 'Cancer' }, { id: 'leo', name: 'Simha', hi: 'सिंह', english: 'Leo' }, { id: 'virgo', name: 'Kanya', hi: 'कन्या', english: 'Virgo' }, { id: 'libra', name: 'Tula', hi: 'तुला', english: 'Libra' }, { id: 'scorpio', name: 'Vrishchika', hi: 'वृश्चिक', english: 'Scorpio' }, { id: 'sagittarius', name: 'Dhanu', hi: 'धनु', english: 'Sagittarius' }, { id: 'capricorn', name: 'Makara', hi: 'मकर', english: 'Capricorn' }, { id: 'aquarius', name: 'Kumbha', hi: 'कुंभ', english: 'Aquarius' }, { id: 'pisces', name: 'Meena', hi: 'मीन', english: 'Pisces' }
+  ];
+  function lahiriAyanamsa(date: Date) { const jd = date.getTime() / 86400000 + 2440587.5; return 23.85675 + ((jd - 2451545) / 365.2425) * 0.013968; }
+  const normalize = (degrees: number) => ((degrees % 360) + 360) % 360;
+  function setupMoonRashiFinder() {
+    const form = document.getElementById('moon-rashi-form') as HTMLFormElement | null; const result = document.getElementById('moon-rashi-result') as HTMLElement | null; const title = document.getElementById('moon-rashi-result-title'); const copy = document.getElementById('moon-rashi-result-copy'); const rashifalLink = document.getElementById('moon-rashi-read-link') as HTMLAnchorElement | null; const nameInput = document.getElementById('moon-rashi-name') as HTMLInputElement | null; const nameLink = document.getElementById('moon-rashi-name-link') as HTMLAnchorElement | null;
+    if (!form || !result || form.dataset.ready === 'true') return; form.dataset.ready = 'true';
+    form.addEventListener('submit', (event) => { event.preventDefault(); if (!form.reportValidity()) return; const details = new FormData(form); const birthDate = new Date(`${String(details.get('birthDate'))}T${String(details.get('birthTime'))}:00+05:30`); const tropicalLongitude = EclipticGeoMoon(birthDate).lon; const siderealLongitude = normalize(tropicalLongitude - lahiriAyanamsa(birthDate)); const index = Math.floor(siderealLongitude / 30); const rashi = rashis[index]; const degreeInRashi = siderealLongitude % 30; const nearBoundary = degreeInRashi < 0.5 || degreeInRashi > 29.5; if (title) title.textContent = `${rashi.name} (${rashi.hi}) · ${rashi.english}`; if (copy) copy.textContent = nearBoundary ? 'This result is close to a Rashi boundary. For an important decision, request a precision Kundli review with the most accurate available birth time.' : `Use ${rashi.name} / ${rashi.hi} to read your Daily Rashifal below. This is a sidereal Lahiri Moon-Rashi calculation for the entered India (IST) birth time.`; if (rashifalLink) rashifalLink.onclick = () => document.getElementById(`tab-${rashi.id}`)?.click(); result.hidden = false; result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+    nameLink?.addEventListener('click', () => { const name = nameInput?.value.trim() || 'Not provided'; const message = `Namaste Deepak, I would like help finding my Chandra Rashi through the traditional Namkaran/birth-name method. My name used at Namkaran is: ${name}. I do not know my exact birth time. Please guide me.`; nameLink.href = `https://wa.me/917669655530?text=${encodeURIComponent(message)}`; });
+  }
+  setupMoonRashiFinder(); document.addEventListener('astro:page-load', setupMoonRashiFinder);
+</script>
+
 <style>
-  .moon-rashi-finder{padding:30px 0;background:#f7f5ed}.moon-rashi-card{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:32px 38px;border:1px solid #b9d5e6;border-radius:14px;background:linear-gradient(135deg,#e5f4fb,#f4fbfd);box-shadow:0 12px 28px #1931510d}.moon-rashi-eyebrow{margin:0 0 8px;color:#2f6f93;font-size:11px;font-weight:800;letter-spacing:1.5px}.moon-rashi-copy h2{margin:0 0 10px;color:#18213d;font-size:clamp(26px,3vw,37px)}.moon-rashi-copy>p{max-width:710px;margin:0;color:#526178;font-size:16px;line-height:1.6}.moon-rashi-details{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.moon-rashi-details span{padding:7px 10px;border:1px solid #c4dbe7;border-radius:999px;background:#fffdf9;color:#31556a;font-size:12px;font-weight:700}.moon-rashi-actions{display:flex;flex-direction:column;align-items:stretch;gap:12px}.moon-rashi-primary,.moon-rashi-secondary{display:flex;align-items:center;justify-content:center;min-height:50px;padding:0 18px;border-radius:8px;font-weight:800;text-align:center;text-decoration:none}.moon-rashi-primary{background:#c7913e;color:#101936}.moon-rashi-primary:hover{background:#dba44e}.moon-rashi-secondary{border:1px solid #8eb7cf;color:#31556a;background:#ffffff}.moon-rashi-secondary:hover{border-color:#c7913e;color:#8a5514}.moon-rashi-actions small{color:#667b89;font-size:11px;line-height:1.45;text-align:center}@media(max-width:760px){.moon-rashi-card{grid-template-columns:1fr;padding:25px 21px;gap:22px}.moon-rashi-actions{max-width:420px;width:100%;margin:auto}}
+  .moon-rashi-finder{padding:30px 0;background:#f7f5ed}.moon-rashi-card{padding:32px 38px;border:1px solid #b9d5e6;border-radius:14px;background:linear-gradient(135deg,#e5f4fb,#f4fbfd);box-shadow:0 12px 28px #1931510d}.moon-rashi-copy{max-width:760px}.moon-rashi-eyebrow{margin:0 0 8px;color:#2f6f93;font-size:11px;font-weight:800;letter-spacing:1.5px}.moon-rashi-copy h2{margin:0 0 10px;color:#18213d;font-size:clamp(26px,3vw,37px)}.moon-rashi-copy>p{margin:0;color:#526178;font-size:16px;line-height:1.6}.moon-rashi-privacy{margin-top:11px!important;color:#31556a!important;font-size:13px!important}.moon-rashi-form{display:grid;grid-template-columns:1fr 1fr 1.2fr auto;gap:13px;align-items:end;margin-top:24px}.moon-rashi-form label{display:grid;gap:7px}.moon-rashi-form label span{color:#31556a;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}.moon-rashi-form input{box-sizing:border-box;min-width:0;min-height:51px;padding:0 12px;border:1px solid #bcd4e0;border-radius:8px;background:#fffdf9;color:#18213d;font:inherit}.moon-rashi-form button,.moon-rashi-name-help a{display:inline-flex;align-items:center;justify-content:center;min-height:51px;padding:0 19px;border:0;border-radius:8px;background:#c7913e;color:#101936;font:inherit;font-weight:800;text-decoration:none;white-space:nowrap;cursor:pointer}.moon-rashi-form button:hover,.moon-rashi-name-help a:hover{background:#dba44e}.moon-rashi-form small{grid-column:1/-1;color:#667b89;font-size:11px}.moon-rashi-result{margin-top:20px;padding:20px;border:1px solid #b9d5e6;border-radius:10px;background:#fffdf9}.moon-result-label{margin:0 0 5px;color:#2f6f93;font-size:11px;font-weight:800;letter-spacing:1.2px}.moon-rashi-result h3{margin:0;color:#18213d;font-size:25px}.moon-rashi-result p{margin:7px 0 13px;color:#526178;line-height:1.55}.moon-rashi-result a{color:#8a5514;font-weight:800;text-decoration:none}.moon-rashi-name-help{margin-top:18px;padding-top:17px;border-top:1px solid #c9e0ea;color:#526178}.moon-rashi-name-help summary{cursor:pointer;color:#31556a;font-weight:800}.moon-rashi-name-help p{max-width:800px;margin:9px 0 12px;font-size:13px;line-height:1.55}.moon-rashi-name-help div{display:flex;gap:10px}.moon-rashi-name-help input{flex:1;min-height:45px;padding:0 12px;border:1px solid #bcd4e0;border-radius:8px;background:#fffdf9;font:inherit}.moon-rashi-name-help a{min-height:45px}@media(max-width:800px){.moon-rashi-card{padding:25px 21px}.moon-rashi-form{grid-template-columns:1fr 1fr}.moon-rashi-form label:nth-child(3),.moon-rashi-form button{grid-column:1/-1}.moon-rashi-name-help div{flex-direction:column}.moon-rashi-name-help a{width:100%;box-sizing:border-box}}@media(max-width:480px){.moon-rashi-form{grid-template-columns:1fr}.moon-rashi-form label:nth-child(3),.moon-rashi-form button{grid-column:auto}}
 </style>
