@@ -3,7 +3,7 @@
     <div class="moon-rashi-copy">
       <p class="moon-rashi-eyebrow">CHANDRA RASHI · जन्म राशि</p>
       <h2 id="moon-rashi-title">Do you know your Moon sign?</h2>
-      <p>Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.</p>
+      <p class="moon-rashi-intro">Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.</p>
       <p class="moon-rashi-privacy">🔒 Your details are calculated only in this browser. Click Jyotish does not save them.</p>
     </div>
     <form id="moon-rashi-form" class="moon-rashi-form">
@@ -27,13 +27,62 @@
   const rashis = [
     { id: 'aries', name: 'Mesha', hi: 'मेष', english: 'Aries' }, { id: 'taurus', name: 'Vrishabha', hi: 'वृषभ', english: 'Taurus' }, { id: 'gemini', name: 'Mithuna', hi: 'मिथुन', english: 'Gemini' }, { id: 'cancer', name: 'Karka', hi: 'कर्क', english: 'Cancer' }, { id: 'leo', name: 'Simha', hi: 'सिंह', english: 'Leo' }, { id: 'virgo', name: 'Kanya', hi: 'कन्या', english: 'Virgo' }, { id: 'libra', name: 'Tula', hi: 'तुला', english: 'Libra' }, { id: 'scorpio', name: 'Vrishchika', hi: 'वृश्चिक', english: 'Scorpio' }, { id: 'sagittarius', name: 'Dhanu', hi: 'धनु', english: 'Sagittarius' }, { id: 'capricorn', name: 'Makara', hi: 'मकर', english: 'Capricorn' }, { id: 'aquarius', name: 'Kumbha', hi: 'कुंभ', english: 'Aquarius' }, { id: 'pisces', name: 'Meena', hi: 'मीन', english: 'Pisces' }
   ];
+  const moonCopy = {
+    en: {
+      eyebrow: 'CHANDRA RASHI · जन्म राशि', title: 'Do you know your Moon sign?',
+      intro: 'Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.',
+      privacy: '🔒 Your details are calculated only in this browser. Click Jyotish does not save them.',
+      labels: ['Date of birth', 'Time of birth', 'Place of birth (India)'], place: 'e.g. New Delhi', submit: 'Know my Chandra Rashi →',
+      outside: 'For births outside India or an uncertain birth time, request a personal check below.', resultLabel: 'YOUR JANMA RASHI · आपकी जन्म राशि',
+      read: 'Read my Rashifal ↓', unknown: 'Birth time not known? Ask through your birth name',
+      nameHelp: 'A name alone cannot calculate an exact Moon Rashi. If your name was chosen through <em>Namkaran</em>, it can be a traditional clue to the birth Nakshatra. Deepak can review it personally.',
+      namePlaceholder: 'Name used at Namkaran', ask: 'Ask Deepak on WhatsApp',
+      boundary: 'This result is close to a Rashi boundary. For an important decision, request a precision Kundli review with the most accurate available birth time.',
+      result: 'Use {name} / {hi} to read your Daily Rashifal below. This is a sidereal Lahiri Moon-Rashi calculation for the entered India (IST) birth time.'
+    },
+    hi: {
+      eyebrow: 'चंद्र राशि · जन्म राशि', title: 'क्या आप अपनी चंद्र राशि जानते हैं?',
+      intro: 'दैनिक राशिफल आपकी <strong>जन्म राशि</strong> से पढ़ा जाता है—जन्म के समय चंद्रमा जिस राशि में था, उससे; आपकी पश्चिमी सूर्य राशि से नहीं।',
+      privacy: '🔒 आपकी जानकारी केवल इसी ब्राउज़र में गणना होती है। Click Jyotish इसे सुरक्षित नहीं करता।',
+      labels: ['जन्म तिथि', 'जन्म समय', 'जन्म स्थान (भारत)'], place: 'उदाहरण: नई दिल्ली', submit: 'मेरी चंद्र राशि जानें →',
+      outside: 'भारत के बाहर जन्म या जन्म समय निश्चित न होने पर नीचे व्यक्तिगत जाँच का अनुरोध करें।', resultLabel: 'आपकी जन्म राशि',
+      read: 'मेरा राशिफल पढ़ें ↓', unknown: 'जन्म समय नहीं पता? जन्म नाम से सहायता लें',
+      nameHelp: 'केवल नाम से सटीक चंद्र राशि नहीं निकाली जा सकती। यदि आपका नाम नामकरण संस्कार के अनुसार रखा गया था, तो वह जन्म नक्षत्र का पारंपरिक संकेत हो सकता है। दीपक इसकी व्यक्तिगत जाँच कर सकते हैं।',
+      namePlaceholder: 'नामकरण में रखा गया नाम', ask: 'WhatsApp पर दीपक से पूछें',
+      boundary: 'यह परिणाम राशि की सीमा के बहुत निकट है। महत्वपूर्ण निर्णय के लिए सबसे सटीक उपलब्ध जन्म समय के साथ कुंडली की व्यक्तिगत जाँच लें।',
+      result: 'नीचे अपना दैनिक राशिफल पढ़ने के लिए {name} / {hi} राशि चुनें। यह दर्ज किए गए भारत (IST) जन्म समय के आधार पर सायडीरियल लाहिड़ी चंद्र राशि गणना है।'
+    }
+  } as const;
   function lahiriAyanamsa(date: Date) { const jd = date.getTime() / 86400000 + 2440587.5; return 23.85675 + ((jd - 2451545) / 365.2425) * 0.013968; }
   const normalize = (degrees: number) => ((degrees % 360) + 360) % 360;
   function setupMoonRashiFinder() {
     const form = document.getElementById('moon-rashi-form') as HTMLFormElement | null; const result = document.getElementById('moon-rashi-result') as HTMLElement | null; const title = document.getElementById('moon-rashi-result-title'); const copy = document.getElementById('moon-rashi-result-copy'); const rashifalLink = document.getElementById('moon-rashi-read-link') as HTMLAnchorElement | null; const nameInput = document.getElementById('moon-rashi-name') as HTMLInputElement | null; const nameLink = document.getElementById('moon-rashi-name-link') as HTMLAnchorElement | null;
     if (!form || !result || form.dataset.ready === 'true') return; form.dataset.ready = 'true';
-    form.addEventListener('submit', (event) => { event.preventDefault(); if (!form.reportValidity()) return; const details = new FormData(form); const birthDate = new Date(`${String(details.get('birthDate'))}T${String(details.get('birthTime'))}:00+05:30`); const tropicalLongitude = EclipticGeoMoon(birthDate).lon; const siderealLongitude = normalize(tropicalLongitude - lahiriAyanamsa(birthDate)); const index = Math.floor(siderealLongitude / 30); const rashi = rashis[index]; const degreeInRashi = siderealLongitude % 30; const nearBoundary = degreeInRashi < 0.5 || degreeInRashi > 29.5; if (title) title.textContent = `${rashi.name} (${rashi.hi}) · ${rashi.english}`; if (copy) copy.textContent = nearBoundary ? 'This result is close to a Rashi boundary. For an important decision, request a precision Kundli review with the most accurate available birth time.' : `Use ${rashi.name} / ${rashi.hi} to read your Daily Rashifal below. This is a sidereal Lahiri Moon-Rashi calculation for the entered India (IST) birth time.`; if (rashifalLink) rashifalLink.onclick = () => document.getElementById(`tab-${rashi.id}`)?.click(); result.hidden = false; result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
-    nameLink?.addEventListener('click', () => { const name = nameInput?.value.trim() || 'Not provided'; const message = `Namaste Deepak, I would like help finding my Chandra Rashi through the traditional Namkaran/birth-name method. My name used at Namkaran is: ${name}. I do not know my exact birth time. Please guide me.`; nameLink.href = `https://wa.me/917669655530?text=${encodeURIComponent(message)}`; });
+    let language: 'en' | 'hi' = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+    let lastResult: { rashi: typeof rashis[number]; nearBoundary: boolean } | null = null;
+    const renderResult = () => {
+      if (!lastResult) return;
+      const text = moonCopy[language]; const { rashi, nearBoundary } = lastResult;
+      if (title) title.textContent = `${rashi.name} (${rashi.hi}) · ${rashi.english}`;
+      if (copy) copy.textContent = nearBoundary ? text.boundary : text.result.replace('{name}', rashi.name).replace('{hi}', rashi.hi);
+    };
+    const applyMoonLanguage = (nextLanguage: 'en' | 'hi') => {
+      language = nextLanguage; const text = moonCopy[language];
+      const section = document.querySelector('.moon-rashi-finder');
+      const intro = section?.querySelector<HTMLElement>('.moon-rashi-intro');
+      if (intro) intro.innerHTML = text.intro;
+      const set = (selector: string, value: string) => { const element = section?.querySelector<HTMLElement>(selector); if (element) element.textContent = value; };
+      set('.moon-rashi-eyebrow', text.eyebrow); set('#moon-rashi-title', text.title); set('.moon-rashi-privacy', text.privacy);
+      section?.querySelectorAll<HTMLElement>('.moon-rashi-form label span').forEach((element, index) => { element.textContent = text.labels[index] || element.textContent; });
+      const place = section?.querySelector<HTMLInputElement>('#moon-rashi-place'); if (place) place.placeholder = text.place;
+      set('.moon-rashi-form button', text.submit); set('.moon-rashi-form small', text.outside); set('.moon-result-label', text.resultLabel); set('#moon-rashi-read-link', text.read);
+      set('.moon-rashi-name-help summary', text.unknown); set('.moon-rashi-name-help p', text.nameHelp); const name = section?.querySelector<HTMLInputElement>('#moon-rashi-name'); if (name) name.placeholder = text.namePlaceholder; set('#moon-rashi-name-link', text.ask);
+      renderResult();
+    };
+    form.addEventListener('submit', (event) => { event.preventDefault(); if (!form.reportValidity()) return; const details = new FormData(form); const birthDate = new Date(`${String(details.get('birthDate'))}T${String(details.get('birthTime'))}:00+05:30`); const tropicalLongitude = EclipticGeoMoon(birthDate).lon; const siderealLongitude = normalize(tropicalLongitude - lahiriAyanamsa(birthDate)); const index = Math.floor(siderealLongitude / 30); const rashi = rashis[index]; const degreeInRashi = siderealLongitude % 30; lastResult = { rashi, nearBoundary: degreeInRashi < 0.5 || degreeInRashi > 29.5 }; renderResult(); if (rashifalLink) rashifalLink.onclick = () => document.getElementById(`tab-${rashi.id}`)?.click(); result.hidden = false; result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+    nameLink?.addEventListener('click', () => { const name = nameInput?.value.trim() || (language === 'hi' ? 'नहीं दिया गया' : 'Not provided'); const message = language === 'hi' ? `नमस्ते दीपक, मैं नामकरण/जन्म नाम की पारंपरिक विधि से अपनी चंद्र राशि जानने में सहायता चाहता/चाहती हूँ। नामकरण में मेरा नाम: ${name}। मुझे जन्म का सही समय नहीं पता। कृपया मार्गदर्शन करें।` : `Namaste Deepak, I would like help finding my Chandra Rashi through the traditional Namkaran/birth-name method. My name used at Namkaran is: ${name}. I do not know my exact birth time. Please guide me.`; nameLink.href = `https://wa.me/917669655530?text=${encodeURIComponent(message)}`; });
+    applyMoonLanguage(language);
+    document.addEventListener('click-jyotish-language-change', ((event: Event) => { const nextLanguage = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language; applyMoonLanguage(nextLanguage === 'hi' ? 'hi' : 'en'); }) as EventListener);
   }
   setupMoonRashiFinder(); document.addEventListener('astro:page-load', setupMoonRashiFinder);
 </script>

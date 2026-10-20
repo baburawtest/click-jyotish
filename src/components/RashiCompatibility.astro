@@ -24,20 +24,58 @@ import { zodiacSigns } from '../data/zodiac';
 </section>
 
 <script>
+  const compatibilityCopy = {
+    en: {
+      eyebrow: 'COMPATIBILITY · अनुकूलता', title: 'How do your Moon Rashis connect?',
+      intro: 'Choose both Janma Rashis for a quick, respectful compatibility overview. This is a starting point—not a complete Kundli Milan.',
+      yours: 'Your Chandra Rashi', partner: "Partner's Chandra Rashi", submit: 'Check overview',
+      note: 'For marriage matching, a full Kundli Milan reviews Nakshatra, Ashtakoota/Guna, Nadi, Bhakoot, Manglik and the wider birth charts.',
+      cta: 'Request detailed Kundli Milan →',
+      sameTitle: 'A shared emotional rhythm', sameCopy: 'You may naturally understand each other’s priorities and reactions. Space for individuality keeps the relationship fresh.',
+      supportiveTitle: 'A naturally supportive pairing', supportiveCopy: '{a} and {b} energy can complement each other well when communication stays honest and practical.',
+      steadyTitle: 'A familiar, steady connection', steadyCopy: 'You may share an instinctive style, while a little patience helps prevent the same strengths from becoming blind spots.',
+      growthTitle: 'A pairing that grows through understanding', growthCopy: '{a} and {b} energy can approach feelings and decisions differently. Respectful conversation helps turn those differences into balance.'
+    },
+    hi: {
+      eyebrow: 'अनुकूलता · COMPATIBILITY', title: 'आपकी चंद्र राशियाँ कैसे जुड़ती हैं?',
+      intro: 'त्वरित और सम्मानजनक अनुकूलता जानकारी के लिए दोनों जन्म राशियाँ चुनें। यह केवल शुरुआती संकेत है—पूर्ण कुंडली मिलान नहीं।',
+      yours: 'आपकी चंद्र राशि', partner: 'साथी की चंद्र राशि', submit: 'अनुकूलता देखें',
+      note: 'विवाह मिलान के लिए पूर्ण कुंडली मिलान में नक्षत्र, अष्टकूट/गुण, नाड़ी, भकूट, मांगलिक और विस्तृत जन्म कुंडली देखी जाती है।',
+      cta: 'विस्तृत कुंडली मिलान का अनुरोध करें →',
+      sameTitle: 'भावनात्मक तालमेल', sameCopy: 'आप एक-दूसरे की प्राथमिकताओं और प्रतिक्रियाओं को सहज रूप से समझ सकते हैं। व्यक्तिगत स्थान संबंध को ताज़ा रखता है।',
+      supportiveTitle: 'स्वाभाविक रूप से सहायक जोड़ी', supportiveCopy: '{a} और {b} तत्व की ऊर्जा ईमानदार और व्यावहारिक संवाद के साथ एक-दूसरे की पूरक हो सकती है।',
+      steadyTitle: 'परिचित और स्थिर जुड़ाव', steadyCopy: 'आपकी सहज शैली मिलती-जुलती हो सकती है; थोड़ा धैर्य समान शक्तियों को सीमाएँ बनने से रोकता है।',
+      growthTitle: 'समझ से बढ़ने वाली जोड़ी', growthCopy: '{a} और {b} तत्व की ऊर्जा भावनाओं और निर्णयों को अलग तरह से देख सकती है। सम्मानजनक बातचीत इन अंतरों को संतुलन में बदलती है।'
+    }
+  } as const;
   const rashiDetails: Record<string, { name: string; element: string }> = {
     aries: { name: 'Mesha (Aries)', element: 'Fire' }, taurus: { name: 'Vrishabha (Taurus)', element: 'Earth' }, gemini: { name: 'Mithuna (Gemini)', element: 'Air' }, cancer: { name: 'Karka (Cancer)', element: 'Water' }, leo: { name: 'Simha (Leo)', element: 'Fire' }, virgo: { name: 'Kanya (Virgo)', element: 'Earth' }, libra: { name: 'Tula (Libra)', element: 'Air' }, scorpio: { name: 'Vrishchika (Scorpio)', element: 'Water' }, sagittarius: { name: 'Dhanu (Sagittarius)', element: 'Fire' }, capricorn: { name: 'Makara (Capricorn)', element: 'Earth' }, aquarius: { name: 'Kumbha (Aquarius)', element: 'Air' }, pisces: { name: 'Meena (Pisces)', element: 'Water' }
   };
-  function describePair(first: string, second: string) {
+  const hindiElements: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
+  function describePair(first: string, second: string, language: 'en' | 'hi') {
     const a = rashiDetails[first]; const b = rashiDetails[second]; const pair = [a.element, b.element].sort().join('-');
-    if (first === second) return { title: 'A shared emotional rhythm', copy: 'You may naturally understand each other’s priorities and reactions. Space for individuality keeps the relationship fresh.' };
-    if (pair === 'Air-Fire' || pair === 'Earth-Water') return { title: 'A naturally supportive pairing', copy: `${a.element} and ${b.element} energy can complement each other well when communication stays honest and practical.` };
-    if (pair === 'Air-Air' || pair === 'Earth-Earth' || pair === 'Fire-Fire' || pair === 'Water-Water') return { title: 'A familiar, steady connection', copy: 'You may share an instinctive style, while a little patience helps prevent the same strengths from becoming blind spots.' };
-    return { title: 'A pairing that grows through understanding', copy: `${a.element} and ${b.element} energy can approach feelings and decisions differently. Respectful conversation helps turn those differences into balance.` };
+    const text = compatibilityCopy[language]; const firstElement = language === 'hi' ? hindiElements[a.element] : a.element; const secondElement = language === 'hi' ? hindiElements[b.element] : b.element;
+    if (first === second) return { title: text.sameTitle, copy: text.sameCopy };
+    if (pair === 'Air-Fire' || pair === 'Earth-Water') return { title: text.supportiveTitle, copy: text.supportiveCopy.replace('{a}', firstElement).replace('{b}', secondElement) };
+    if (pair === 'Air-Air' || pair === 'Earth-Earth' || pair === 'Fire-Fire' || pair === 'Water-Water') return { title: text.steadyTitle, copy: text.steadyCopy };
+    return { title: text.growthTitle, copy: text.growthCopy.replace('{a}', firstElement).replace('{b}', secondElement) };
   }
   function setupCompatibilityChecker() {
     const form = document.getElementById('rashi-compatibility-form') as HTMLFormElement | null; const result = document.getElementById('compatibility-result') as HTMLElement | null; const resultTitle = document.getElementById('compatibility-result-title'); const resultCopy = document.getElementById('compatibility-result-copy');
     if (!form || !result || form.dataset.ready === 'true') return; form.dataset.ready = 'true';
-    form.addEventListener('submit', (event) => { event.preventDefault(); const details = new FormData(form); const yourRashi = String(details.get('yourRashi')); const partnerRashi = String(details.get('partnerRashi')); const overview = describePair(yourRashi, partnerRashi); if (resultTitle) resultTitle.textContent = `${rashiDetails[yourRashi].name} & ${rashiDetails[partnerRashi].name}: ${overview.title}`; if (resultCopy) resultCopy.textContent = overview.copy; result.hidden = false; });
+    let language: 'en' | 'hi' = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+    let lastPair: { yourRashi: string; partnerRashi: string } | null = null;
+    const renderResult = () => { if (!lastPair) return; const overview = describePair(lastPair.yourRashi, lastPair.partnerRashi, language); if (resultTitle) resultTitle.textContent = `${rashiDetails[lastPair.yourRashi].name} & ${rashiDetails[lastPair.partnerRashi].name}: ${overview.title}`; if (resultCopy) resultCopy.textContent = overview.copy; };
+    const applyCompatibilityLanguage = (nextLanguage: 'en' | 'hi') => {
+      language = nextLanguage; const text = compatibilityCopy[language]; const section = document.querySelector('.rashi-compatibility');
+      const set = (selector: string, value: string) => { const element = section?.querySelector<HTMLElement>(selector); if (element) element.textContent = value; };
+      set('.compatibility-eyebrow', text.eyebrow); set('#compatibility-title', text.title); set('.compatibility-copy p', text.intro);
+      const labels = section?.querySelectorAll<HTMLElement>('.compatibility-form label span'); if (labels?.[0]) labels[0].textContent = text.yours; if (labels?.[1]) labels[1].textContent = text.partner;
+      set('.compatibility-form button', text.submit); set('.compatibility-result small', text.note); set('.compatibility-result a', text.cta); renderResult();
+    };
+    form.addEventListener('submit', (event) => { event.preventDefault(); const details = new FormData(form); lastPair = { yourRashi: String(details.get('yourRashi')), partnerRashi: String(details.get('partnerRashi')) }; renderResult(); result.hidden = false; });
+    applyCompatibilityLanguage(language);
+    document.addEventListener('click-jyotish-language-change', ((event: Event) => { const nextLanguage = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language; applyCompatibilityLanguage(nextLanguage === 'hi' ? 'hi' : 'en'); }) as EventListener);
   }
   setupCompatibilityChecker(); document.addEventListener('astro:page-load', setupCompatibilityChecker);
 </script>
