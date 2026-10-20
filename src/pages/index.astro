@@ -10,6 +10,7 @@ import ConsultationForm from '../components/ConsultationForm.astro';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
+  '@id': 'https://clickjyotish.in/#business',
   name: site.name,
   url: 'https://clickjyotish.in/',
   logo: 'https://clickjyotish.in/images/click-jyotish-logo.jpg',
@@ -20,10 +21,66 @@ const organizationSchema = {
   address: {
     '@type': 'PostalAddress',
     addressLocality: site.city,
+    addressRegion: 'Delhi',
     addressCountry: 'IN'
   },
-  areaServed: 'India',
-  availableLanguage: ['Hindi', 'English']
+  areaServed: [
+    { '@type': 'City', name: 'New Delhi' },
+    { '@type': 'AdministrativeArea', name: 'Delhi NCR' },
+    { '@type': 'Country', name: 'India' }
+  ],
+  availableLanguage: ['Hindi', 'English'],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: `+${site.phone}`,
+    email: site.email,
+    contactType: 'customer service',
+    areaServed: 'IN',
+    availableLanguage: ['Hindi', 'English']
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Click Jyotish consultation services',
+    itemListElement: [
+      {
+        '@type': 'Offer',
+        price: '600',
+        priceCurrency: 'INR',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Vedic Astrology and Kundali Consultation',
+          description: 'Personal online guidance for Janam Kundli, Dasha, career, relationships and timing.'
+        }
+      },
+      {
+        '@type': 'Offer',
+        price: '600',
+        priceCurrency: 'INR',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Palmistry and Hastarekha Consultation',
+          description: 'Personal online Palmistry guidance focused on strengths, patterns and life-direction questions.'
+        }
+      },
+      {
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: 'Vastu Shastra Consultation',
+          description: 'Practical Vastu guidance for homes, offices and commercial spaces; scope is confirmed individually.'
+        }
+      }
+    ]
+  },
+  potentialAction: {
+    '@type': 'ReserveAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: site.bookingLink,
+      actionPlatform: ['https://schema.org/DesktopWebPlatform', 'https://schema.org/MobileWebPlatform']
+    },
+    name: 'Book a consultation'
+  }
 };
 ---
 
