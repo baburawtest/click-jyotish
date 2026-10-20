@@ -5,16 +5,19 @@ interface Props {
   title: string;
   description: string;
   eyebrow?: string;
+  titleHi?: string;
+  descriptionHi?: string;
+  eyebrowHi?: string;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, eyebrow = 'CLICK JYOTISH', structuredData } = Astro.props;
+const { title, description, eyebrow = 'CLICK JYOTISH', titleHi, descriptionHi, eyebrowHi, structuredData } = Astro.props;
 ---
 <BaseLayout {title} {description} {structuredData}>
   <main class="wrap page">
-    <p class="eyebrow">{eyebrow}</p>
-    <h1>{title}</h1>
-    <p class="lead">{description}</p>
+    <p class="eyebrow" data-page-copy="eyebrow" data-en={eyebrow} data-hi={eyebrowHi ?? eyebrow}>{eyebrow}</p>
+    <h1 data-page-copy="title" data-en={title} data-hi={titleHi ?? title}>{title}</h1>
+    <p class="lead" data-page-copy="description" data-en={description} data-hi={descriptionHi ?? description}>{description}</p>
     <article class="content"><slot /></article>
   </main>
   <footer>
@@ -24,6 +27,25 @@ const { title, description, eyebrow = 'CLICK JYOTISH', structuredData } = Astro.
     </div>
   </footer>
 </BaseLayout>
+<script>
+  function setupInfoPageLanguage() {
+    const page = document.querySelector<HTMLElement>('.page');
+    if (!page || page.dataset.languageReady === 'true') return;
+    page.dataset.languageReady = 'true';
+    const applyLanguage = (language: 'en' | 'hi') => {
+      page.querySelectorAll<HTMLElement>('[data-page-copy]').forEach((element) => {
+        element.textContent = language === 'hi' ? element.dataset.hi || element.dataset.en || '' : element.dataset.en || '';
+      });
+    };
+    applyLanguage(localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en');
+    document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+      const language = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language;
+      applyLanguage(language === 'hi' ? 'hi' : 'en');
+    }) as EventListener);
+  }
+  setupInfoPageLanguage();
+  document.addEventListener('astro:page-load', setupInfoPageLanguage);
+</script>
 <style>
   .page{max-width:820px;padding:74px 0 88px}.eyebrow{font-size:12px;letter-spacing:1.7px;color:#a86f1e;font-weight:800;margin:0 0 12px}.page h1{font-size:clamp(38px,6vw,58px);margin:0 0 18px}.lead{font-size:19px;color:#536076;margin:0 0 42px}.content :global(h2){font-size:29px;margin:42px 0 10px}.content :global(h3){font-size:21px;margin:28px 0 8px}.content :global(p),.content :global(li){font-size:16px;color:#4d566a}.content :global(li){margin:9px 0}.content :global(a){color:#9b631a;text-decoration:underline}.content :global(.notice){background:#f5ead4;border-left:4px solid #c7913e;padding:18px 20px;margin:25px 0;color:#493116}.content :global(.service-summary){display:grid;grid-template-columns:repeat(3,1fr);gap:1px;overflow:hidden;margin:0 0 34px;border:1px solid #dedbd1;border-radius:12px;background:#dedbd1}.content :global(.service-summary div){padding:18px;background:#fffdf9}.content :global(.service-summary span){display:block;margin-bottom:6px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.content :global(.service-summary strong){display:block;color:#18213d;font-size:16px;line-height:1.35}.content :global(.service-actions){display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 10px}.content :global(.service-actions a){display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:7px;text-decoration:none;font-weight:800}.content :global(.service-actions a:first-child){background:#c7913e;color:#101936}.content :global(.service-actions a:last-child){border:1px solid #c7913e;color:#845313;background:#fffdf9}.content :global(.service-note){margin:12px 0 0;font-size:13px;color:#687385}.content :global(.faq-item){border-top:1px solid #dedbd1;padding:21px 0}.content :global(.faq-item:last-child){border-bottom:1px solid #dedbd1}footer{background:#0b1126;color:#b4becd;padding:26px 0}.footer-inner{display:flex;gap:20px;justify-content:space-between;align-items:center;flex-wrap:wrap;font-size:13px}footer nav{display:flex;flex-wrap:wrap;gap:14px}footer a:hover{color:#dca34e}@media(max-width:580px){.page{padding:46px 0 65px}.content :global(.service-summary){grid-template-columns:1fr}.content :global(.service-actions){flex-direction:column}.content :global(.service-actions a){width:100%}}
 </style>

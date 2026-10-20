@@ -1,5 +1,6 @@
 ---
 import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import BilingualContent from '../components/BilingualContent.astro';
 import { faqs } from '../data/faq';
 
 const structuredData = {
@@ -11,9 +12,22 @@ const structuredData = {
   }))
 };
 ---
-<InfoPageLayout title="Frequently Asked Questions | Click Jyotish" description="Answers about Click Jyotish online Vedic Astrology, Vastu and Palmistry consultations, booking, privacy and personal consultations." eyebrow="CONSULTATION FAQ" {structuredData}>
+<InfoPageLayout title="Frequently Asked Questions | Click Jyotish" titleHi="अक्सर पूछे जाने वाले प्रश्न | क्लिक ज्योतिष" description="Answers about Click Jyotish online Vedic Astrology, Vastu and Palmistry consultations, booking, privacy and personal consultations." descriptionHi="Click Jyotish के ऑनलाइन वैदिक ज्योतिष, वास्तु और हस्तरेखा परामर्श, बुकिंग, गोपनीयता और व्यक्तिगत मार्गदर्शन से जुड़े उत्तर।" eyebrow="CONSULTATION FAQ" eyebrowHi="परामर्श से जुड़े प्रश्न" {structuredData}>
+<BilingualContent>
+  <Fragment slot="en">
   <p class="notice">For a personal question or the quickest booking help, message Deepak Ji on <a href="https://wa.me/917669655530" target="_blank" rel="noreferrer">WhatsApp</a>.</p>
   {faqs.map(({ question, answer }) => (
     <section class="faq-item"><h2>{question}</h2><p>{answer}</p></section>
   ))}
+  </Fragment>
+  <Fragment slot="hi">
+    <p class="notice">व्यक्तिगत प्रश्न या जल्दी बुकिंग सहायता के लिए दीपक से <a href="https://wa.me/917669655530" target="_blank" rel="noreferrer">WhatsApp</a> पर संपर्क करें।</p>
+    <section class="faq-item"><h2>15 मिनट का ऑनलाइन परामर्श कैसे होता है?</h2><p>परामर्श फॉर्म भरें या कैलेंडर स्लॉट चुनें। दीपक आपके अनुरोध की समीक्षा कर WhatsApp पर उपलब्ध समय और भुगतान की जानकारी की पुष्टि करेंगे। पक्के समय पर परामर्श ऑनलाइन होता है।</p></section>
+    <section class="faq-item"><h2>मुझे कौन-से जन्म विवरण साझा करने चाहिए?</h2><p>कुंडली आधारित परामर्श के लिए जन्म तिथि, जन्म स्थान और यदि ज्ञात हो तो सबसे सटीक जन्म समय साझा करें। सही समय ज्ञात न होने पर फॉर्म में लिखें, ताकि परामर्श उसी अनुसार किया जा सके।</p></section>
+    <section class="faq-item"><h2>क्या मेरी व्यक्तिगत जानकारी निजी रहती है?</h2><p>आपकी पूछताछ निजी रूप से रखी जाती है ताकि Click Jyotish आपके अनुरोध का उत्तर दे सके। इसका उपयोग परामर्श, समय-सारणी और सहायता के लिए होता है; इसे विपणन डेटा के रूप में बेचा नहीं जाता। पूरी जानकारी के लिए गोपनीयता नीति पढ़ें।</p></section>
+    <section class="faq-item"><h2>कौन-सी भाषाएँ उपलब्ध हैं?</h2><p>परामर्श हिंदी और अंग्रेज़ी में उपलब्ध हैं। बुकिंग फॉर्म में अपनी पसंदीदा भाषा चुन सकते हैं।</p></section>
+    <section class="faq-item"><h2>क्या वास्तु या हस्तरेखा परामर्श बुक कर सकता/सकती हूँ?</h2><p>हाँ। परामर्श फॉर्म में वास्तु शास्त्र या हस्तरेखा चुनें और संक्षेप में बताएं कि किस विषय पर मार्गदर्शन चाहिए। संपत्ति और कार्य-क्षेत्र के अनुसार वास्तु की आवश्यकता बदल सकती है, इसलिए अगला कदम व्यक्तिगत रूप से तय किया जाता है।</p></section>
+    <section class="faq-item"><h2>क्या ज्योतिष किसी निश्चित परिणाम की गारंटी देता है?</h2><p>नहीं। ज्योतिष आध्यात्मिक और व्यक्तिगत मार्गदर्शन के रूप में दिया जाता है। यह परिणामों की गारंटी नहीं देता और योग्य चिकित्सा, कानूनी, वित्तीय या मानसिक-स्वास्थ्य सलाह का विकल्प नहीं है।</p></section>
+  </Fragment>
+</BilingualContent>
 </InfoPageLayout>

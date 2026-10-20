@@ -1,5 +1,6 @@
 ---
 import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import BilingualContent from '../components/BilingualContent.astro';
 import { site } from '../data/site';
 
 const structuredData = {
@@ -12,7 +13,9 @@ const structuredData = {
   availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/vastu-consultation' }
 };
 ---
-<InfoPageLayout title="Vastu Shastra Consultation for Home & Office | Click Jyotish" description="Request practical Vastu guidance for your home, office or commercial space with Deepak Maheshwari. Start with a private online consultation." eyebrow="VASTU SHASTRA GUIDANCE" {structuredData}>
+<InfoPageLayout title="Vastu Shastra Consultation for Home & Office | Click Jyotish" titleHi="घर और कार्यालय के लिए वास्तु शास्त्र परामर्श | क्लिक ज्योतिष" description="Request practical Vastu guidance for your home, office or commercial space with Deepak Maheshwari. Start with a private online consultation." descriptionHi="दीपक महेश्वरी के साथ घर, कार्यालय या व्यावसायिक स्थान के लिए व्यावहारिक वास्तु मार्गदर्शन का अनुरोध करें। निजी ऑनलाइन परामर्श से शुरुआत करें।" eyebrow="VASTU SHASTRA GUIDANCE" eyebrowHi="वास्तु शास्त्र मार्गदर्शन" {structuredData}>
+<BilingualContent>
+  <Fragment slot="en">
   <p class="notice"><strong>Practical Vastu guidance for homes, workplaces and commercial spaces.</strong><br />Share the property type and your main concern to receive the right next-step recommendation.</p>
   <div class="service-summary">
     <div><span>FORMAT</span><strong>Online discussion or site visit</strong></div>
@@ -30,4 +33,15 @@ const structuredData = {
   <div class="service-actions"><a href="/?service=vastu&utm_source=service-page&utm_medium=website&utm_campaign=vastu#book">Request Vastu guidance</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">Ask on WhatsApp</a></div>
   <p class="service-note">The booking form will ask only for property details—birth details are not required for Vastu.</p>
   <p>Vastu is spiritual and personal guidance. It does not replace engineering, architectural, legal, safety or professional building advice.</p>
+  </Fragment>
+  <Fragment slot="hi">
+    <p class="notice"><strong>घर, कार्यस्थल और व्यावसायिक स्थानों के लिए व्यावहारिक वास्तु मार्गदर्शन।</strong><br />सही अगला कदम जानने के लिए संपत्ति का प्रकार और अपनी मुख्य समस्या बताएं।</p>
+    <div class="service-summary"><div><span>प्रारूप</span><strong>ऑनलाइन चर्चा या साइट विज़िट</strong></div><div><span>परामर्श शुल्क</span><strong>जाँच के बाद बताया जाएगा</strong></div><div><span>तैयारी</span><strong>संपत्ति का प्रकार, शहर और समस्या</strong></div></div>
+    <h2>विचारपूर्ण वास्तु, सरल भाषा में</h2><p>वास्तु मार्गदर्शन यह देखता है कि आप किसी स्थान का उपयोग और अनुभव कैसे करते हैं। दीपक मौजूदा घर या कार्यस्थल की वास्तविकताओं का सम्मान करते हुए व्यावहारिक सुझाव देते हैं। परामर्श की शुरुआत संपत्ति, आपकी समस्या और वास्तव में क्या संभव है, यह समझने से होती है।</p>
+    <h2>सामान्य वास्तु प्रश्न</h2><ul><li>घर का लेआउट, प्रवेश, बेडरूम, रसोई या अध्ययन कक्ष</li><li>ऑफिस, दुकान या कार्यस्थल की व्यवस्था</li><li>दिशा, स्थान निर्धारण और रोज़मर्रा के उपयोग के प्रश्न</li><li>नए घर, कार्यालय या व्यावसायिक स्थान में प्रवेश</li><li>बिना अनावश्यक तोड़फोड़ वाले व्यावहारिक बदलाव</li></ul>
+    <h2>क्या तैयार रखें</h2><p>अनुरोध भेजते समय संपत्ति का प्रकार, शहर, मुख्य समस्या और आपके पास उपलब्ध मूल फ्लोर प्लान या फोटो की जानकारी दें। संवेदनशील दस्तावेज़ या वित्तीय जानकारी न भेजें। उपयुक्त परामर्श का दायरा और आवश्यक अतिरिक्त जानकारी व्यक्तिगत रूप से बताई जाएगी।</p>
+    <h2>परामर्श का दायरा और शुल्क</h2><p>वास्तु की आवश्यकता संपत्ति के आकार और अपेक्षित समीक्षा के स्तर पर निर्भर करती है। संक्षिप्त ऑनलाइन चर्चा से शुरुआत करें; विस्तृत सेवा से पहले सटीक दायरा, समय और शुल्क की पुष्टि की जाएगी।</p>
+    <div class="service-actions"><a href="/?service=vastu&utm_source=service-page&utm_medium=website&utm_campaign=vastu#book">वास्तु मार्गदर्शन का अनुरोध करें</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp पर पूछें</a></div><p class="service-note">बुकिंग फॉर्म में केवल संपत्ति की जानकारी मांगी जाएगी—वास्तु के लिए जन्म विवरण आवश्यक नहीं है।</p><p>वास्तु आध्यात्मिक और व्यक्तिगत मार्गदर्शन है। यह इंजीनियरिंग, वास्तुकला, कानूनी, सुरक्षा या पेशेवर निर्माण सलाह का विकल्प नहीं है।</p>
+  </Fragment>
+</BilingualContent>
 </InfoPageLayout>

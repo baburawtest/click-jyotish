@@ -1,5 +1,6 @@
 ---
 import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import BilingualContent from '../components/BilingualContent.astro';
 import { site } from '../data/site';
 
 const structuredData = {
@@ -12,7 +13,9 @@ const structuredData = {
   availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/palmistry-consultation' }
 };
 ---
-<InfoPageLayout title="Palmistry & Hastarekha Consultation | Click Jyotish" description="Book a personal online Palmistry and Hastarekha consultation with Deepak Maheshwari. Explore strengths, patterns and life-direction questions." eyebrow="PALMISTRY · HASTAREKHA" {structuredData}>
+<InfoPageLayout title="Palmistry & Hastarekha Consultation | Click Jyotish" titleHi="हस्तरेखा परामर्श | क्लिक ज्योतिष" description="Book a personal online Palmistry and Hastarekha consultation with Deepak Maheshwari. Explore strengths, patterns and life-direction questions." descriptionHi="दीपक महेश्वरी के साथ व्यक्तिगत ऑनलाइन हस्तरेखा परामर्श बुक करें। अपनी शक्तियों, प्रवृत्तियों और जीवन-दिशा के प्रश्नों को जानें।" eyebrow="PALMISTRY · HASTAREKHA" eyebrowHi="हस्तरेखा · HASTAREKHA" {structuredData}>
+<BilingualContent>
+  <Fragment slot="en">
   <p class="notice"><strong>Personal Palmistry consultation</strong><br />Share your question first; Deepak Ji will confirm the best way to prepare and the applicable fee.</p>
   <div class="service-summary">
     <div><span>FORMAT</span><strong>15-minute online call</strong></div>
@@ -30,4 +33,15 @@ const structuredData = {
   <div class="service-actions"><a href="/?service=palmistry&utm_source=service-page&utm_medium=website&utm_campaign=palmistry#book">Book a Palmistry consultation</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">Ask on WhatsApp</a></div>
   <p class="service-note">The booking form will not ask for birth details for a Palmistry consultation.</p>
   <p>Palmistry is spiritual guidance and does not replace medical, legal, financial or mental-health advice.</p>
+  </Fragment>
+  <Fragment slot="hi">
+    <p class="notice"><strong>व्यक्तिगत हस्तरेखा परामर्श</strong><br />पहले अपना प्रश्न साझा करें; दीपक तैयारी का सही तरीका और लागू शुल्क की पुष्टि करेंगे।</p>
+    <div class="service-summary"><div><span>प्रारूप</span><strong>15 मिनट की ऑनलाइन कॉल</strong></div><div><span>परामर्श शुल्क</span><strong>₹600</strong></div><div><span>तैयारी</span><strong>आपका प्रश्न; आवश्यकता पर हाथों की तस्वीरें</strong></div></div>
+    <h2>प्रवृत्तियों, शक्तियों और दिशा को समझें</h2><p>हस्तरेखा एक पारंपरिक चिंतन विधि है जिससे व्यक्तिगत प्रवृत्तियों, शक्तियों और जीवन-विषयों को समझा जाता है। हर सत्र सम्मानजनक रहता है और आपके महत्वपूर्ण प्रश्न पर केंद्रित होता है।</p>
+    <h2>लोग किन विषयों पर पूछते हैं</h2><ul><li>व्यक्तिगत शक्तियाँ और आत्म-विकास के क्षेत्र</li><li>करियर की प्रवृत्ति और कार्य शैली</li><li>संबंध और संवाद की प्रवृत्तियाँ</li><li>बदलाव के दौर में जीवन की दिशा</li><li>व्यापक ज्योतिष चर्चा में हस्तरेखा की भूमिका</li></ul>
+    <h2>तैयारी कैसे करें</h2><p>बुकिंग या संदेश में अपना प्रश्न लिखकर शुरुआत करें। परामर्श से पहले दोनों हथेलियों की साफ़, अच्छी रोशनी वाली तस्वीरें मांगी जा सकती हैं। WhatsApp पर सही तैयारी की पुष्टि होने से पहले तस्वीरें न भेजें।</p>
+    <h2>व्यक्तिगत और गोपनीय बातचीत</h2><p>आपका अनुरोध समय-सारणी और परामर्श सहायता के लिए निजी रूप से रखा जाता है। उद्देश्य उपयोगी चिंतन और व्यक्तिगत दृष्टि देना है, न कि भय पैदा करने वाली भविष्यवाणियाँ या निश्चित परिणामों का दावा।</p>
+    <div class="service-actions"><a href="/?service=palmistry&utm_source=service-page&utm_medium=website&utm_campaign=palmistry#book">हस्तरेखा परामर्श बुक करें</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp पर पूछें</a></div><p class="service-note">हस्तरेखा परामर्श के लिए बुकिंग फॉर्म में जन्म विवरण नहीं मांगा जाएगा।</p><p>हस्तरेखा आध्यात्मिक मार्गदर्शन है और चिकित्सा, कानूनी, वित्तीय या मानसिक-स्वास्थ्य सलाह का विकल्प नहीं है।</p>
+  </Fragment>
+</BilingualContent>
 </InfoPageLayout>

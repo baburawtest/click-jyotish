@@ -1,5 +1,6 @@
 ---
 import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import BilingualContent from '../components/BilingualContent.astro';
 import { site } from '../data/site';
 
 const structuredData = {
@@ -12,7 +13,9 @@ const structuredData = {
   availableChannel: { '@type': 'ServiceChannel', serviceUrl: 'https://clickjyotish.in/vedic-astrology-consultation' }
 };
 ---
-<InfoPageLayout title="Vedic Astrology & Kundali Consultation | Click Jyotish" description="Book a personal online Vedic Astrology and Janam Kundli consultation with Deepak Maheshwari. Guidance for career, relationships, timing and life questions." eyebrow="VEDIC ASTROLOGY · JANAM KUNDLI" {structuredData}>
+<InfoPageLayout title="Vedic Astrology & Kundali Consultation | Click Jyotish" titleHi="वैदिक ज्योतिष एवं कुंडली परामर्श | क्लिक ज्योतिष" description="Book a personal online Vedic Astrology and Janam Kundli consultation with Deepak Maheshwari. Guidance for career, relationships, timing and life questions." descriptionHi="दीपक महेश्वरी के साथ व्यक्तिगत ऑनलाइन वैदिक ज्योतिष और जन्म कुंडली परामर्श। करियर, संबंध, समय और जीवन के प्रश्नों पर मार्गदर्शन।" eyebrow="VEDIC ASTROLOGY · JANAM KUNDLI" eyebrowHi="वैदिक ज्योतिष · जन्म कुंडली" {structuredData}>
+<BilingualContent>
+  <Fragment slot="en">
   <p class="notice"><strong>Personal online consultation</strong><br />A focused 15-minute discussion for your Kundali, timing or life question. Choose a slot or send your question on WhatsApp to begin.</p>
   <div class="service-summary">
     <div><span>FORMAT</span><strong>15-minute online call</strong></div>
@@ -30,4 +33,15 @@ const structuredData = {
   <div class="service-actions"><a href="/?service=kundali&utm_source=service-page&utm_medium=website&utm_campaign=vedic-astrology#book">Book a Kundali consultation</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">Ask on WhatsApp</a></div>
   <p class="service-note">Your booking form will open with the Kundali consultation selected.</p>
   <p>Vedic Astrology is spiritual guidance and does not replace medical, legal, financial or mental-health advice. See the <a href="/disclaimer">full disclaimer</a>.</p>
+  </Fragment>
+  <Fragment slot="hi">
+    <p class="notice"><strong>व्यक्तिगत ऑनलाइन परामर्श</strong><br />आपकी कुंडली, समय या जीवन के प्रश्न पर केंद्रित 15 मिनट की बातचीत। शुरुआत के लिए स्लॉट चुनें या WhatsApp पर अपना प्रश्न भेजें।</p>
+    <div class="service-summary"><div><span>प्रारूप</span><strong>15 मिनट की ऑनलाइन कॉल</strong></div><div><span>परामर्श शुल्क</span><strong>₹600</strong></div><div><span>तैयारी</span><strong>जन्म तिथि, स्थान और समय</strong></div></div>
+    <h2>आपके प्रश्न के लिए व्यक्तिगत मार्गदर्शन</h2><p>वैदिक ज्योतिष परामर्श उन विषयों पर केंद्रित बातचीत है जिन पर आप स्पष्टता चाहते हैं। आपकी जन्म कुंडली के आधार पर दीपक संबंधित ग्रह दशा और समय को व्यावहारिक एवं सम्मानजनक तरीके से देखते हैं—सामान्य कंप्यूटर रिपोर्ट की तरह नहीं।</p>
+    <h2>परामर्श में किन विषयों पर बात कर सकते हैं</h2><ul><li>करियर की दिशा, नौकरी परिवर्तन या व्यवसाय का समय</li><li>विवाह, अनुकूलता और संबंधों के प्रश्न</li><li>शिक्षा, यात्रा और जीवन के महत्वपूर्ण निर्णय</li><li>व्यक्तिगत चक्र, दशा और गोचर</li><li>सरल और उपयुक्त आध्यात्मिक अभ्यास या उपाय</li></ul>
+    <h2>क्या तैयार रखें</h2><p>कृपया अपनी जन्म तिथि, जन्म स्थान और उपलब्ध सबसे सटीक जन्म समय साझा करें। सही समय ज्ञात न हो तो बुकिंग फॉर्म में स्पष्ट लिखें। जिस एक प्रश्न पर बात करनी है, उसे भी संक्षेप में लिखें।</p>
+    <h2>अनुरोध भेजने के बाद क्या होता है</h2><ol><li>निजी परामर्श फॉर्म भरें या कैलेंडर स्लॉट चुनें।</li><li>WhatsApp पर पुष्टि और समय-सारणी की जानकारी पाएँ।</li><li>पक्के समय पर ऑनलाइन कॉल में शामिल हों।</li></ol>
+    <div class="service-actions"><a href="/?service=kundali&utm_source=service-page&utm_medium=website&utm_campaign=vedic-astrology#book">कुंडली परामर्श बुक करें</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp पर पूछें</a></div><p class="service-note">बुकिंग फॉर्म में कुंडली परामर्श पहले से चुना हुआ खुलेगा।</p><p>वैदिक ज्योतिष आध्यात्मिक मार्गदर्शन है और चिकित्सा, कानूनी, वित्तीय या मानसिक-स्वास्थ्य सलाह का विकल्प नहीं है। <a href="/disclaimer">पूरा अस्वीकरण</a> देखें।</p>
+  </Fragment>
+</BilingualContent>
 </InfoPageLayout>

@@ -1,0 +1,25 @@
+<div class="bilingual-content">
+  <div data-language-content="en"><slot name="en" /></div>
+  <div data-language-content="hi" hidden><slot name="hi" /></div>
+</div>
+
+<script>
+  function setupBilingualContent() {
+    document.querySelectorAll<HTMLElement>('.bilingual-content').forEach((container) => {
+      if (container.dataset.languageReady === 'true') return;
+      container.dataset.languageReady = 'true';
+      const applyLanguage = (language: 'en' | 'hi') => {
+        container.querySelectorAll<HTMLElement>('[data-language-content]').forEach((content) => {
+          content.hidden = content.dataset.languageContent !== language;
+        });
+      };
+      applyLanguage(localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en');
+      document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+        const language = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language;
+        applyLanguage(language === 'hi' ? 'hi' : 'en');
+      }) as EventListener);
+    });
+  }
+  setupBilingualContent();
+  document.addEventListener('astro:page-load', setupBilingualContent);
+</script>
