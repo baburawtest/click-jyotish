@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
 import DailyRashifal from '../components/DailyRashifal.astro';
 import MoonRashiFinder from '../components/MoonRashiFinder.astro';
+import RashiCompatibility from '../components/RashiCompatibility.astro';
 import PanchangRequest from '../components/PanchangRequest.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 
@@ -99,6 +100,9 @@ const organizationSchema = {
 
     <!-- Moon-sign explanation and free finder -->
     <MoonRashiFinder />
+
+    <!-- Quick Moon-Rashi compatibility overview -->
+    <RashiCompatibility />
 
     <!-- Daily Rashifal & Horoscope Component -->
     <DailyRashifal />

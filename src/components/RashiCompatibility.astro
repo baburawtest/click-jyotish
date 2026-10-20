@@ -1,0 +1,47 @@
+---
+import { zodiacSigns } from '../data/zodiac';
+---
+
+<section class="rashi-compatibility" aria-labelledby="compatibility-title">
+  <div class="wrap"><div class="compatibility-card">
+    <div class="compatibility-copy">
+      <p class="compatibility-eyebrow">COMPATIBILITY · अनुकूलता</p>
+      <h2 id="compatibility-title">How do your Moon Rashis connect?</h2>
+      <p>Choose both Janma Rashis for a quick, respectful compatibility overview. This is a starting point—not a complete Kundli Milan.</p>
+    </div>
+    <form id="rashi-compatibility-form" class="compatibility-form">
+      <label for="your-rashi"><span>Your Chandra Rashi</span><select id="your-rashi" name="yourRashi">{zodiacSigns.map((sign) => <option value={sign.id}>{sign.icon} {sign.sanskrit} ({sign.nameHi})</option>)}</select></label>
+      <span class="compatibility-heart" aria-hidden="true">♥</span>
+      <label for="partner-rashi"><span>Partner's Chandra Rashi</span><select id="partner-rashi" name="partnerRashi">{zodiacSigns.map((sign, index) => <option value={sign.id} selected={index === 6}>{sign.icon} {sign.sanskrit} ({sign.nameHi})</option>)}</select></label>
+      <button type="submit">Check overview</button>
+    </form>
+    <div id="compatibility-result" class="compatibility-result" hidden aria-live="polite">
+      <strong id="compatibility-result-title"></strong><p id="compatibility-result-copy"></p>
+      <small>For marriage matching, a full Kundli Milan reviews Nakshatra, Ashtakoota/Guna, Nadi, Bhakoot, Manglik and the wider birth charts.</small>
+      <a href="/?service=marriage&utm_source=compatibility-checker&utm_medium=website&utm_campaign=kundli-milan#book">Request detailed Kundli Milan →</a>
+    </div>
+  </div></div>
+</section>
+
+<script>
+  const rashiDetails: Record<string, { name: string; element: string }> = {
+    aries: { name: 'Mesha (Aries)', element: 'Fire' }, taurus: { name: 'Vrishabha (Taurus)', element: 'Earth' }, gemini: { name: 'Mithuna (Gemini)', element: 'Air' }, cancer: { name: 'Karka (Cancer)', element: 'Water' }, leo: { name: 'Simha (Leo)', element: 'Fire' }, virgo: { name: 'Kanya (Virgo)', element: 'Earth' }, libra: { name: 'Tula (Libra)', element: 'Air' }, scorpio: { name: 'Vrishchika (Scorpio)', element: 'Water' }, sagittarius: { name: 'Dhanu (Sagittarius)', element: 'Fire' }, capricorn: { name: 'Makara (Capricorn)', element: 'Earth' }, aquarius: { name: 'Kumbha (Aquarius)', element: 'Air' }, pisces: { name: 'Meena (Pisces)', element: 'Water' }
+  };
+  function describePair(first: string, second: string) {
+    const a = rashiDetails[first]; const b = rashiDetails[second]; const pair = [a.element, b.element].sort().join('-');
+    if (first === second) return { title: 'A shared emotional rhythm', copy: 'You may naturally understand each other’s priorities and reactions. Space for individuality keeps the relationship fresh.' };
+    if (pair === 'Air-Fire' || pair === 'Earth-Water') return { title: 'A naturally supportive pairing', copy: `${a.element} and ${b.element} energy can complement each other well when communication stays honest and practical.` };
+    if (pair === 'Air-Air' || pair === 'Earth-Earth' || pair === 'Fire-Fire' || pair === 'Water-Water') return { title: 'A familiar, steady connection', copy: 'You may share an instinctive style, while a little patience helps prevent the same strengths from becoming blind spots.' };
+    return { title: 'A pairing that grows through understanding', copy: `${a.element} and ${b.element} energy can approach feelings and decisions differently. Respectful conversation helps turn those differences into balance.` };
+  }
+  function setupCompatibilityChecker() {
+    const form = document.getElementById('rashi-compatibility-form') as HTMLFormElement | null; const result = document.getElementById('compatibility-result') as HTMLElement | null; const resultTitle = document.getElementById('compatibility-result-title'); const resultCopy = document.getElementById('compatibility-result-copy');
+    if (!form || !result || form.dataset.ready === 'true') return; form.dataset.ready = 'true';
+    form.addEventListener('submit', (event) => { event.preventDefault(); const details = new FormData(form); const yourRashi = String(details.get('yourRashi')); const partnerRashi = String(details.get('partnerRashi')); const overview = describePair(yourRashi, partnerRashi); if (resultTitle) resultTitle.textContent = `${rashiDetails[yourRashi].name} & ${rashiDetails[partnerRashi].name}: ${overview.title}`; if (resultCopy) resultCopy.textContent = overview.copy; result.hidden = false; });
+  }
+  setupCompatibilityChecker(); document.addEventListener('astro:page-load', setupCompatibilityChecker);
+</script>
+
+<style>
+  .rashi-compatibility{padding:0 0 30px;background:#f7f5ed}.compatibility-card{padding:32px 38px;border:1px solid #f0c5d3;border-radius:14px;background:linear-gradient(135deg,#fff5f8,#fdeaf0);box-shadow:0 12px 28px #5e19300b}.compatibility-copy{max-width:720px}.compatibility-eyebrow{margin:0 0 8px;color:#bf3e67;font-size:11px;font-weight:800;letter-spacing:1.5px}.compatibility-copy h2{margin:0 0 10px;color:#241b1e;font-size:clamp(26px,3vw,37px)}.compatibility-copy p{margin:0;color:#6c5960;line-height:1.6}.compatibility-form{display:grid;grid-template-columns:1fr auto 1fr auto;gap:14px;align-items:end;margin-top:24px}.compatibility-form label{display:grid;gap:7px}.compatibility-form label span{color:#806d73;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}.compatibility-form select{min-height:52px;padding:0 12px;border:1px solid #e3cdd4;border-radius:8px;background:#fffdfd;color:#291d21;font:inherit;font-weight:700}.compatibility-heart{align-self:center;margin-top:21px;color:#df5279;font-size:24px}.compatibility-form button{min-height:52px;padding:0 20px;border:0;border-radius:8px;background:#df5279;color:#fff;font:inherit;font-weight:800;cursor:pointer}.compatibility-form button:hover{background:#c94167}.compatibility-result{margin-top:22px;padding:18px 20px;border:1px solid #edbecd;border-radius:9px;background:#fffafd}.compatibility-result strong{color:#4b2935;font-size:17px}.compatibility-result p{margin:7px 0;color:#695661;line-height:1.55}.compatibility-result small{display:block;color:#856f79;line-height:1.45}.compatibility-result a{display:inline-block;margin-top:12px;color:#a42d51;font-size:14px;font-weight:800;text-decoration:none}@media(max-width:800px){.compatibility-card{padding:25px 21px}.compatibility-form{grid-template-columns:1fr}.compatibility-heart{margin:0;justify-self:center}.compatibility-form button{width:100%}}
+</style>
