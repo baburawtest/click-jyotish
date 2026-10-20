@@ -84,6 +84,15 @@
 </section>
 
 <script>
+  let panchangLanguage: 'en' | 'hi' = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+  const panchangCopy = {
+    en: {
+      eyebrow: 'DAINIK PANCHANG · दैनिक पंचांग', title: 'Today’s Panchang for {city}', intro: 'Free daily information. Tithi and timings change by place, so select your city before relying on a Panchang for an important ritual.', location: 'Location · स्थान', loading: 'Loading today’s verified Panchang…', unavailable: 'Panchang is unavailable. Please refresh shortly.', ends: 'Ends at {time}', nakshatra: 'Nakshatra: {name}', nakshatraEnds: ' · ends at {time}', today: 'Today', sunrise: 'Sunrise {time}', sunset: 'Sunset {time}', tithi: 'TITHI · तिथि', rahu: 'RAHU KAAL · राहु काल', abhijit: 'ABHIJIT MUHURAT · अभिजित मुहूर्त', festival: 'TODAY’S FESTIVAL / OBSERVANCE', rahuDetail: 'Traditionally avoided for new beginnings.', abhijitDetail: 'A daily midday Muhurat window.', note: 'For informational use. Local customs and family traditions may vary.'
+    },
+    hi: {
+      eyebrow: 'दैनिक पंचांग · DAINIK PANCHANG', title: '{city} के लिए आज का पंचांग', intro: 'निःशुल्क दैनिक जानकारी। तिथि और समय स्थान के अनुसार बदलते हैं, इसलिए महत्वपूर्ण अनुष्ठान के लिए पंचांग पर निर्भर होने से पहले अपना शहर चुनें।', location: 'स्थान', loading: 'आज का सत्यापित पंचांग लोड हो रहा है…', unavailable: 'पंचांग अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद पेज रीफ़्रेश करें।', ends: '{time} तक', nakshatra: 'नक्षत्र: {name}', nakshatraEnds: ' · {time} तक', today: 'आज', sunrise: 'सूर्योदय {time}', sunset: 'सूर्यास्त {time}', tithi: 'तिथि', rahu: 'राहु काल', abhijit: 'अभिजित मुहूर्त', festival: 'आज का पर्व / विशेष दिन', rahuDetail: 'नई शुरुआत के लिए परंपरागत रूप से वर्जित समय।', abhijitDetail: 'दोपहर का दैनिक शुभ मुहूर्त।', note: 'यह केवल जानकारी के लिए है। स्थानीय परंपराएँ और पारिवारिक मान्यताएँ अलग हो सकती हैं।'
+    }
+  } as const;
   const setText = (id: string, value: unknown) => {
     const target = document.getElementById(id);
     if (target) target.textContent = typeof value === 'string' && value.trim() ? value : '—';
@@ -91,10 +100,27 @@
 
   const formatDate = (iso: string) => {
     const date = new Date(`${iso}T12:00:00+05:30`);
-    return new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(date);
+    return new Intl.DateTimeFormat(panchangLanguage === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(date);
+  };
+
+  const applyPanchangLanguage = (language: 'en' | 'hi') => {
+    panchangLanguage = language;
+    const text = panchangCopy[language];
+    const section = document.querySelector('.panchang-request');
+    const set = (selector: string, value: string) => { const element = section?.querySelector<HTMLElement>(selector); if (element) element.textContent = value; };
+    const picker = section?.querySelector<HTMLSelectElement>('#panchang-city');
+    const city = picker?.selectedOptions[0]?.textContent || (language === 'hi' ? 'नई दिल्ली' : 'New Delhi');
+    set('.eyebrow', text.eyebrow); set('#panchang-title', text.title.replace('{city}', city)); set('.section-heading > p:not(.eyebrow)', text.intro); set('.city-picker > span', text.location);
+    const labels = section?.querySelectorAll<HTMLElement>('.calendar-card .card-label');
+    [text.tithi, text.rahu, text.abhijit, text.festival].forEach((value, index) => { if (labels?.[index]) labels[index].textContent = value; });
+    const detail = section?.querySelectorAll<HTMLElement>('.calendar-card .detail');
+    if (detail?.[1]) detail[1].textContent = text.rahuDetail;
+    if (detail?.[2]) detail[2].textContent = text.abhijitDetail;
+    set('.panchang-footnote small', text.note);
   };
 
   async function loadDailyPanchang(cityId?: string) {
+    const text = panchangCopy[panchangLanguage];
     const loading = document.getElementById('panchang-loading');
     const error = document.getElementById('panchang-error');
     const dataArea = document.getElementById('panchang-data');
@@ -102,30 +128,30 @@
     const title = document.getElementById('panchang-title');
     const cityPicker = document.getElementById('panchang-city') as HTMLSelectElement | null;
     const selectedCity = cityId || cityPicker?.value || 'delhi';
-    if (loading) { loading.hidden = false; loading.textContent = 'Loading today’s verified Panchang…'; }
+    if (loading) { loading.hidden = false; loading.textContent = text.loading; }
     if (error) error.hidden = true;
     try {
       const response = await fetch(`/api/panchang?city=${encodeURIComponent(selectedCity)}`);
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Panchang is unavailable.');
+      if (!response.ok) throw new Error(data.error || text.unavailable);
       setText('panchang-tithi', data.tithi?.name);
       setText('panchang-paksha', data.tithi?.paksha);
-      setText('panchang-tithi-ends', data.tithi?.endsAt ? `Ends at ${data.tithi.endsAt}` : '');
+      setText('panchang-tithi-ends', data.tithi?.endsAt ? text.ends.replace('{time}', data.tithi.endsAt) : '');
       setText('panchang-rahu', data.rahuKaal);
       setText('panchang-abhijit', data.abhijitMuhurat);
       setText('panchang-festival', Array.isArray(data.festivals) ? data.festivals.join(' · ') : data.festivals);
-      setText('panchang-nakshatra', data.nakshatra?.name ? `Nakshatra: ${data.nakshatra.name}${data.nakshatra.endsAt ? ` · ends at ${data.nakshatra.endsAt}` : ''}` : '');
-      setText('panchang-date', data.date ? formatDate(data.date) : 'Today');
+      setText('panchang-nakshatra', data.nakshatra?.name ? `${text.nakshatra.replace('{name}', data.nakshatra.name)}${data.nakshatra.endsAt ? text.nakshatraEnds.replace('{time}', data.nakshatra.endsAt) : ''}` : '');
+      setText('panchang-date', data.date ? formatDate(data.date) : text.today);
       setText('panchang-location', data.location);
-      if (title && data.location) title.textContent = `Today’s Panchang for ${String(data.location).replace(', India (IST)', '')}`;
-      const sun = [data.sunrise && `Sunrise ${data.sunrise}`, data.sunset && `Sunset ${data.sunset}`].filter(Boolean).join(' · ');
+      if (title && data.location) title.textContent = text.title.replace('{city}', String(data.location).replace(', India (IST)', ''));
+      const sun = [data.sunrise && text.sunrise.replace('{time}', data.sunrise), data.sunset && text.sunset.replace('{time}', data.sunset)].filter(Boolean).join(' · ');
       setText('panchang-sun', sun);
       loading?.setAttribute('hidden', '');
       dataArea?.removeAttribute('hidden');
       footnote?.removeAttribute('hidden');
     } catch (problem) {
       if (loading) loading.hidden = true;
-      if (error) { error.hidden = false; error.textContent = problem instanceof Error ? problem.message : 'Panchang is unavailable. Please refresh shortly.'; }
+      if (error) { error.hidden = false; error.textContent = problem instanceof Error ? problem.message : text.unavailable; }
     }
   }
 
@@ -144,6 +170,12 @@
 
   setupPanchangPicker();
   document.addEventListener('astro:page-load', setupPanchangPicker);
+  applyPanchangLanguage(panchangLanguage);
+  document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+    const language = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language === 'hi' ? 'hi' : 'en';
+    applyPanchangLanguage(language);
+    loadDailyPanchang();
+  }) as EventListener);
 </script>
 
 <style>

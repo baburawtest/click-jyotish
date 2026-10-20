@@ -149,6 +149,40 @@ import { site } from '../data/site';
 </section>
 
 <script>
+  const rashifalCopy = {
+    en: {
+      eyebrow: 'DAILY HOROSCOPE · दैनिक राशिफल', title: "Today's Chandra Rashi Insights", description: 'Daily guidance for all 12 Rashis, viewed through your Janma Rashi (Moon sign).',
+      note: '<strong>Choose your Moon sign, not your Sun sign.</strong> In Vedic Jyotish, daily Rashifal is generally read from the Rashi occupied by Chandra (the Moon) at the time of birth. Your date-of-birth Sun-sign range is not used here.',
+      chip: 'Janma Rashi · Moon Sign', read: 'Read this guidance from your Janma Rashi (Moon sign).', stats: ['Lucky Number', 'Lucky Color', 'Direction'],
+      predictions: ['Today\'s Cosmic Overview (दैनिक प्रभाव)', 'Career & Wealth (कार्यक्षेत्र व वित्त)', 'Health & Energy (स्वास्थ्य व ऊर्जा)', 'Relationships & Family (प्रेम व परिवार)'],
+      remedy: 'VEDIC REMEDY · आज का उपाय', mantra: 'PLANETARY BEEJ MANTRA', chant: 'Chant 11 or 108 times with pure intention', cta: 'Want a personalized deep-dive into your <strong>Janma Kundli</strong> and Dasha cycles?', button: 'Request Kundali Reading →'
+    },
+    hi: {
+      eyebrow: 'दैनिक राशिफल · DAILY HOROSCOPE', title: 'आज की चंद्र राशि जानकारी', description: 'आपकी जन्म राशि (चंद्र राशि) के आधार पर सभी 12 राशियों के लिए दैनिक मार्गदर्शन।',
+      note: '<strong>सूर्य राशि नहीं, अपनी चंद्र राशि चुनें।</strong> वैदिक ज्योतिष में दैनिक राशिफल जन्म के समय चंद्रमा जिस राशि में हो, उस राशि से पढ़ा जाता है। यहाँ जन्म तिथि की सूर्य राशि का उपयोग नहीं होता।',
+      chip: 'जन्म राशि · चंद्र राशि', read: 'यह मार्गदर्शन अपनी जन्म राशि (चंद्र राशि) से पढ़ें।', stats: ['शुभ अंक', 'शुभ रंग', 'दिशा'],
+      predictions: ['आज का समग्र प्रभाव', 'करियर एवं धन', 'स्वास्थ्य एवं ऊर्जा', 'संबंध एवं परिवार'],
+      remedy: 'वैदिक उपाय · आज का उपाय', mantra: 'ग्रह बीज मंत्र', chant: 'शुद्ध भावना से 11 या 108 बार जप करें', cta: 'क्या आप अपनी <strong>जन्म कुंडली</strong> और दशा का व्यक्तिगत विश्लेषण चाहते हैं?', button: 'कुंडली विश्लेषण का अनुरोध करें →'
+    }
+  } as const;
+
+  const applyRashifalLanguage = (language: 'en' | 'hi') => {
+    const text = rashifalCopy[language]; const section = document.querySelector<HTMLElement>('.rashifal-section');
+    if (!section) return; section.classList.toggle('is-hindi', language === 'hi');
+    const set = (selector: string, value: string) => { const element = section.querySelector<HTMLElement>(selector); if (element) element.textContent = value; };
+    set('.section-header .eyebrow-text', text.eyebrow); set('.section-header h2', text.title); set('.section-header .section-desc', text.description);
+    const note = section.querySelector<HTMLElement>('.moon-sign-note'); if (note) note.innerHTML = text.note;
+    section.querySelectorAll<HTMLElement>('.z-date').forEach((element) => { element.textContent = text.chip; });
+    section.querySelectorAll<HTMLElement>('.z-date-range').forEach((element) => { element.textContent = text.read; });
+    section.querySelectorAll<HTMLElement>('.stat-label').forEach((element, index) => { element.textContent = text.stats[index % 3]; });
+    section.querySelectorAll<HTMLElement>('.pred-title h4').forEach((element, index) => { element.textContent = text.predictions[index % 4]; });
+    section.querySelectorAll<HTMLElement>('.remedy-col .rm-tag').forEach((element) => { element.textContent = text.remedy; });
+    section.querySelectorAll<HTMLElement>('.mantra-col .rm-tag').forEach((element) => { element.textContent = text.mantra; });
+    section.querySelectorAll<HTMLElement>('.mantra-note').forEach((element) => { element.textContent = text.chant; });
+    section.querySelectorAll<HTMLElement>('.z-cta-footer p').forEach((element) => { element.innerHTML = text.cta; });
+    section.querySelectorAll<HTMLElement>('.z-cta-footer a').forEach((element) => { element.textContent = text.button; });
+  };
+
   function setupZodiacTabs() {
     const chips = document.querySelectorAll<HTMLButtonElement>('.zodiac-chip');
     const panels = document.querySelectorAll<HTMLElement>('[data-sign-panel]');
@@ -180,6 +214,11 @@ import { site } from '../data/site';
   // Initialize on load & Astro page transitions
   setupZodiacTabs();
   document.addEventListener('astro:page-load', setupZodiacTabs);
+  applyRashifalLanguage(localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en');
+  document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+    const language = (event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language === 'hi' ? 'hi' : 'en';
+    applyRashifalLanguage(language);
+  }) as EventListener);
 </script>
 
 <style>
@@ -436,6 +475,16 @@ import { site } from '../data/site';
     border-top: 1px dashed #e2ded5;
     padding-top: 8px;
   }
+  .rashifal-section:not(.is-hindi) .pred-hi,
+  .rashifal-section:not(.is-hindi) .rm-text-hi { display: none; }
+  .rashifal-section.is-hindi .pred-en,
+  .rashifal-section.is-hindi .rm-text { display: none; }
+  .rashifal-section.is-hindi .pred-hi,
+  .rashifal-section.is-hindi .rm-text-hi { display: block; border-top: 0; padding-top: 0; margin: 0; }
+  .rashifal-section:not(.is-hindi) .z-hi { display: none; }
+  .rashifal-section.is-hindi .z-en { display: none; }
+  .rashifal-section.is-hindi .z-hi { color: inherit; font-weight: 700; font-size: 14px; }
+  .rashifal-section.is-hindi .zodiac-chip.active .z-hi { color: #f3c76f; }
 
   /* Remedy & Mantra Banner */
   .remedy-mantra-banner {
