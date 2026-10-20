@@ -72,6 +72,7 @@ const links = [
       button.setAttribute('aria-label', language === 'hi' ? 'Switch website language to English' : 'Switch website language to Hindi');
       button.title = language === 'hi' ? 'Switch to English' : 'हिंदी में बदलें';
     });
+    document.dispatchEvent(new CustomEvent('click-jyotish-language-change', { detail: { language } }));
   };
 
   const initialiseHeader = () => {

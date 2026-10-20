@@ -121,7 +121,7 @@ const consultationTypes = [
                 <label for="lead-service">Consultation Type (परामर्श का प्रकार) <span class="req">*</span></label>
                 <select id="lead-service" name="service" required>
                   {consultationTypes.map((t, idx) => (
-                    <option value={t.name} data-price={t.price} selected={idx === 0}>
+                    <option value={t.name} data-price={t.price} data-service-id={t.id} selected={idx === 0}>
                       {t.icon} {t.name} — {t.price}
                     </option>
                   ))}
@@ -234,7 +234,7 @@ const consultationTypes = [
       <div class="modal-icon">✅</div>
       <h3>Consultation Request Prepared!</h3>
       <p class="modal-msg">
-        Thank you <strong id="modal-client-name"></strong>! Your Vedic consultation request has been recorded.
+        <span class="modal-msg-before">Thank you</span> <strong id="modal-client-name"></strong>! <span class="modal-msg-after">Your Vedic consultation request has been recorded.</span>
       </p>
 
       <div class="modal-summary-box">
@@ -254,7 +254,7 @@ const consultationTypes = [
 
       <div class="modal-cta-buttons">
         <a id="modal-wa-btn" href="#" target="_blank" rel="noreferrer" class="btn btn-gold btn-block">
-          Open WhatsApp to Confirm Slot with Deepak Ji 💬
+          Open WhatsApp to Confirm Slot with Deepak 💬
         </a>
         <a href={site.bookingLink} target="_blank" rel="noreferrer" class="btn btn-outline btn-block">
           View Available Calendar Slots
@@ -272,6 +272,93 @@ const consultationTypes = [
 </section>
 
 <script>
+  type BookingLanguage = 'en' | 'hi';
+
+  const bookingText = {
+    en: {
+      eyebrow: 'DIRECT CONSULTATION · प्रत्यक्ष परामर्श',
+      sidebarTitle: 'Book Your 1-on-1 Guidance',
+      sidebarLead: 'Speak directly with Deepak Maheshwari. Every session is personal, strictly confidential, and centered around actionable Vedic remedies.',
+      practitioner: 'Vedic Astrologer & Vastu Consultant',
+      privateTitle: '100% Private & Confidential',
+      privateText: 'Your birth details and personal questions remain strictly protected.',
+      callTitle: 'Focused 15-Minute Online Calls',
+      callText: 'No generic computer reports. Direct, live conversation tailored to your query.',
+      confirmationTitle: 'Personal Confirmation',
+      confirmationText: 'Choose a calendar slot or receive personal confirmation on WhatsApp.',
+      calendarTitle: 'Prefer to choose a time now?',
+      calendarText: 'View available 15-minute slots',
+      help: 'Need immediate assistance?',
+      title: 'Request a consultation',
+      intro: 'Choose your consultation type first. We will confirm the suitable time on WhatsApp.',
+      name: 'Full Name (पूरा नाम)', phone: 'WhatsApp Number (व्हाट्सएप नंबर)', email: 'Email Address (ईमेल)',
+      service: 'Consultation Type (परामर्श का प्रकार)', birth: 'VEDIC BIRTH DETAILS (जन्म विवरण)',
+      dob: 'Date of Birth (जन्म तिथि)', tob: 'Time of Birth (जन्म समय)', pob: 'Place of Birth (जन्म स्थान)',
+      unknownTime: 'I do not know my exact birth time (use Prashna Kundali / Palmistry)',
+      language: 'Preferred Language (भाषा)', slot: 'Preferred Consultation Time',
+      consent: 'I consent to Click Jyotish securely storing these details so Deepak can respond to my consultation request.',
+      submit: 'Send consultation request →',
+      disclaimer: '🔒 Your request is saved privately for Deepak, then you can confirm your preferred slot on WhatsApp. No spam guaranteed.',
+      kundaliGuidance: 'For Kundali-based consultations, date and place of birth are required. Your exact birth time is helpful but optional.',
+      vastuGuidance: 'Birth details are not needed for Vastu. Please share your property type, city/area and main concern.',
+      palmistryGuidance: 'Birth details are not needed for Palmistry. Clear hand photographs can be requested after confirmation.',
+      question: 'What specific question or life concern would you like clarity on?',
+      vastuQuestion: 'Property type, city/area and your main Vastu concern',
+      palmistryQuestion: 'What would you like clarity on?',
+      processing: 'Processing your request... ⏳',
+      modalTitle: 'Consultation Request Prepared!',
+      modalGreeting: 'Thank you', modalAfter: 'Your Vedic consultation request has been recorded.',
+      modalService: 'Service:', modalFee: 'Consultation Fee:', modalBirth: 'Birth Details:',
+      modalWhatsapp: 'Open WhatsApp to Confirm Slot with Deepak 💬',
+      modalCalendar: 'View Available Calendar Slots', modalClose: 'Done & Close',
+      modalNote: 'After opening WhatsApp, simply send the pre-written message to lock in your preferred session time.',
+      serviceNames: {
+        kundali: 'Vedic Kundali & Dasha Analysis', career: 'Career, Job Change & Business Timing', marriage: 'Kundali Milan & Relationship Harmony', vastu: 'Home & Workplace Vastu Shastra', palmistry: 'Palmistry & Hand Analysis (Hastarekha)'
+      }
+    },
+    hi: {
+      eyebrow: 'प्रत्यक्ष परामर्श · DIRECT CONSULTATION',
+      sidebarTitle: 'व्यक्तिगत मार्गदर्शन बुक करें',
+      sidebarLead: 'दीपक महेश्वरी से सीधे बात करें। हर सत्र निजी, गोपनीय और व्यावहारिक वैदिक मार्गदर्शन पर केंद्रित है।',
+      practitioner: 'वैदिक ज्योतिषी एवं वास्तु सलाहकार',
+      privateTitle: 'पूरी तरह निजी और गोपनीय',
+      privateText: 'आपकी जन्म जानकारी और व्यक्तिगत प्रश्न सुरक्षित रखे जाते हैं।',
+      callTitle: '15 मिनट की ऑनलाइन कॉल',
+      callText: 'कोई सामान्य कंप्यूटर रिपोर्ट नहीं—आपके प्रश्न पर सीधी, व्यक्तिगत बातचीत।',
+      confirmationTitle: 'व्यक्तिगत पुष्टि',
+      confirmationText: 'कैलेंडर स्लॉट चुनें या WhatsApp पर व्यक्तिगत पुष्टि पाएं।',
+      calendarTitle: 'क्या अभी समय चुनना चाहते हैं?',
+      calendarText: 'उपलब्ध 15 मिनट के स्लॉट देखें',
+      help: 'तुरंत सहायता चाहिए?',
+      title: 'परामर्श का अनुरोध करें',
+      intro: 'पहले अपना परामर्श प्रकार चुनें। उपयुक्त समय की पुष्टि WhatsApp पर की जाएगी।',
+      name: 'पूरा नाम', phone: 'WhatsApp नंबर', email: 'ईमेल पता',
+      service: 'परामर्श का प्रकार', birth: 'जन्म विवरण',
+      dob: 'जन्म तिथि', tob: 'जन्म समय', pob: 'जन्म स्थान',
+      unknownTime: 'मुझे जन्म का सही समय नहीं पता (प्रश्न कुंडली / हस्तरेखा का उपयोग करें)',
+      language: 'पसंदीदा भाषा', slot: 'पसंदीदा परामर्श समय',
+      consent: 'मैं सहमति देता/देती हूँ कि Click Jyotish इन विवरणों को सुरक्षित रूप से रखे, ताकि दीपक मेरे परामर्श अनुरोध का उत्तर दे सकें।',
+      submit: 'परामर्श अनुरोध भेजें →',
+      disclaimer: '🔒 आपका अनुरोध दीपक के लिए निजी रूप से सुरक्षित रहेगा। फिर आप WhatsApp पर अपना समय पक्का कर सकते हैं।',
+      kundaliGuidance: 'कुंडली परामर्श के लिए जन्म तिथि और जन्म स्थान आवश्यक हैं। जन्म का सही समय उपयोगी है, पर अनिवार्य नहीं।',
+      vastuGuidance: 'वास्तु के लिए जन्म विवरण आवश्यक नहीं है। कृपया संपत्ति का प्रकार, शहर/क्षेत्र और मुख्य समस्या लिखें।',
+      palmistryGuidance: 'हस्तरेखा के लिए जन्म विवरण आवश्यक नहीं है। पुष्टि के बाद दोनों हथेलियों की साफ़ तस्वीरें मांगी जा सकती हैं।',
+      question: 'आप किस प्रश्न या जीवन की चिंता पर स्पष्टता चाहते हैं?',
+      vastuQuestion: 'संपत्ति का प्रकार, शहर/क्षेत्र और आपकी मुख्य वास्तु समस्या',
+      palmistryQuestion: 'आप किस विषय पर स्पष्टता चाहते हैं?',
+      processing: 'आपका अनुरोध भेजा जा रहा है... ⏳',
+      modalTitle: 'परामर्श अनुरोध तैयार है!',
+      modalGreeting: 'धन्यवाद', modalAfter: 'आपका वैदिक परामर्श अनुरोध दर्ज हो गया है।',
+      modalService: 'सेवा:', modalFee: 'परामर्श शुल्क:', modalBirth: 'जन्म विवरण:',
+      modalWhatsapp: 'दीपक से स्लॉट पक्का करने के लिए WhatsApp खोलें 💬',
+      modalCalendar: 'उपलब्ध कैलेंडर स्लॉट देखें', modalClose: 'पूरा हुआ',
+      modalNote: 'WhatsApp खुलने पर पहले से लिखा संदेश भेजें और अपना पसंदीदा समय पक्का करें।',
+      serviceNames: {
+        kundali: 'वैदिक कुंडली एवं दशा विश्लेषण', career: 'करियर, नौकरी परिवर्तन एवं व्यवसाय समय', marriage: 'कुंडली मिलान एवं संबंध सामंजस्य', vastu: 'घर एवं कार्यस्थल वास्तु शास्त्र', palmistry: 'हस्तरेखा एवं हाथ विश्लेषण'
+      }
+    }
+  } as const;
+
   function initBookingForm() {
     const form = document.getElementById('consultation-form') as HTMLFormElement;
     const modal = document.getElementById('booking-success-modal') as HTMLElement;
@@ -284,10 +371,29 @@ const consultationTypes = [
     const questionInput = document.getElementById('lead-question') as HTMLTextAreaElement;
     const questionLabel = document.getElementById('lead-question-label') as HTMLLabelElement;
     const serviceGuidance = document.getElementById('service-guidance') as HTMLElement;
+    const section = document.getElementById('book') as HTMLElement;
 
     if (!form) return;
 
+    let currentLanguage: BookingLanguage = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+    const setText = (selector: string, value: string) => {
+      const element = section?.querySelector<HTMLElement>(selector);
+      if (element) element.textContent = value;
+    };
+    const setRequiredLabel = (selector: string, value: string) => {
+      const element = section?.querySelector<HTMLElement>(selector);
+      if (element) element.innerHTML = `${value} <span class="req">*</span>`;
+    };
+    const setPerk = (index: number, title: string, description: string) => {
+      const perk = section?.querySelectorAll<HTMLElement>('.perk-item')[index];
+      const heading = perk?.querySelector<HTMLElement>('strong');
+      const copy = perk?.querySelector<HTMLElement>('p');
+      if (heading) heading.textContent = title;
+      if (copy) copy.textContent = description;
+    };
+
     const updateServiceFields = () => {
+      const text = bookingText[currentLanguage];
       const service = serviceSelect?.value || '';
       const isVastu = service.includes('Vastu');
       const isPalmistry = service.includes('Palmistry');
@@ -297,18 +403,82 @@ const consultationTypes = [
       if (pobInput) pobInput.required = needsBirthDetails;
       if (questionInput) questionInput.required = isVastu || isPalmistry;
       if (isVastu) {
-        questionLabel.textContent = 'Property type, city/area and your main Vastu concern *';
-        questionInput.placeholder = 'e.g., 3BHK flat in Noida, residential, entrance and bedroom concern. Mention online discussion or site visit.';
-        serviceGuidance.textContent = 'Birth details are not needed for Vastu. Please share your property type, city/area and main concern.';
+        questionLabel.textContent = `${text.vastuQuestion} *`;
+        questionInput.placeholder = currentLanguage === 'hi' ? 'उदाहरण: नोएडा में 3BHK फ्लैट, प्रवेश और बेडरूम से जुड़ी समस्या। ऑनलाइन चर्चा या साइट विज़िट भी बताएं।' : 'e.g., 3BHK flat in Noida, residential, entrance and bedroom concern. Mention online discussion or site visit.';
+        serviceGuidance.textContent = text.vastuGuidance;
       } else if (isPalmistry) {
-        questionLabel.textContent = 'What would you like clarity on? *';
-        questionInput.placeholder = 'Write your main question. Clear photos of both palms can be requested after personal confirmation.';
-        serviceGuidance.textContent = 'Birth details are not needed for Palmistry. Clear hand photographs can be requested after confirmation.';
+        questionLabel.textContent = `${text.palmistryQuestion} *`;
+        questionInput.placeholder = currentLanguage === 'hi' ? 'अपना मुख्य प्रश्न लिखें। व्यक्तिगत पुष्टि के बाद दोनों हथेलियों की साफ़ तस्वीरें मांगी जा सकती हैं।' : 'Write your main question. Clear photos of both palms can be requested after personal confirmation.';
+        serviceGuidance.textContent = text.palmistryGuidance;
       } else {
-        questionLabel.textContent = 'What specific question or life concern would you like clarity on?';
-        questionInput.placeholder = 'e.g., Job promotion timing, business partnership or relationship question.';
-        serviceGuidance.textContent = 'For Kundali-based consultations, date and place of birth are required. Your exact birth time is helpful but optional.';
+        questionLabel.textContent = text.question;
+        questionInput.placeholder = currentLanguage === 'hi' ? 'उदाहरण: नौकरी में पदोन्नति का समय, व्यवसाय साझेदारी या संबंध से जुड़ा प्रश्न।' : 'e.g., Job promotion timing, business partnership or relationship question.';
+        serviceGuidance.textContent = text.kundaliGuidance;
       }
+    };
+
+    const applyBookingLanguage = (language: BookingLanguage) => {
+      currentLanguage = language;
+      const text = bookingText[language];
+      setText('.eyebrow-text-light', text.eyebrow);
+      setText('.sidebar-header h2', text.sidebarTitle);
+      setText('.sidebar-lead', text.sidebarLead);
+      setText('.practitioner-mini-card span', text.practitioner);
+      setPerk(0, text.privateTitle, text.privateText);
+      setPerk(1, text.callTitle, text.callText);
+      setPerk(2, text.confirmationTitle, text.confirmationText);
+      setText('.calendar-choice strong', text.calendarTitle);
+      setText('.calendar-choice small', text.calendarText);
+      setText('.sidebar-contact-info > span', text.help);
+      setText('.form-header h3', text.title);
+      setText('.form-header p', text.intro);
+      setRequiredLabel('label[for="lead-name"]', text.name);
+      setRequiredLabel('label[for="lead-phone"]', text.phone);
+      setRequiredLabel('label[for="lead-email"]', text.email);
+      setRequiredLabel('label[for="lead-service"]', text.service);
+      setText('.form-subheading span', text.birth);
+      setRequiredLabel('label[for="lead-dob"]', text.dob);
+      setText('label[for="lead-tob"]', text.tob);
+      setRequiredLabel('label[for="lead-pob"]', text.pob);
+      setText('label[for="lead-tob-unknown"]', text.unknownTime);
+      setRequiredLabel('label[for="lead-language"]', text.language);
+      setText('label[for="lead-slot"]', text.slot);
+      setRequiredLabel('label[for="lead-consent"]', text.consent);
+      setText('#submit-lead-btn span', text.submit);
+      setText('.submit-disclaimer', text.disclaimer);
+      setText('.modal-card h3', text.modalTitle);
+      setText('.modal-msg-before', text.modalGreeting);
+      setText('.modal-msg-after', text.modalAfter);
+      const summaryLabels = section?.querySelectorAll<HTMLElement>('.modal-summary-box .ms-row > span:first-child');
+      if (summaryLabels?.[0]) summaryLabels[0].textContent = text.modalService;
+      if (summaryLabels?.[1]) summaryLabels[1].textContent = text.modalFee;
+      if (summaryLabels?.[2]) summaryLabels[2].textContent = text.modalBirth;
+      setText('#modal-wa-btn', text.modalWhatsapp);
+      setText('.modal-cta-buttons a.btn-outline', text.modalCalendar);
+      setText('#close-modal-btn', text.modalClose);
+      setText('.modal-note', text.modalNote);
+
+      const icons: Record<string, string> = { kundali: '✨', career: '💼', marriage: '💍', vastu: '🏡', palmistry: '✋' };
+      Array.from(serviceSelect?.options || []).forEach((option) => {
+        const id = option.dataset.serviceId as keyof typeof text.serviceNames | undefined;
+        if (!id) return;
+        option.textContent = `${icons[id]} ${text.serviceNames[id]} — ${option.dataset.price}`;
+      });
+      const languageOptions = Array.from(document.querySelectorAll('#lead-language option'));
+      const languageLabels = language === 'hi' ? ['हिंदी', 'अंग्रेज़ी', 'हिंदी + अंग्रेज़ी'] : ['Hindi (हिंदी)', 'English', 'Bilingual (Hindi + English)'];
+      languageOptions.forEach((option, index) => { option.textContent = languageLabels[index] || option.textContent; });
+      const slotOptions = Array.from(document.querySelectorAll('#lead-slot option'));
+      const slotLabels = language === 'hi' ? ['सुबह (10:00 AM - 01:00 PM)', 'दोपहर (02:00 PM - 05:00 PM)', 'शाम (06:00 PM - 09:00 PM)', 'सबसे पहला उपलब्ध स्लॉट'] : ['Morning (10:00 AM - 01:00 PM)', 'Afternoon (02:00 PM - 05:00 PM)', 'Evening (06:00 PM - 09:00 PM)', 'Earliest Available Slot'];
+      slotOptions.forEach((option, index) => { option.textContent = slotLabels[index] || option.textContent; });
+      const nameInput = document.getElementById('lead-name') as HTMLInputElement | null;
+      const phoneInput = document.getElementById('lead-phone') as HTMLInputElement | null;
+      const emailInput = document.getElementById('lead-email') as HTMLInputElement | null;
+      const pobTextInput = document.getElementById('lead-pob') as HTMLInputElement | null;
+      if (nameInput) nameInput.placeholder = language === 'hi' ? 'उदाहरण: राहुल शर्मा' : 'e.g. Rahul Sharma';
+      if (phoneInput) phoneInput.placeholder = language === 'hi' ? 'उदाहरण: 9876543210 (कंट्री कोड के साथ)' : 'e.g. 9876543210 (with country code)';
+      if (emailInput) emailInput.placeholder = language === 'hi' ? 'उदाहरण: rahul.sharma@gmail.com' : 'e.g. rahul.sharma@gmail.com';
+      if (pobTextInput) pobTextInput.placeholder = language === 'hi' ? 'उदाहरण: नई दिल्ली, भारत' : 'e.g. New Delhi, India';
+      updateServiceFields();
     };
     const requestedService = new URLSearchParams(window.location.search).get('service');
     const serviceLookup: Record<string, string> = {
@@ -322,14 +492,21 @@ const consultationTypes = [
       serviceSelect.value = serviceLookup[requestedService];
     }
     serviceSelect?.addEventListener('change', updateServiceFields);
-    updateServiceFields();
+    applyBookingLanguage(currentLanguage);
+    if (!form.dataset.languageInitialised) {
+      form.dataset.languageInitialised = 'true';
+      document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+        const language = (event as CustomEvent<{ language?: BookingLanguage }>).detail?.language;
+        applyBookingLanguage(language === 'hi' ? 'hi' : 'en');
+      }) as EventListener);
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Processing your request... ⏳</span>';
+        submitBtn.innerHTML = `<span>${bookingText[currentLanguage].processing}</span>`;
       }
 
       const formData = new FormData(form);
@@ -440,7 +617,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
 
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>Send consultation request →</span>';
+        submitBtn.innerHTML = `<span>${bookingText[currentLanguage].submit}</span>`;
       }
     });
 
