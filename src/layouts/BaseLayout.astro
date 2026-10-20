@@ -19,7 +19,7 @@ const {
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://clickjyotish.in').toString();
 const socialImage = new URL(image, Astro.site ?? 'https://clickjyotish.in').toString();
-const translatedPages = new Set(['/', '/vedic-astrology-consultation/', '/vastu-consultation/', '/palmistry-consultation/', '/faq/']);
+const translatedPages = new Set(['/', '/astrologer-in-new-delhi/', '/vedic-astrology-consultation/', '/vastu-consultation/', '/palmistry-consultation/', '/faq/']);
 const englishPath = locale === 'hi' ? (Astro.url.pathname.replace(/^\/hi(?=\/|$)/, '') || '/') : Astro.url.pathname;
 const hasHindiTranslation = translatedPages.has(englishPath);
 const englishUrl = new URL(englishPath, Astro.site ?? 'https://clickjyotish.in').toString();

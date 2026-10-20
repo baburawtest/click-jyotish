@@ -9,7 +9,7 @@ export const site = {
   email: 'support@clickjyotish.in',
   city: 'New Delhi',
   bookingLink: 'https://cal.id/clickjyotish/15-minute-consultation',
-  whatsappUrl: 'https://wa.me/917669655530?text=Namaste%20Deepak%20Ji%2C%20I%20would%20like%20to%20book%20a%20consultation.',
+  whatsappUrl: 'https://wa.me/917669655530?text=Namaste%20Deepak%2C%20I%20would%20like%20to%20book%20a%20consultation.',
   services: [
     {
       icon: '✨',

@@ -1,0 +1,67 @@
+---
+import HindiSeoPage from '../../layouts/HindiSeoPage.astro';
+import { site } from '../../data/site';
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'नई दिल्ली में वैदिक ज्योतिषी | क्लिक ज्योतिष',
+    url: 'https://clickjyotish.in/hi/astrologer-in-new-delhi/',
+    inLanguage: 'hi-IN',
+    about: { '@id': 'https://clickjyotish.in/#business' }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'नई दिल्ली में व्यक्तिगत वैदिक ज्योतिष परामर्श',
+    provider: { '@id': 'https://clickjyotish.in/#business' },
+    areaServed: [
+      { '@type': 'City', name: 'New Delhi' },
+      { '@type': 'AdministrativeArea', name: 'Delhi NCR' }
+    ],
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: 'https://clickjyotish.in/hi/astrologer-in-new-delhi/',
+      availableLanguage: ['Hindi', 'English']
+    }
+  }
+];
+---
+
+<HindiSeoPage
+  title="नई दिल्ली में वैदिक ज्योतिषी"
+  description="दीपक महेश्वरी के साथ नई दिल्ली से व्यक्तिगत वैदिक ज्योतिष, कुंडली, वास्तु और हस्तरेखा मार्गदर्शन। हिंदी और अंग्रेज़ी में ऑनलाइन परामर्श उपलब्ध है।"
+  eyebrow="क्लिक ज्योतिष · नई दिल्ली"
+  {structuredData}
+>
+  <p class="intro-card"><strong>नई दिल्ली से व्यक्तिगत मार्गदर्शन।</strong><br />Click Jyotish हिंदी और अंग्रेज़ी में भारत भर के लिए केंद्रित ऑनलाइन परामर्श देता है। दिल्ली NCR में वास्तु कार्य का दायरा संपत्ति और आवश्यकता समझकर व्यक्तिगत रूप से तय किया जाता है।</p>
+
+  <div class="service-grid">
+    <div class="service-card"><span>स्थान</span><h3>नई दिल्ली, भारत</h3></div>
+    <div class="service-card"><span>भाषाएँ</span><h3>हिंदी और अंग्रेज़ी</h3></div>
+    <div class="service-card"><span>परामर्श</span><h3>ऑनलाइन; वास्तु का दायरा व्यक्तिगत रूप से तय</h3></div>
+  </div>
+
+  <h2>दिल्ली और भारत भर के लिए व्यक्तिगत वैदिक मार्गदर्शन</h2>
+  <p>दीपक महेश्वरी नई दिल्ली से वैदिक ज्योतिष, जन्म कुंडली, हस्तरेखा और वास्तु का व्यक्तिगत मार्गदर्शन देते हैं। शुरुआत आपके वास्तविक प्रश्न से होती है—सामान्य भविष्यवाणी से नहीं—और उसी के अनुसार सही प्रकार का परामर्श चुना जाता है।</p>
+  <p>कुंडली और हस्तरेखा परामर्श सामान्यतः ऑनलाइन होते हैं। घर, कार्यालय या व्यावसायिक स्थान के वास्तु के लिए पहले संपत्ति का प्रकार, शहर और मुख्य समस्या बताएं; इसके बाद ऑनलाइन चर्चा या आवश्यकता के अनुसार दिल्ली NCR में साइट विज़िट पर विचार किया जा सकता है।</p>
+
+  <h2>अपने प्रश्न के अनुसार सेवा चुनें</h2>
+  <ul>
+    <li><a href="/hi/vedic-astrology-consultation/">वैदिक ज्योतिष एवं जन्म कुंडली</a> — करियर, संबंध, व्यक्तिगत चक्र और समय से जुड़े प्रश्नों के लिए।</li>
+    <li><a href="/hi/palmistry-consultation/">हस्तरेखा</a> — शक्तियों, प्रवृत्तियों और जीवन दिशा पर केंद्रित चर्चा के लिए।</li>
+    <li><a href="/hi/vastu-consultation/">वास्तु शास्त्र</a> — घर, कार्यस्थल और व्यावसायिक स्थानों के व्यावहारिक मार्गदर्शन के लिए।</li>
+  </ul>
+
+  <h2>परामर्श कैसे तय होता है</h2>
+  <ol>
+    <li>परामर्श का प्रकार चुनें और केवल अपने प्रश्न के लिए जरूरी जानकारी दें।</li>
+    <li>कैलेंडर में उपलब्ध स्लॉट चुनें या WhatsApp पर उपयुक्त समय का अनुरोध करें।</li>
+    <li>दीपक समय और सत्र से पहले की आवश्यक तैयारी की पुष्टि करते हैं।</li>
+  </ol>
+  <p>कुंडली के लिए जन्म तिथि, जन्म स्थान और उपलब्ध सबसे सटीक जन्म समय उपयोगी है। वास्तु के लिए पहली चर्चा के बाद मूल फ्लोर प्लान या फोटो मांगे जा सकते हैं; वेबसाइट फॉर्म पर संवेदनशील दस्तावेज़ न भेजें।</p>
+
+  <div class="button-row"><a href="/?lang=hi&utm_source=local-page&utm_medium=website&utm_campaign=new-delhi#book">परामर्श का अनुरोध करें</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp पर पूछें</a></div>
+  <p>Click Jyotish को <a href="https://maps.app.goo.gl/s5ALfH8iLjqHVTVQ7" target="_blank" rel="noreferrer">Google Maps</a> पर भी देखें। ज्योतिष और वास्तु आध्यात्मिक एवं व्यक्तिगत मार्गदर्शन हैं; ये चिकित्सा, कानूनी, वित्तीय, इंजीनियरिंग या सुरक्षा विशेषज्ञ सलाह का विकल्प नहीं हैं।</p>
+</HindiSeoPage>

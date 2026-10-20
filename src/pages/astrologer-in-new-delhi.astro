@@ -1,0 +1,67 @@
+---
+import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import { site } from '../data/site';
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Vedic Astrologer in New Delhi | Click Jyotish',
+    url: 'https://clickjyotish.in/astrologer-in-new-delhi/',
+    inLanguage: 'en-IN',
+    about: { '@id': 'https://clickjyotish.in/#business' }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Personal Vedic Astrology Consultation in New Delhi',
+    provider: { '@id': 'https://clickjyotish.in/#business' },
+    areaServed: [
+      { '@type': 'City', name: 'New Delhi' },
+      { '@type': 'AdministrativeArea', name: 'Delhi NCR' }
+    ],
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: 'https://clickjyotish.in/astrologer-in-new-delhi/',
+      availableLanguage: ['Hindi', 'English']
+    }
+  }
+];
+---
+
+<InfoPageLayout
+  title="Vedic Astrologer in New Delhi | Click Jyotish"
+  description="Personal Vedic Astrology, Kundali, Vastu and Palmistry guidance with Deepak Maheshwari in New Delhi. Hindi and English online consultations; Vastu visits are scoped personally."
+  eyebrow="CLICK JYOTISH · NEW DELHI"
+  {structuredData}
+>
+  <p class="notice"><strong>Personal guidance from New Delhi.</strong><br />Click Jyotish offers focused online consultations across India in Hindi and English. Vastu work in Delhi NCR is discussed personally according to the property and required scope.</p>
+
+  <div class="service-summary">
+    <div><span>BASED IN</span><strong>New Delhi, India</strong></div>
+    <div><span>LANGUAGES</span><strong>Hindi & English</strong></div>
+    <div><span>FORMAT</span><strong>Online guidance; Vastu scope reviewed personally</strong></div>
+  </div>
+
+  <h2>Personal Vedic guidance for Delhi and beyond</h2>
+  <p>Deepak Maheshwari provides personal Vedic Astrology, Janam Kundli, Palmistry and Vastu guidance from New Delhi. The work begins with your actual question—not a generic prediction—and the consultation type is chosen according to what you need clarity on.</p>
+  <p>For Kundali and Palmistry, consultations are normally conducted online. For a home, office or commercial Vastu matter, share the property type, city and concern first; an online discussion or a Delhi NCR site visit can then be considered when suitable.</p>
+
+  <h2>Choose the right type of guidance</h2>
+  <ul>
+    <li><a href="/vedic-astrology-consultation/">Vedic Astrology & Janam Kundli</a> for career, relationships, personal cycles and timing questions.</li>
+    <li><a href="/palmistry-consultation/">Palmistry / Hastarekha</a> for a focused reflective discussion on strengths, patterns and life direction.</li>
+    <li><a href="/vastu-consultation/">Vastu Shastra</a> for homes, workplaces and commercial spaces, with practical next steps based on the property.</li>
+  </ul>
+
+  <h2>How a consultation is arranged</h2>
+  <ol>
+    <li>Choose the consultation type and share only the details relevant to your question.</li>
+    <li>Select an available calendar slot or request a suitable time on WhatsApp.</li>
+    <li>Deepak confirms the appointment and any preparation needed before the session.</li>
+  </ol>
+  <p>For Kundali work, date of birth, place of birth and the most accurate available birth time are helpful. For Vastu, a basic floor plan or photos may be requested after the initial discussion; do not send sensitive documents through the website form.</p>
+
+  <div class="service-actions"><a href="/?utm_source=local-page&utm_medium=website&utm_campaign=new-delhi#book">Request a consultation</a><a href={site.whatsappUrl} target="_blank" rel="noreferrer">Ask on WhatsApp</a></div>
+  <p class="service-note">You can also find Click Jyotish on <a href="https://maps.app.goo.gl/s5ALfH8iLjqHVTVQ7" target="_blank" rel="noreferrer">Google Maps</a>. Astrology and Vastu are spiritual, personal guidance and do not replace qualified medical, legal, financial, engineering or safety advice.</p>
+</InfoPageLayout>
