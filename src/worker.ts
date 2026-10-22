@@ -324,6 +324,38 @@ function geminiText(value: unknown) {
   return null;
 }
 
+type PalmReflectionSections = {
+  summary: string;
+  patterns: string;
+  reflection: string;
+};
+
+function palmSections(reading: string, language: 'English' | 'Hindi'): PalmReflectionSections {
+  const fallback: PalmReflectionSections = language === 'Hindi'
+    ? {
+        summary: reading.slice(0, 900),
+        patterns: 'हर हथेली अलग होती है; रेखाओं की स्पष्टता और हाथ के आकार को एक सामान्य शुरुआत की तरह देखना बेहतर है।',
+        reflection: 'इसे निश्चित भविष्यवाणी नहीं, बल्कि आत्म-चिंतन के एक सौम्य अवसर की तरह लें।'
+      }
+    : {
+        summary: reading.slice(0, 900),
+        patterns: 'Every palm is individual; line clarity and hand shape are best considered as a broad starting point.',
+        reflection: 'Use this as a gentle moment for self-awareness, not as a fixed prediction.'
+      };
+  try {
+    const clean = reading.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
+    const parsed: unknown = JSON.parse(clean);
+    if (!isRecord(parsed)) return fallback;
+    const summary = typeof parsed.summary === 'string' ? parsed.summary.trim() : '';
+    const patterns = typeof parsed.patterns === 'string' ? parsed.patterns.trim() : '';
+    const reflection = typeof parsed.reflection === 'string' ? parsed.reflection.trim() : '';
+    if (!summary || !patterns || !reflection) return fallback;
+    return { summary: summary.slice(0, 900), patterns: patterns.slice(0, 900), reflection: reflection.slice(0, 600) };
+  } catch {
+    return fallback;
+  }
+}
+
 function palmProviderMessage(status: number) {
   if (status === 401 || status === 403) return 'The free palm reflection needs an updated Gemini access key. Please try again later or request a personal reading.';
   if (status === 429) return 'Today’s free palm-reflection capacity has been reached. Please try again later.';
@@ -361,8 +393,8 @@ async function palmReflection(request: Request, env: Env) {
   if (input.consent !== true || !isPalmImage(input.image, input.mimeType)) {
     return json({ error: 'Please provide a clear JPG, PNG or WebP photo of the palm and confirm consent.' }, 400);
   }
-  const language = input.language === 'hi' ? 'Hindi' : 'English';
-  const prompt = `You are writing a short, respectful general Hastarekha (traditional Indian palmistry) reflection from one image of the visitor's active (dominant) hand. First check whether the supplied image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write in ${language}. Give a gentle 140-180 word reflection about visible line patterns, hand shape, and practical self-reflection only. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, exact dates or ages, or predictions about marriage, death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. End with one sentence saying that a personal Palmistry consultation can explore the person’s question in more depth. This is entertainment and spiritual reflection, not professional advice.`;
+  const language: 'English' | 'Hindi' = input.language === 'hi' ? 'Hindi' : 'English';
+  const prompt = `You are writing a respectful general Hastarekha (traditional Indian palmistry) reflection from one image of the visitor's active (dominant) hand. First check whether the image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write natural ${language}. Return ONLY one valid JSON object, with no markdown or extra text, exactly using these fields: {"summary":"...","patterns":"...","reflection":"..."}. Keep each value to 1-2 short sentences (maximum 42 words each), easy to read on a phone. Summary: a gentle overall observation. Patterns: visible line/shape themes only. Reflection: one practical self-awareness invitation and mention that a personal Palmistry consultation can explore the person's question in more depth. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, exact dates or ages, or predictions about marriage, death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. This is entertainment and spiritual reflection, not professional advice.`;
   const providerBody = {
     // Gemini 2.5 Flash-Lite is restricted for new projects. This current lightweight
     // multimodal model accepts image input and avoids a paid image-generation model.
@@ -382,7 +414,8 @@ async function palmReflection(request: Request, env: Env) {
     const reading = geminiText(await response.json());
     if (!reading) return json({ error: 'The free palm reflection could not be completed. Please try another clear photo.' }, 502);
     if (reading === 'UNCLEAR_PALM') return json({ title: language === 'Hindi' ? 'कृपया एक और फोटो लें' : 'Please try another photo', reading: language === 'Hindi' ? 'खुली हथेली साफ़ दिखाई नहीं दे रही है। पूरी हथेली के साथ अधिक रोशनी वाली स्पष्ट फोटो फिर से आज़माएं।' : 'I could not clearly see an open palm. Please try a brighter, sharper photo with the whole palm visible.' });
-    return json({ title: language === 'Hindi' ? 'एक सौम्य दृष्टि' : 'A gentle reflection', reading: reading.slice(0, 3000) });
+    const sections = palmSections(reading, language);
+    return json({ title: language === 'Hindi' ? 'एक सौम्य दृष्टि' : 'A gentle reflection', reading: sections.summary, sections });
   } catch (error) {
     console.error('Palm reflection request failed', error);
     return json({ error: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.' }, 502);
