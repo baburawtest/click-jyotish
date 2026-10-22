@@ -294,15 +294,59 @@ function isPalmImage(value: unknown, mimeType: unknown) {
   return typeof value === 'string' && value.length > 100 && value.length <= palmMaxBase64Length && /^[A-Za-z0-9+/]+={0,2}$/.test(value) && typeof mimeType === 'string' && palmAllowedMimeTypes.has(mimeType);
 }
 
+function textFromGeminiContent(value: unknown) {
+  if (!Array.isArray(value)) return null;
+  for (const item of value) {
+    if (isRecord(item) && typeof item.text === 'string' && item.text.trim()) return item.text.trim();
+  }
+  return null;
+}
+
 function geminiText(value: unknown) {
-  if (!isRecord(value) || !Array.isArray(value.candidates)) return null;
-  for (const candidate of value.candidates) {
-    if (!isRecord(candidate) || !isRecord(candidate.content) || !Array.isArray(candidate.content.parts)) continue;
-    for (const part of candidate.content.parts) {
-      if (isRecord(part) && typeof part.text === 'string' && part.text.trim()) return part.text.trim();
+  if (!isRecord(value)) return null;
+  if (typeof value.output_text === 'string' && value.output_text.trim()) return value.output_text.trim();
+  const directOutput = textFromGeminiContent(value.output);
+  if (directOutput) return directOutput;
+  if (Array.isArray(value.steps)) {
+    for (const step of value.steps) {
+      if (!isRecord(step)) continue;
+      const stepOutput = textFromGeminiContent(step.content);
+      if (stepOutput) return stepOutput;
+    }
+  }
+  if (Array.isArray(value.candidates)) {
+    for (const candidate of value.candidates) {
+      if (!isRecord(candidate) || !isRecord(candidate.content)) continue;
+      const candidateOutput = textFromGeminiContent(candidate.content.parts);
+      if (candidateOutput) return candidateOutput;
     }
   }
   return null;
+}
+
+function palmProviderMessage(status: number) {
+  if (status === 401 || status === 403) return 'The free palm reflection needs an updated Gemini access key. Please try again later or request a personal reading.';
+  if (status === 429) return 'Today’s free palm-reflection capacity has been reached. Please try again later.';
+  if (status === 400 || status === 404) return 'The free palm reflection is being updated. Please try again shortly or request a personal reading.';
+  return 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.';
+}
+
+function isTransientPalmProviderStatus(status: number) {
+  return status === 408 || status === 429 || status >= 500;
+}
+
+async function requestPalmReflectionFromGemini(apiKey: string, body: Record<string, unknown>) {
+  let response: Response | null = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+      body: JSON.stringify(body)
+    });
+    if (response.ok || !isTransientPalmProviderStatus(response.status) || attempt === 1) return response;
+    await new Promise((resolve) => setTimeout(resolve, 550 + Math.round(Math.random() * 250)));
+  }
+  return response!;
 }
 
 async function palmReflection(request: Request, env: Env) {
@@ -319,20 +363,21 @@ async function palmReflection(request: Request, env: Env) {
   }
   const language = input.language === 'hi' ? 'Hindi' : 'English';
   const prompt = `You are writing a short, respectful general Hastarekha (traditional Indian palmistry) reflection from one image of the visitor's active (dominant) hand. First check whether the supplied image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write in ${language}. Give a gentle 140-180 word reflection about visible line patterns, hand shape, and practical self-reflection only. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, exact dates or ages, or predictions about marriage, death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. End with one sentence saying that a personal Palmistry consultation can explore the person’s question in more depth. This is entertainment and spiritual reflection, not professional advice.`;
-  const parts: Array<Record<string, unknown>> = [
-    { text: prompt },
-    { inline_data: { mime_type: input.mimeType, data: input.image } }
-  ];
+  const providerBody = {
+    // Gemini 2.5 Flash-Lite is restricted for new projects. This current lightweight
+    // multimodal model accepts image input and avoids a paid image-generation model.
+    model: 'gemini-3.5-flash-lite',
+    input: [
+      { type: 'text', text: prompt },
+      { type: 'image', data: input.image, mime_type: input.mimeType }
+    ]
+  };
 
   try {
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-      body: JSON.stringify({ contents: [{ parts }], generationConfig: { temperature: 0.65, maxOutputTokens: 500 } })
-    });
+    const response = await requestPalmReflectionFromGemini(env.GEMINI_API_KEY, providerBody);
     if (!response.ok) {
       console.error('Palm reflection provider failed', response.status);
-      return json({ error: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.' }, 502);
+      return json({ error: palmProviderMessage(response.status) }, response.status === 429 ? 429 : 502);
     }
     const reading = geminiText(await response.json());
     if (!reading) return json({ error: 'The free palm reflection could not be completed. Please try another clear photo.' }, 502);
