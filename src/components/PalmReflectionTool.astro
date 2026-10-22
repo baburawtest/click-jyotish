@@ -1,0 +1,179 @@
+---
+import { site } from '../data/site';
+---
+
+<section class="palm-tool" aria-labelledby="palm-tool-title">
+  <div class="wrap palm-tool-grid">
+    <div class="palm-tool-copy">
+      <p class="palm-tool-eyebrow" data-copy="eyebrow">FREE PALM REFLECTION · हस्तरेखा</p>
+      <h1 id="palm-tool-title" data-copy="title">A thoughtful look at your palm</h1>
+      <p class="palm-tool-intro" data-copy="intro">Upload a clear palm photo for an instant, general Hastarekha reflection. It is a spiritual, entertainment-style perspective—not a certain prediction or professional advice.</p>
+      <div class="palm-tool-privacy"><span aria-hidden="true">🔒</span><p data-copy="privacy">Click Jyotish does not store these photos. They are resized in your browser and sent only to create this one response.</p></div>
+      <div class="palm-tool-guidance">
+        <h2 data-copy="tipsTitle">For a useful photo</h2>
+        <ul>
+          <li data-copy="tip1">Use your right palm, open and facing the camera.</li>
+          <li data-copy="tip2">Use daylight; keep the whole palm and fingers in focus.</li>
+          <li data-copy="tip3">Avoid filters, shadows, jewellery and blurred photos.</li>
+        </ul>
+      </div>
+      <div class="palm-tool-human">
+        <strong data-copy="humanTitle">Want a personal reading?</strong>
+        <p data-copy="humanCopy">A photo cannot replace a conversation. Deepak can review both palms and your specific question in a private consultation.</p>
+        <a href="/?service=palmistry&utm_source=palm-reflection&utm_medium=website&utm_campaign=personal-reading#book" data-copy="humanAction">Request Palmistry consultation →</a>
+      </div>
+    </div>
+
+    <div class="palm-tool-panel">
+      <form id="palm-reflection-form" novalidate>
+        <label class="palm-upload" for="palm-right-photo">
+          <span class="palm-upload-icon" aria-hidden="true">🖐️</span>
+          <span class="palm-upload-title" data-copy="rightLabel">Right palm photo <em>required</em></span>
+          <span class="palm-upload-detail" data-copy="rightDetail">Tap to choose a JPG, PNG or WebP image</span>
+          <input id="palm-right-photo" name="rightPalm" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" required />
+        </label>
+        <p id="palm-right-name" class="palm-file-name" aria-live="polite"></p>
+
+        <label class="palm-upload palm-upload-optional" for="palm-left-photo">
+          <span class="palm-upload-icon" aria-hidden="true">🤲</span>
+          <span class="palm-upload-title" data-copy="leftLabel">Left palm photo <em>optional</em></span>
+          <span class="palm-upload-detail" data-copy="leftDetail">Add this only if it is also clear and well-lit</span>
+          <input id="palm-left-photo" name="leftPalm" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" />
+        </label>
+        <p id="palm-left-name" class="palm-file-name" aria-live="polite"></p>
+
+        <label class="palm-consent"><input id="palm-consent" type="checkbox" required /><span data-copy="consent">I consent to sending these photos to Google Gemini for this one general palmistry reflection. I understand free-tier processing may use submitted content to improve the provider’s products.</span></label>
+        <input id="palm-website" class="palm-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button id="palm-submit" type="submit"><span data-copy="submit">Get my free palm reflection</span><span aria-hidden="true">→</span></button>
+        <p class="palm-tool-disclaimer" data-copy="disclaimer">Please do not upload documents, another person’s hand without permission, or any sensitive image. This tool cannot assess health, lifespan, pregnancy, legal matters or financial outcomes.</p>
+        <p id="palm-form-status" class="palm-form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <section id="palm-result" class="palm-result" hidden aria-live="polite">
+        <p class="palm-result-eyebrow" data-copy="resultEyebrow">YOUR GENERAL PALM REFLECTION</p>
+        <h2 id="palm-result-title"></h2>
+        <p id="palm-result-copy"></p>
+        <div class="palm-result-actions"><a href="/?service=palmistry&utm_source=palm-reflection-result&utm_medium=website&utm_campaign=personal-reading#book" data-copy="resultAction">Request a personal reading</a><button id="palm-try-again" type="button" data-copy="tryAgain">Try another photo</button></div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<script>
+  const copy = {
+    en: {
+      eyebrow: 'FREE PALM REFLECTION · हस्तरेखा', title: 'A thoughtful look at your palm',
+      intro: 'Upload a clear palm photo for an instant, general Hastarekha reflection. It is a spiritual, entertainment-style perspective—not a certain prediction or professional advice.',
+      privacy: 'Click Jyotish does not store these photos. They are resized in your browser and sent only to create this one response.',
+      tipsTitle: 'For a useful photo', tip1: 'Use your right palm, open and facing the camera.', tip2: 'Use daylight; keep the whole palm and fingers in focus.', tip3: 'Avoid filters, shadows, jewellery and blurred photos.',
+      humanTitle: 'Want a personal reading?', humanCopy: 'A photo cannot replace a conversation. Deepak can review both palms and your specific question in a private consultation.', humanAction: 'Request Palmistry consultation →',
+      rightLabel: 'Right palm photo <em>required</em>', rightDetail: 'Tap to choose a JPG, PNG or WebP image', leftLabel: 'Left palm photo <em>optional</em>', leftDetail: 'Add this only if it is also clear and well-lit',
+      consent: 'I consent to sending these photos to Google Gemini for this one general palmistry reflection. I understand free-tier processing may use submitted content to improve the provider’s products.', submit: 'Get my free palm reflection',
+      disclaimer: 'Please do not upload documents, another person’s hand without permission, or any sensitive image. This tool cannot assess health, lifespan, pregnancy, legal matters or financial outcomes.',
+      preparing: 'Preparing your photo…', thinking: 'Reading your palm thoughtfully…', missing: 'Please choose a clear photo of your right palm and give consent.', tooLarge: 'Please use a photo under 8 MB.', unavailable: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.', resultEyebrow: 'YOUR GENERAL PALM REFLECTION', resultTitle: 'A gentle reflection', tryAgain: 'Try another photo', resultAction: 'Request a personal reading', noHand: 'I could not clearly see an open palm. Please try a brighter, sharper photo with the whole palm visible.'
+    },
+    hi: {
+      eyebrow: 'निःशुल्क हस्तरेखा चिंतन · HASTAREKHA', title: 'अपनी हथेली को सोच-समझकर जानें',
+      intro: 'एक साफ़ हथेली की तस्वीर अपलोड करें और सामान्य हस्तरेखा चिंतन पाएं। यह आध्यात्मिक व मनोरंजन-आधारित दृष्टि है—निश्चित भविष्यवाणी या पेशेवर सलाह नहीं।',
+      privacy: 'Click Jyotish इन तस्वीरों को स्टोर नहीं करता। इन्हें आपके ब्राउज़र में छोटा किया जाता है और केवल एक उत्तर बनाने के लिए भेजा जाता है।',
+      tipsTitle: 'साफ़ फोटो के लिए', tip1: 'दाहिनी हथेली खोलकर कैमरे की ओर रखें।', tip2: 'दिन की रोशनी में पूरी हथेली और उंगलियाँ फोकस में रखें।', tip3: 'फिल्टर, छाया, आभूषण और धुंधली तस्वीर से बचें।',
+      humanTitle: 'व्यक्तिगत रीडिंग चाहिए?', humanCopy: 'तस्वीर बातचीत का विकल्प नहीं है। दीपक आपकी दोनों हथेलियाँ और आपका विशेष प्रश्न निजी परामर्श में देख सकते हैं।', humanAction: 'हस्तरेखा परामर्श का अनुरोध करें →',
+      rightLabel: 'दाहिनी हथेली की फोटो <em>आवश्यक</em>', rightDetail: 'JPG, PNG या WebP फोटो चुनने के लिए टैप करें', leftLabel: 'बाईं हथेली की फोटो <em>वैकल्पिक</em>', leftDetail: 'केवल साफ़ और अच्छी रोशनी वाली फोटो जोड़ें',
+      consent: 'मैं इस सामान्य हस्तरेखा चिंतन के लिए इन तस्वीरों को Google Gemini को भेजने की सहमति देता/देती हूँ। मैं समझता/समझती हूँ कि मुफ्त स्तर पर भेजी गई सामग्री का उपयोग प्रदाता अपने उत्पाद सुधारने में कर सकता है।', submit: 'मेरा निःशुल्क हस्तरेखा चिंतन पाएं',
+      disclaimer: 'दस्तावेज़, बिना अनुमति किसी अन्य व्यक्ति के हाथ की फोटो या संवेदनशील तस्वीर अपलोड न करें। यह टूल स्वास्थ्य, आयु, गर्भावस्था, कानूनी मामलों या वित्तीय परिणामों का आकलन नहीं कर सकता।',
+      preparing: 'आपकी फोटो तैयार हो रही है…', thinking: 'हथेली को ध्यान से देखा जा रहा है…', missing: 'कृपया दाहिनी हथेली की साफ़ फोटो चुनें और सहमति दें।', tooLarge: 'कृपया 8 MB से छोटी फोटो चुनें।', unavailable: 'निःशुल्क हस्तरेखा चिंतन अभी उपलब्ध नहीं है। बाद में प्रयास करें या व्यक्तिगत रीडिंग का अनुरोध करें।', resultEyebrow: 'आपका सामान्य हस्तरेखा चिंतन', resultTitle: 'एक सौम्य दृष्टि', tryAgain: 'दूसरी फोटो आज़माएं', resultAction: 'व्यक्तिगत रीडिंग का अनुरोध करें', noHand: 'खुली हथेली साफ़ दिखाई नहीं दे रही है। पूरी हथेली के साथ अधिक रोशनी वाली स्पष्ट फोटो फिर से आज़माएं।'
+    }
+  } as const;
+
+  type Language = keyof typeof copy;
+  const limitBytes = 8 * 1024 * 1024;
+
+  function setupPalmReflection() {
+    const form = document.getElementById('palm-reflection-form') as HTMLFormElement | null;
+    if (!form || form.dataset.ready === 'true') return;
+    form.dataset.ready = 'true';
+    const right = document.getElementById('palm-right-photo') as HTMLInputElement;
+    const left = document.getElementById('palm-left-photo') as HTMLInputElement;
+    const rightName = document.getElementById('palm-right-name') as HTMLElement;
+    const leftName = document.getElementById('palm-left-name') as HTMLElement;
+    const consent = document.getElementById('palm-consent') as HTMLInputElement;
+    const honeypot = document.getElementById('palm-website') as HTMLInputElement;
+    const status = document.getElementById('palm-form-status') as HTMLElement;
+    const submit = document.getElementById('palm-submit') as HTMLButtonElement;
+    const result = document.getElementById('palm-result') as HTMLElement;
+    const resultTitle = document.getElementById('palm-result-title') as HTMLElement;
+    const resultCopy = document.getElementById('palm-result-copy') as HTMLElement;
+    let language: Language = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+
+    const text = () => copy[language];
+    const fileName = (file: File | undefined) => file ? `${file.name} · ${Math.ceil(file.size / 1024)} KB` : '';
+    const updateFileName = (input: HTMLInputElement, output: HTMLElement) => { output.textContent = fileName(input.files?.[0]); };
+    right.addEventListener('change', () => updateFileName(right, rightName));
+    left.addEventListener('change', () => updateFileName(left, leftName));
+
+    const setLanguage = (next: Language) => {
+      language = next;
+      document.querySelectorAll<HTMLElement>('[data-copy]').forEach((element) => {
+        const key = element.dataset.copy as keyof typeof copy.en | undefined;
+        if (!key) return;
+        const value = copy[language][key];
+        if (element.matches('.palm-upload-title')) element.innerHTML = value as string;
+        else element.textContent = value as string;
+      });
+    };
+
+    const resize = (file: File) => new Promise<{ data: string; mimeType: string }>((resolve, reject) => {
+      const image = new Image();
+      const objectUrl = URL.createObjectURL(file);
+      image.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        const longest = Math.max(image.naturalWidth, image.naturalHeight);
+        const scale = longest > 1400 ? 1400 / longest : 1;
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const context = canvas.getContext('2d');
+        if (!context) return reject(new Error('Could not prepare this image.'));
+        context.fillStyle = '#ffffff'; context.fillRect(0, 0, canvas.width, canvas.height); context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        const encoded = canvas.toDataURL('image/jpeg', 0.84).split(',')[1];
+        resolve({ data: encoded, mimeType: 'image/jpeg' });
+      };
+      image.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Could not read this image.')); };
+      image.src = objectUrl;
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const rightFile = right.files?.[0]; const leftFile = left.files?.[0];
+      if (!rightFile || !consent.checked || honeypot.value) { status.textContent = text().missing; return; }
+      if ([rightFile, leftFile].filter(Boolean).some((file) => (file as File).size > limitBytes)) { status.textContent = text().tooLarge; return; }
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowed.includes(rightFile.type) || (leftFile && !allowed.includes(leftFile.type))) { status.textContent = text().tooLarge; return; }
+      const lastUse = Number(localStorage.getItem('click-jyotish-palm-last-use') || '0');
+      if (Date.now() - lastUse < 60_000) { status.textContent = language === 'hi' ? 'कृपया दूसरी रीडिंग से पहले एक मिनट प्रतीक्षा करें।' : 'Please wait one minute before requesting another reading.'; return; }
+      submit.disabled = true; status.textContent = text().preparing; result.hidden = true;
+      try {
+        const primary = await resize(rightFile);
+        status.textContent = text().thinking;
+        const secondary = leftFile ? await resize(leftFile) : undefined;
+        const response = await fetch('/api/palm-reading', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: primary.data, mimeType: primary.mimeType, leftImage: secondary?.data, leftMimeType: secondary?.mimeType, language, consent: true }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || text().unavailable);
+        resultTitle.textContent = data.title || text().resultTitle;
+        resultCopy.textContent = data.reading || text().unavailable;
+        status.textContent = ''; result.hidden = false; localStorage.setItem('click-jyotish-palm-last-use', String(Date.now()));
+        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (error) { status.textContent = error instanceof Error ? error.message : text().unavailable; }
+      finally { submit.disabled = false; }
+    });
+    document.getElementById('palm-try-again')?.addEventListener('click', () => { result.hidden = true; form.scrollIntoView({ behavior: 'smooth', block: 'center' }); right.focus(); });
+    setLanguage(language);
+    document.addEventListener('click-jyotish-language-change', ((event: Event) => setLanguage((event as CustomEvent<{ language?: Language }>).detail?.language === 'hi' ? 'hi' : 'en')) as EventListener);
+  }
+  setupPalmReflection();
+  document.addEventListener('astro:page-load', setupPalmReflection);
+</script>
+
+<style>
+  .palm-tool{padding:72px 0 92px;background:radial-gradient(circle at 14% 12%,#26396f 0,transparent 24rem),radial-gradient(circle at 83% 75%,#472852 0,transparent 30rem),#070b1e}.palm-tool-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(420px,1.08fr);gap:42px;align-items:start}.palm-tool-eyebrow,.palm-result-eyebrow{margin:0 0 12px;color:#f0c875;font-size:12px;font-weight:800;letter-spacing:1.7px}.palm-tool h1{margin:0 0 16px;color:#fffdf7;font-size:clamp(42px,5vw,66px)}.palm-tool-intro{max-width:620px;margin:0;color:#c7d4eb;font-size:19px;line-height:1.65}.palm-tool-privacy{display:flex;gap:11px;align-items:flex-start;max-width:590px;margin:26px 0;padding:16px 18px;border:1px solid #41648f;border-radius:12px;background:#101a3a}.palm-tool-privacy span{font-size:20px}.palm-tool-privacy p{margin:0;color:#dbe5fa;font-size:14px}.palm-tool-guidance h2,.palm-tool-human strong{color:#fffdf7;font-family:"DM Sans","Noto Serif Devanagari",sans-serif;font-size:18px}.palm-tool-guidance ul{display:grid;gap:10px;margin:13px 0 30px;padding:0;list-style:none}.palm-tool-guidance li{position:relative;padding-left:24px;color:#bac9e7}.palm-tool-guidance li::before{content:'✦';position:absolute;left:0;color:#f0c875}.palm-tool-human{max-width:590px;padding:20px;border-left:3px solid #e5b45f;background:#101936}.palm-tool-human p{margin:7px 0 13px;color:#c7d4eb}.palm-tool-human a{color:#f0c875;font-weight:800}.palm-tool-panel{padding:25px;border:1px solid #42648f;border-radius:18px;background:linear-gradient(145deg,#16264e,#101735);box-shadow:0 26px 55px #02061766}.palm-tool-panel form{display:grid;gap:12px}.palm-upload{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;min-height:100px;padding:17px;border:1px dashed #6f91bf;border-radius:12px;background:#0b1430;cursor:pointer;transition:.2s}.palm-upload:hover,.palm-upload:focus-within{border-color:#f0c875;background:#111e42}.palm-upload-icon{grid-row:span 2;font-size:30px}.palm-upload-title{color:#fffdf7;font-weight:800}.palm-upload-title em{color:#f0c875;font-size:12px;font-style:normal}.palm-upload-detail{color:#aebfdf;font-size:13px}.palm-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}.palm-upload-optional{min-height:79px;opacity:.9}.palm-file-name{min-height:17px;margin:-5px 3px 0;color:#b7d5ff;font-size:12px}.palm-consent{display:flex;gap:10px;align-items:flex-start;margin-top:8px;color:#c7d4eb;font-size:12px;line-height:1.5}.palm-consent input{width:18px;height:18px;margin:1px 0 0;accent-color:#d79c45}.palm-honeypot{position:absolute!important;left:-10000px!important;opacity:0!important}.palm-tool-panel button{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;border:0;border-radius:9px;background:linear-gradient(135deg,#f0c875,#cb8b36);color:#07102a;font:800 15px "DM Sans","Noto Serif Devanagari",sans-serif;cursor:pointer}.palm-tool-panel button:hover{background:linear-gradient(135deg,#ffe0a3,#e3a14a)}.palm-tool-panel button:disabled{cursor:wait;filter:saturate(.6);opacity:.72}.palm-tool-disclaimer{margin:0;color:#aebbd6;font-size:11px;line-height:1.55}.palm-form-status{min-height:20px;margin:0;color:#ffe0a3;font-weight:700;font-size:13px}.palm-result{margin-top:20px;padding:22px;border:1px solid #d7a650;border-radius:13px;background:linear-gradient(145deg,#1d2549,#111933)}.palm-result h2{margin:0 0 9px;color:#fffdf7;font-size:28px}.palm-result p{margin:0;white-space:pre-line;color:#dbe5fa;line-height:1.65}.palm-result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.palm-result-actions a,.palm-result-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 15px;border-radius:7px;font-size:13px;font-weight:800}.palm-result-actions a{background:#d79c45;color:#07102a}.palm-result-actions button{border:1px solid #6682ae;background:transparent;color:#dbe5fa}@media(max-width:900px){.palm-tool{padding:50px 0 70px}.palm-tool-grid{grid-template-columns:1fr;gap:28px}.palm-tool-intro{font-size:17px}}@media(max-width:520px){.palm-tool{padding-top:40px}.palm-tool-panel{padding:16px}.palm-tool h1{font-size:42px}.palm-result-actions{flex-direction:column}.palm-result-actions a,.palm-result-actions button{width:100%}}
+</style>

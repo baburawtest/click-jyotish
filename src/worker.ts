@@ -5,6 +5,7 @@ interface Env {
   ADMIN_PASSWORD?: string;
   LEAD_WEBHOOK_URL?: string;
   SHUBH_API_KEY?: string;
+  GEMINI_API_KEY?: string;
 }
 
 type LeadInput = {
@@ -66,6 +67,19 @@ function removedLegacyShopResponse() {
 }
 
 type UnknownRecord = Record<string, unknown>;
+
+type PalmReflectionInput = {
+  image?: unknown;
+  mimeType?: unknown;
+  leftImage?: unknown;
+  leftMimeType?: unknown;
+  language?: unknown;
+  consent?: unknown;
+};
+
+const palmRequestWindows = new Map<string, { count: number; resetAt: number }>();
+const palmAllowedMimeTypes = new Set(['image/jpeg', 'image/png', 'image/webp']);
+const palmMaxBase64Length = 4_000_000;
 
 type PanchangCity = { id: string; name: string; latitude: string; longitude: string };
 
@@ -265,6 +279,74 @@ async function dailyPanchang(env: Env, cityId: string | null) {
   }
 }
 
+function palmRateLimit(request: Request) {
+  const client = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() || 'unknown';
+  const now = Date.now();
+  const current = palmRequestWindows.get(client);
+  if (!current || current.resetAt <= now) {
+    palmRequestWindows.set(client, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    return null;
+  }
+  if (current.count >= 3) return Math.ceil((current.resetAt - now) / 60_000);
+  current.count += 1;
+  return null;
+}
+
+function isPalmImage(value: unknown, mimeType: unknown) {
+  return typeof value === 'string' && value.length > 100 && value.length <= palmMaxBase64Length && /^[A-Za-z0-9+/]+={0,2}$/.test(value) && typeof mimeType === 'string' && palmAllowedMimeTypes.has(mimeType);
+}
+
+function geminiText(value: unknown) {
+  if (!isRecord(value) || !Array.isArray(value.candidates)) return null;
+  for (const candidate of value.candidates) {
+    if (!isRecord(candidate) || !isRecord(candidate.content) || !Array.isArray(candidate.content.parts)) continue;
+    for (const part of candidate.content.parts) {
+      if (isRecord(part) && typeof part.text === 'string' && part.text.trim()) return part.text.trim();
+    }
+  }
+  return null;
+}
+
+async function palmReflection(request: Request, env: Env) {
+  if (!env.GEMINI_API_KEY) return json({ error: 'The free palm reflection is being set up. Please try again shortly or request a personal reading.' }, 503);
+  const origin = request.headers.get('Origin');
+  if (origin && origin !== new URL(request.url).origin) return json({ error: 'This request must come from clickjyotish.in.' }, 403);
+  const retryAfterMinutes = palmRateLimit(request);
+  if (retryAfterMinutes !== null) return json({ error: `Please wait about ${retryAfterMinutes} minute${retryAfterMinutes === 1 ? '' : 's'} before another free reflection.` }, 429);
+
+  let input: PalmReflectionInput;
+  try { input = await request.json(); } catch { return json({ error: 'Invalid image request.' }, 400); }
+  if (input.consent !== true || !isPalmImage(input.image, input.mimeType) || (input.leftImage !== undefined && !isPalmImage(input.leftImage, input.leftMimeType))) {
+    return json({ error: 'Please provide a clear JPG, PNG or WebP photo of the palm and confirm consent.' }, 400);
+  }
+  const language = input.language === 'hi' ? 'Hindi' : 'English';
+  const prompt = `You are writing a short, respectful general Hastarekha (traditional Indian palmistry) reflection. First check whether the supplied image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write in ${language}. Give a gentle 160-220 word reflection about visible line patterns, hand shape, and practical self-reflection only. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, predictions about death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. End with one sentence saying that a personal Palmistry consultation can explore the person’s question in more depth. This is entertainment and spiritual reflection, not professional advice.`;
+  const parts: Array<Record<string, unknown>> = [
+    { text: prompt },
+    { inline_data: { mime_type: input.mimeType, data: input.image } }
+  ];
+  if (input.leftImage) parts.push({ inline_data: { mime_type: input.leftMimeType, data: input.leftImage } });
+
+  try {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
+      body: JSON.stringify({ contents: [{ parts }], generationConfig: { temperature: 0.65, maxOutputTokens: 500 } })
+    });
+    if (!response.ok) {
+      console.error('Palm reflection provider failed', response.status);
+      return json({ error: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.' }, 502);
+    }
+    const reading = geminiText(await response.json());
+    if (!reading) return json({ error: 'The free palm reflection could not be completed. Please try another clear photo.' }, 502);
+    if (reading === 'UNCLEAR_PALM') return json({ title: language === 'Hindi' ? 'कृपया एक और फोटो लें' : 'Please try another photo', reading: language === 'Hindi' ? 'खुली हथेली साफ़ दिखाई नहीं दे रही है। पूरी हथेली के साथ अधिक रोशनी वाली स्पष्ट फोटो फिर से आज़माएं।' : 'I could not clearly see an open palm. Please try a brighter, sharper photo with the whole palm visible.' });
+    return json({ title: language === 'Hindi' ? 'एक सौम्य दृष्टि' : 'A gentle reflection', reading: reading.slice(0, 3000) });
+  } catch (error) {
+    console.error('Palm reflection request failed', error);
+    return json({ error: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.' }, 502);
+  }
+}
+
 function dashboardHtml() {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -385,6 +467,7 @@ export default {
       return removedLegacyShopResponse();
     }
     if (url.pathname === '/api/panchang' && request.method === 'GET') return dailyPanchang(env, url.searchParams.get('city'));
+    if (url.pathname === '/api/palm-reading' && request.method === 'POST') return palmReflection(request, env);
     if (url.pathname === '/api/leads' && request.method === 'POST') return submitLead(request, env, ctx);
     if (url.pathname === '/api/leads' && request.method === 'GET') {
       const denied = requireAdmin(request, env); return denied ?? listLeads(request, env);

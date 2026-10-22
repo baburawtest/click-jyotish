@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PalmReflectionTool from '../components/PalmReflectionTool.astro';
+import { site } from '../data/site';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Free Palm Reflection | Click Jyotish',
+  url: 'https://clickjyotish.in/palm-reading/',
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'Web',
+  description: 'A free, general palmistry reflection tool with clear privacy and spiritual-guidance limitations.',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'INR' },
+  provider: { '@type': 'ProfessionalService', name: site.name, url: 'https://clickjyotish.in/' }
+};
+---
+
+<BaseLayout title="Free Palm Reading Reflection | Click Jyotish" description="Upload a clear palm photo for a free general Hastarekha reflection. Photos are not stored by Click Jyotish; personal Palmistry consultations are available with Deepak Maheshwari." {structuredData}>
+  <PalmReflectionTool />
+</BaseLayout>

@@ -1,0 +1,31 @@
+# Free palm reflection setup
+
+The `/palm-reading/` page works only after the `GEMINI_API_KEY` secret is added to the Click Jyotish Cloudflare Worker.
+
+## Create the free key
+
+1. Sign in with the Google account that will own the key.
+2. Open [Google AI Studio API keys](https://aistudio.google.com/app/apikey).
+3. Select **Create API key** and copy the newly created key.
+4. Do not paste the key in GitHub, an Astro source file, WhatsApp, or a screenshot.
+
+Google's free API tier has rate limits. Submitted images may be used by Google to improve its products, which is why the website shows an explicit consent checkbox before a photo is sent.
+
+## Add it to Cloudflare
+
+1. Open **Cloudflare Dashboard → Workers & Pages → click-jyotish → Settings → Variables and Secrets**.
+2. Under **Production**, choose **Add variable**.
+3. Set the name to `GEMINI_API_KEY`.
+4. Paste the key as the value and enable **Encrypt** / **Secret**.
+5. Save, then deploy the latest version of the Worker.
+
+The key stays only in Cloudflare. The browser sends photos to `/api/palm-reading`; the Worker forwards them to Gemini. The photos are not inserted into the Click Jyotish lead database and are not stored by the Worker.
+
+## Test after deployment
+
+1. Visit `https://clickjyotish.in/palm-reading/`.
+2. Upload a clear photo of an open right palm, tick consent, and submit.
+3. Confirm a general reflection appears.
+4. Submit twice more only if needed. The server intentionally allows at most three requests per visitor in 15 minutes to protect the free API allowance.
+
+If the key is absent or the free quota is unavailable, the page shows a temporary-unavailable message rather than exposing the secret or an API error.
