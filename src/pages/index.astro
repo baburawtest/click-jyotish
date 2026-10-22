@@ -871,9 +871,14 @@ const organizationSchema = {
 
   /* Responsive */
   @media (max-width: 900px) {
-    .hero-container { grid-template-columns: 1fr; text-align: center; }
-    .hero-lead { margin: 0 auto 32px; }
-    .hero-cta-group, .hero-badges-row { justify-content: center; }
+    .hero-section { padding: 48px 0 44px; }
+    .hero-container { grid-template-columns: 1fr; gap: 0; text-align: center; }
+    .hero-trust-pill { margin-bottom: 16px; }
+    .hero-heading { font-size: clamp(42px, 10vw, 54px); margin-bottom: 18px; }
+    .hero-lead { margin: 0 auto 24px; max-width: 620px; }
+    .hero-cta-group { justify-content: center; margin-bottom: 0; }
+    .hero-cta-group .btn-whatsapp, .hero-cta-group .btn-outline, .hero-badges-row, .hero-visual { display: none; }
+    .hero-cta-group .btn-gold { min-width: min(100%, 340px); }
     .about-grid { grid-template-columns: 1fr; }
     .expectations-grid { grid-template-columns: 1fr; gap: 35px; }
     .nav-links { display: none; }
