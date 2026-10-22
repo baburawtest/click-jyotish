@@ -821,7 +821,7 @@ const organizationSchema = {
     right: 0;
     background: #101936;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 10px 16px;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
     display: none;
     gap: 12px;
     z-index: 99;
@@ -883,7 +883,7 @@ const organizationSchema = {
     .expectations-grid { grid-template-columns: 1fr; gap: 35px; }
     .nav-links { display: none; }
     .floating-mobile-bar { display: flex; }
-    body { padding-bottom: 65px; }
+    :global(body) { padding-bottom: 112px; }
     .consultation-strip-inner { min-height: 48px; font-size: 12px; }
   }
   @media (max-width: 560px) {
