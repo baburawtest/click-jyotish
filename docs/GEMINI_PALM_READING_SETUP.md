@@ -24,8 +24,8 @@ The key stays only in Cloudflare. The browser sends photos to `/api/palm-reading
 ## Test after deployment
 
 1. Visit `https://clickjyotish.in/palm-reading/`.
-2. Upload a clear photo of an open right palm, tick consent, and submit.
+2. Upload a clear photo of the active/dominant hand (the hand used most), tick consent, and submit.
 3. Confirm a general reflection appears.
-4. Submit twice more only if needed. The server intentionally allows at most three requests per visitor in 15 minutes to protect the free API allowance.
+4. If the photo is unclear, take one better photo and try again. The server intentionally allows at most two requests per visitor in 24 hours to protect the free API allowance.
 
 If the key is absent or the free quota is unavailable, the page shows a temporary-unavailable message rather than exposing the secret or an API error.

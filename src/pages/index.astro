@@ -156,6 +156,30 @@ const organizationSchema = {
       </div>
     </section>
 
+    <!-- Highlighted free palm reading entry point -->
+    <section class="free-palm-feature" aria-labelledby="free-palm-title">
+      <div class="wrap">
+        <div class="free-palm-card">
+          <div class="free-palm-copy">
+            <p class="free-palm-badge"><span aria-hidden="true">✦</span> FREE PALM READING</p>
+            <p class="free-palm-eyebrow">HASTAREKHA · सक्रिय हस्तरेखा</p>
+            <h2 id="free-palm-title">Discover the patterns your active hand may hold.</h2>
+            <p>Upload one clear photo of the hand you use most. Receive a private, general palm reflection on line patterns and practical self-awareness—free to try.</p>
+            <div class="free-palm-steps" aria-label="How the free palm reading works"><span><b>1</b> Upload one active palm</span><span><b>2</b> Receive a gentle reflection</span></div>
+            <a class="free-palm-cta" href="/palm-reading/?utm_source=home&utm_medium=website&utm_campaign=free-palm-reading">Try free palm reading <span aria-hidden="true">→</span></a>
+            <small>One image · No account · Spiritual reflection only</small>
+          </div>
+          <div class="free-palm-visual" aria-hidden="true">
+            <div class="palm-glow"></div>
+            <div class="palm-hand">🖐️</div>
+            <div class="palm-scan-line"></div>
+            <div class="palm-insight-card"><span class="palm-insight-icon">✦</span><div><small>FREE INSIGHT</small><strong>Lines · shape · reflection</strong></div></div>
+            <div class="palm-orbit palm-orbit-one"></div><div class="palm-orbit palm-orbit-two"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Moon-sign explanation and free finder -->
     <MoonRashiFinder />
 
@@ -717,6 +741,9 @@ const organizationSchema = {
   @keyframes cosmic-spin { to { transform: rotate(360deg); } }
   @media (prefers-reduced-motion: reduce) { .ring-outer,.ring-mid,.ring-inner { animation: none; } }
 
+  /* Free Palm Reading highlight */
+  .free-palm-feature{padding:54px 0;background:linear-gradient(145deg,#080d23,#142555 50%,#2b1e48)}.free-palm-card{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:32px;min-height:390px;padding:48px 58px;overflow:hidden;border:1px solid rgba(238,194,112,.52);border-radius:22px;background:radial-gradient(circle at 88% 14%,rgba(67,160,255,.29),transparent 17rem),linear-gradient(120deg,#111c41,#1b1742 72%,#162b5c);box-shadow:0 24px 65px rgba(2,6,23,.45)}.free-palm-copy{position:relative;z-index:2}.free-palm-badge{display:inline-flex;align-items:center;gap:8px;margin:0 0 17px;padding:7px 12px;border:1px solid rgba(240,200,117,.55);border-radius:99px;background:rgba(235,183,74,.1);color:#ffe0a3;font-size:11px;font-weight:900;letter-spacing:1.45px}.free-palm-badge span{color:#f9cb60;font-size:16px}.free-palm-eyebrow{margin:0 0 8px;color:#93d7ff;font-size:11px;font-weight:800;letter-spacing:1.65px}.free-palm-copy h2{max-width:620px;margin:0;color:#fffdf7;font-size:clamp(32px,3.7vw,50px)}.free-palm-copy>p:not(.free-palm-badge):not(.free-palm-eyebrow){max-width:575px;margin:16px 0 20px;color:#d6e0f8;font-size:16px;line-height:1.65}.free-palm-steps{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:23px}.free-palm-steps span{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(151,182,233,.34);border-radius:7px;background:#0c1637;color:#d9e6fb;font-size:12px}.free-palm-steps b{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#e5b45f;color:#0d1634;font-size:11px}.free-palm-cta{display:inline-flex;align-items:center;gap:18px;padding:14px 19px;border-radius:8px;background:linear-gradient(135deg,#f1cc78,#cb8c35);color:#07112a;font-size:15px;font-weight:900;box-shadow:0 9px 22px rgba(215,157,56,.24);transition:transform .2s,box-shadow .2s}.free-palm-cta:hover{transform:translateY(-2px);box-shadow:0 13px 28px rgba(215,157,56,.35)}.free-palm-cta span{font-size:22px;line-height:1}.free-palm-copy>small{display:block;margin-top:11px;color:#aec4e7;font-size:11px}.free-palm-visual{position:relative;min-height:290px;isolation:isolate;display:flex;align-items:center;justify-content:center}.palm-glow{position:absolute;width:265px;height:265px;border-radius:50%;background:radial-gradient(circle,#5f98ea 0,rgba(81,91,200,.33) 38%,transparent 70%);filter:blur(2px)}.palm-hand{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;width:178px;height:212px;border:1px solid rgba(213,232,255,.48);border-radius:48% 48% 44% 44% / 38% 38% 62% 62%;background:linear-gradient(160deg,rgba(231,245,255,.9),rgba(136,195,255,.55));box-shadow:inset 0 0 24px rgba(255,255,255,.63),0 18px 42px rgba(2,7,28,.38);font-size:105px;transform:rotate(-14deg)}.palm-scan-line{position:absolute;z-index:3;width:142px;height:4px;border-radius:99px;background:#8ff1ff;box-shadow:0 0 0 4px rgba(143,241,255,.16),0 0 22px #8ff1ff;transform:rotate(-14deg) translate(-6px,7px)}.palm-insight-card{position:absolute;z-index:5;right:-5px;top:37px;display:flex;align-items:center;gap:11px;padding:13px 15px;border:2px solid #6db4ff;border-radius:12px;background:rgba(255,255,255,.96);color:#14204a;box-shadow:0 12px 30px rgba(4,10,33,.35);transform:rotate(3deg)}.palm-insight-card small{display:block;color:#3978bd;font-size:9px;font-weight:900;letter-spacing:1.3px}.palm-insight-card strong{display:block;font-size:13px}.palm-insight-icon{color:#387ded;font-size:24px}.palm-orbit{position:absolute;border:1px solid rgba(179,207,255,.35);border-radius:50%}.palm-orbit-one{width:348px;height:142px;transform:rotate(27deg)}.palm-orbit-two{width:267px;height:267px;border-color:rgba(240,200,117,.34)}
+
   /* Sections */
   .section { padding: 85px 0; }
   .services-section,.insights-section { background:linear-gradient(180deg,#090e24 0%,#0d1534 100%); color:#eaf0ff; }
@@ -885,8 +912,20 @@ const organizationSchema = {
     .floating-mobile-bar { display: flex; }
     :global(body) { padding-bottom: 112px; }
     .consultation-strip-inner { min-height: 48px; font-size: 12px; }
+    .free-palm-card { grid-template-columns: 1fr; padding: 36px 30px 26px; gap: 10px; }
+    .free-palm-visual { min-height: 240px; max-width: 370px; width: 100%; margin: 0 auto; }
   }
   @media (max-width: 560px) {
     .consultation-strip-inner { flex-direction: column; justify-content: center; gap: 2px; padding: 7px 0; text-align: center; }
+    .free-palm-feature { padding: 35px 0; }
+    .free-palm-card { padding: 28px 20px 12px; border-radius: 16px; }
+    .free-palm-copy h2 { font-size: 34px; }
+    .free-palm-copy>p:not(.free-palm-badge):not(.free-palm-eyebrow) { font-size: 15px; }
+    .free-palm-steps { display: grid; }
+    .free-palm-cta { width: 100%; justify-content:space-between; }
+    .palm-hand { width: 142px; height: 174px; font-size: 82px; }
+    .palm-scan-line { width: 113px; }
+    .palm-insight-card { right: 0; top: 23px; padding: 11px; }
+    .palm-orbit-one { width: 280px; height: 110px; }.palm-orbit-two { width: 215px; height: 215px; }
   }
 </style>

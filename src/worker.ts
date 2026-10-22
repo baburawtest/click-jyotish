@@ -71,8 +71,6 @@ type UnknownRecord = Record<string, unknown>;
 type PalmReflectionInput = {
   image?: unknown;
   mimeType?: unknown;
-  leftImage?: unknown;
-  leftMimeType?: unknown;
   language?: unknown;
   consent?: unknown;
 };
@@ -284,10 +282,10 @@ function palmRateLimit(request: Request) {
   const now = Date.now();
   const current = palmRequestWindows.get(client);
   if (!current || current.resetAt <= now) {
-    palmRequestWindows.set(client, { count: 1, resetAt: now + 15 * 60 * 1000 });
+    palmRequestWindows.set(client, { count: 1, resetAt: now + 24 * 60 * 60 * 1000 });
     return null;
   }
-  if (current.count >= 3) return Math.ceil((current.resetAt - now) / 60_000);
+  if (current.count >= 2) return Math.ceil((current.resetAt - now) / 60_000);
   current.count += 1;
   return null;
 }
@@ -316,16 +314,15 @@ async function palmReflection(request: Request, env: Env) {
 
   let input: PalmReflectionInput;
   try { input = await request.json(); } catch { return json({ error: 'Invalid image request.' }, 400); }
-  if (input.consent !== true || !isPalmImage(input.image, input.mimeType) || (input.leftImage !== undefined && !isPalmImage(input.leftImage, input.leftMimeType))) {
+  if (input.consent !== true || !isPalmImage(input.image, input.mimeType)) {
     return json({ error: 'Please provide a clear JPG, PNG or WebP photo of the palm and confirm consent.' }, 400);
   }
   const language = input.language === 'hi' ? 'Hindi' : 'English';
-  const prompt = `You are writing a short, respectful general Hastarekha (traditional Indian palmistry) reflection. First check whether the supplied image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write in ${language}. Give a gentle 160-220 word reflection about visible line patterns, hand shape, and practical self-reflection only. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, predictions about death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. End with one sentence saying that a personal Palmistry consultation can explore the person’s question in more depth. This is entertainment and spiritual reflection, not professional advice.`;
+  const prompt = `You are writing a short, respectful general Hastarekha (traditional Indian palmistry) reflection from one image of the visitor's active (dominant) hand. First check whether the supplied image shows a clear, open human palm with the whole palm and fingers visible. If it does not, reply with exactly UNCLEAR_PALM. If it does, write in ${language}. Give a gentle 140-180 word reflection about visible line patterns, hand shape, and practical self-reflection only. Use tentative language such as “may suggest” and “can invite reflection.” Do not make promises, certainty claims, exact dates or ages, or predictions about marriage, death, lifespan, pregnancy, health, disease, mental health, crime, legal matters, money, gambling, or investing. Do not diagnose age, gender, ethnicity, or any sensitive trait. Do not mention that you are AI. End with one sentence saying that a personal Palmistry consultation can explore the person’s question in more depth. This is entertainment and spiritual reflection, not professional advice.`;
   const parts: Array<Record<string, unknown>> = [
     { text: prompt },
     { inline_data: { mime_type: input.mimeType, data: input.image } }
   ];
-  if (input.leftImage) parts.push({ inline_data: { mime_type: input.leftMimeType, data: input.leftImage } });
 
   try {
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent', {

@@ -12,7 +12,7 @@ import { site } from '../data/site';
       <div class="palm-tool-guidance">
         <h2 data-copy="tipsTitle">For a useful photo</h2>
         <ul>
-          <li data-copy="tip1">Use your right palm, open and facing the camera.</li>
+          <li data-copy="tip1">Use your active (dominant) palm, open and facing the camera.</li>
           <li data-copy="tip2">Use daylight; keep the whole palm and fingers in focus.</li>
           <li data-copy="tip3">Avoid filters, shadows, jewellery and blurred photos.</li>
         </ul>
@@ -28,19 +28,11 @@ import { site } from '../data/site';
       <form id="palm-reflection-form" novalidate>
         <label class="palm-upload" for="palm-right-photo">
           <span class="palm-upload-icon" aria-hidden="true">🖐️</span>
-          <span class="palm-upload-title" data-copy="rightLabel">Right palm photo <em>required</em></span>
+          <span class="palm-upload-title" data-copy="rightLabel">Active / dominant palm photo <em>required</em></span>
           <span class="palm-upload-detail" data-copy="rightDetail">Tap to choose a JPG, PNG or WebP image</span>
           <input id="palm-right-photo" name="rightPalm" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" required />
         </label>
         <p id="palm-right-name" class="palm-file-name" aria-live="polite"></p>
-
-        <label class="palm-upload palm-upload-optional" for="palm-left-photo">
-          <span class="palm-upload-icon" aria-hidden="true">🤲</span>
-          <span class="palm-upload-title" data-copy="leftLabel">Left palm photo <em>optional</em></span>
-          <span class="palm-upload-detail" data-copy="leftDetail">Add this only if it is also clear and well-lit</span>
-          <input id="palm-left-photo" name="leftPalm" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" />
-        </label>
-        <p id="palm-left-name" class="palm-file-name" aria-live="polite"></p>
 
         <label class="palm-consent"><input id="palm-consent" type="checkbox" required /><span data-copy="consent">I consent to sending these photos to Google Gemini for this one general palmistry reflection. I understand free-tier processing may use submitted content to improve the provider’s products.</span></label>
         <input id="palm-website" class="palm-honeypot" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -65,9 +57,9 @@ import { site } from '../data/site';
       eyebrow: 'FREE PALM REFLECTION · हस्तरेखा', title: 'A thoughtful look at your palm',
       intro: 'Upload a clear palm photo for an instant, general Hastarekha reflection. It is a spiritual, entertainment-style perspective—not a certain prediction or professional advice.',
       privacy: 'Click Jyotish does not store these photos. They are resized in your browser and sent only to create this one response.',
-      tipsTitle: 'For a useful photo', tip1: 'Use your right palm, open and facing the camera.', tip2: 'Use daylight; keep the whole palm and fingers in focus.', tip3: 'Avoid filters, shadows, jewellery and blurred photos.',
+      tipsTitle: 'For a useful photo', tip1: 'Use your active (dominant) palm, open and facing the camera.', tip2: 'Use daylight; keep the whole palm and fingers in focus.', tip3: 'Avoid filters, shadows, jewellery and blurred photos.',
       humanTitle: 'Want a personal reading?', humanCopy: 'A photo cannot replace a conversation. Deepak can review both palms and your specific question in a private consultation.', humanAction: 'Request Palmistry consultation →',
-      rightLabel: 'Right palm photo <em>required</em>', rightDetail: 'Tap to choose a JPG, PNG or WebP image', leftLabel: 'Left palm photo <em>optional</em>', leftDetail: 'Add this only if it is also clear and well-lit',
+      rightLabel: 'Active / dominant palm photo <em>required</em>', rightDetail: 'Tap to choose a JPG, PNG or WebP image',
       consent: 'I consent to sending these photos to Google Gemini for this one general palmistry reflection. I understand free-tier processing may use submitted content to improve the provider’s products.', submit: 'Get my free palm reflection',
       disclaimer: 'Please do not upload documents, another person’s hand without permission, or any sensitive image. This tool cannot assess health, lifespan, pregnancy, legal matters or financial outcomes.',
       preparing: 'Preparing your photo…', thinking: 'Reading your palm thoughtfully…', missing: 'Please choose a clear photo of your right palm and give consent.', tooLarge: 'Please use a photo under 8 MB.', unavailable: 'The free palm reflection is temporarily unavailable. Please try again later or request a personal reading.', resultEyebrow: 'YOUR GENERAL PALM REFLECTION', resultTitle: 'A gentle reflection', tryAgain: 'Try another photo', resultAction: 'Request a personal reading', noHand: 'I could not clearly see an open palm. Please try a brighter, sharper photo with the whole palm visible.'
@@ -76,9 +68,9 @@ import { site } from '../data/site';
       eyebrow: 'निःशुल्क हस्तरेखा चिंतन · HASTAREKHA', title: 'अपनी हथेली को सोच-समझकर जानें',
       intro: 'एक साफ़ हथेली की तस्वीर अपलोड करें और सामान्य हस्तरेखा चिंतन पाएं। यह आध्यात्मिक व मनोरंजन-आधारित दृष्टि है—निश्चित भविष्यवाणी या पेशेवर सलाह नहीं।',
       privacy: 'Click Jyotish इन तस्वीरों को स्टोर नहीं करता। इन्हें आपके ब्राउज़र में छोटा किया जाता है और केवल एक उत्तर बनाने के लिए भेजा जाता है।',
-      tipsTitle: 'साफ़ फोटो के लिए', tip1: 'दाहिनी हथेली खोलकर कैमरे की ओर रखें।', tip2: 'दिन की रोशनी में पूरी हथेली और उंगलियाँ फोकस में रखें।', tip3: 'फिल्टर, छाया, आभूषण और धुंधली तस्वीर से बचें।',
+      tipsTitle: 'साफ़ फोटो के लिए', tip1: 'अपनी सक्रिय (जिस हाथ से आप लिखते हैं) हथेली खोलकर कैमरे की ओर रखें।', tip2: 'दिन की रोशनी में पूरी हथेली और उंगलियाँ फोकस में रखें।', tip3: 'फिल्टर, छाया, आभूषण और धुंधली तस्वीर से बचें।',
       humanTitle: 'व्यक्तिगत रीडिंग चाहिए?', humanCopy: 'तस्वीर बातचीत का विकल्प नहीं है। दीपक आपकी दोनों हथेलियाँ और आपका विशेष प्रश्न निजी परामर्श में देख सकते हैं।', humanAction: 'हस्तरेखा परामर्श का अनुरोध करें →',
-      rightLabel: 'दाहिनी हथेली की फोटो <em>आवश्यक</em>', rightDetail: 'JPG, PNG या WebP फोटो चुनने के लिए टैप करें', leftLabel: 'बाईं हथेली की फोटो <em>वैकल्पिक</em>', leftDetail: 'केवल साफ़ और अच्छी रोशनी वाली फोटो जोड़ें',
+      rightLabel: 'सक्रिय हथेली की फोटो <em>आवश्यक</em>', rightDetail: 'JPG, PNG या WebP फोटो चुनने के लिए टैप करें',
       consent: 'मैं इस सामान्य हस्तरेखा चिंतन के लिए इन तस्वीरों को Google Gemini को भेजने की सहमति देता/देती हूँ। मैं समझता/समझती हूँ कि मुफ्त स्तर पर भेजी गई सामग्री का उपयोग प्रदाता अपने उत्पाद सुधारने में कर सकता है।', submit: 'मेरा निःशुल्क हस्तरेखा चिंतन पाएं',
       disclaimer: 'दस्तावेज़, बिना अनुमति किसी अन्य व्यक्ति के हाथ की फोटो या संवेदनशील तस्वीर अपलोड न करें। यह टूल स्वास्थ्य, आयु, गर्भावस्था, कानूनी मामलों या वित्तीय परिणामों का आकलन नहीं कर सकता।',
       preparing: 'आपकी फोटो तैयार हो रही है…', thinking: 'हथेली को ध्यान से देखा जा रहा है…', missing: 'कृपया दाहिनी हथेली की साफ़ फोटो चुनें और सहमति दें।', tooLarge: 'कृपया 8 MB से छोटी फोटो चुनें।', unavailable: 'निःशुल्क हस्तरेखा चिंतन अभी उपलब्ध नहीं है। बाद में प्रयास करें या व्यक्तिगत रीडिंग का अनुरोध करें।', resultEyebrow: 'आपका सामान्य हस्तरेखा चिंतन', resultTitle: 'एक सौम्य दृष्टि', tryAgain: 'दूसरी फोटो आज़माएं', resultAction: 'व्यक्तिगत रीडिंग का अनुरोध करें', noHand: 'खुली हथेली साफ़ दिखाई नहीं दे रही है। पूरी हथेली के साथ अधिक रोशनी वाली स्पष्ट फोटो फिर से आज़माएं।'
@@ -93,9 +85,7 @@ import { site } from '../data/site';
     if (!form || form.dataset.ready === 'true') return;
     form.dataset.ready = 'true';
     const right = document.getElementById('palm-right-photo') as HTMLInputElement;
-    const left = document.getElementById('palm-left-photo') as HTMLInputElement;
     const rightName = document.getElementById('palm-right-name') as HTMLElement;
-    const leftName = document.getElementById('palm-left-name') as HTMLElement;
     const consent = document.getElementById('palm-consent') as HTMLInputElement;
     const honeypot = document.getElementById('palm-website') as HTMLInputElement;
     const status = document.getElementById('palm-form-status') as HTMLElement;
@@ -109,7 +99,6 @@ import { site } from '../data/site';
     const fileName = (file: File | undefined) => file ? `${file.name} · ${Math.ceil(file.size / 1024)} KB` : '';
     const updateFileName = (input: HTMLInputElement, output: HTMLElement) => { output.textContent = fileName(input.files?.[0]); };
     right.addEventListener('change', () => updateFileName(right, rightName));
-    left.addEventListener('change', () => updateFileName(left, leftName));
 
     const setLanguage = (next: Language) => {
       language = next;
@@ -128,14 +117,14 @@ import { site } from '../data/site';
       image.onload = () => {
         URL.revokeObjectURL(objectUrl);
         const longest = Math.max(image.naturalWidth, image.naturalHeight);
-        const scale = longest > 1400 ? 1400 / longest : 1;
+        const scale = longest > 1200 ? 1200 / longest : 1;
         const canvas = document.createElement('canvas');
         canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
         canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
         const context = canvas.getContext('2d');
         if (!context) return reject(new Error('Could not prepare this image.'));
         context.fillStyle = '#ffffff'; context.fillRect(0, 0, canvas.width, canvas.height); context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        const encoded = canvas.toDataURL('image/jpeg', 0.84).split(',')[1];
+        const encoded = canvas.toDataURL('image/jpeg', 0.76).split(',')[1];
         resolve({ data: encoded, mimeType: 'image/jpeg' });
       };
       image.onerror = () => { URL.revokeObjectURL(objectUrl); reject(new Error('Could not read this image.')); };
@@ -144,24 +133,29 @@ import { site } from '../data/site';
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const rightFile = right.files?.[0]; const leftFile = left.files?.[0];
+      const rightFile = right.files?.[0];
       if (!rightFile || !consent.checked || honeypot.value) { status.textContent = text().missing; return; }
-      if ([rightFile, leftFile].filter(Boolean).some((file) => (file as File).size > limitBytes)) { status.textContent = text().tooLarge; return; }
+      if (rightFile.size > limitBytes) { status.textContent = text().tooLarge; return; }
       const allowed = ['image/jpeg', 'image/png', 'image/webp'];
-      if (!allowed.includes(rightFile.type) || (leftFile && !allowed.includes(leftFile.type))) { status.textContent = text().tooLarge; return; }
+      if (!allowed.includes(rightFile.type)) { status.textContent = text().tooLarge; return; }
       const lastUse = Number(localStorage.getItem('click-jyotish-palm-last-use') || '0');
-      if (Date.now() - lastUse < 60_000) { status.textContent = language === 'hi' ? 'कृपया दूसरी रीडिंग से पहले एक मिनट प्रतीक्षा करें।' : 'Please wait one minute before requesting another reading.'; return; }
+      if (Date.now() - lastUse < 10 * 60_000) { status.textContent = language === 'hi' ? 'कृपया दूसरी रीडिंग से पहले 10 मिनट प्रतीक्षा करें।' : 'Please wait 10 minutes before requesting another reading.'; return; }
       submit.disabled = true; status.textContent = text().preparing; result.hidden = true;
       try {
         const primary = await resize(rightFile);
+        const fingerprint = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(primary.data)))).map((byte) => byte.toString(16).padStart(2, '0')).join('');
+        const cached = JSON.parse(localStorage.getItem('click-jyotish-palm-reading-cache') || 'null') as { fingerprint?: string; title?: string; reading?: string } | null;
+        if (cached?.fingerprint === fingerprint && cached.title && cached.reading) {
+          resultTitle.textContent = cached.title; resultCopy.textContent = cached.reading; status.textContent = ''; result.hidden = false;
+          result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); return;
+        }
         status.textContent = text().thinking;
-        const secondary = leftFile ? await resize(leftFile) : undefined;
-        const response = await fetch('/api/palm-reading', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: primary.data, mimeType: primary.mimeType, leftImage: secondary?.data, leftMimeType: secondary?.mimeType, language, consent: true }) });
+        const response = await fetch('/api/palm-reading', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: primary.data, mimeType: primary.mimeType, language, consent: true }) });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || text().unavailable);
         resultTitle.textContent = data.title || text().resultTitle;
         resultCopy.textContent = data.reading || text().unavailable;
-        status.textContent = ''; result.hidden = false; localStorage.setItem('click-jyotish-palm-last-use', String(Date.now()));
+        status.textContent = ''; result.hidden = false; localStorage.setItem('click-jyotish-palm-last-use', String(Date.now())); localStorage.setItem('click-jyotish-palm-reading-cache', JSON.stringify({ fingerprint, title: resultTitle.textContent, reading: resultCopy.textContent }));
         result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } catch (error) { status.textContent = error instanceof Error ? error.message : text().unavailable; }
       finally { submit.disabled = false; }
