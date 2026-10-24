@@ -653,10 +653,12 @@ _Please let me know the available time slot and payment details. Thank you._`;
   }
   .booking-card-container {
     display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     gap: 48px;
     align-items: flex-start;
   }
+  .booking-sidebar,
+  .booking-form-wrapper { min-width: 0; }
 
   /* Sidebar Left */
   .eyebrow-text-light {
@@ -695,6 +697,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     height: 54px;
     border-radius: 50%;
     object-fit: cover;
+    object-position: 50% 24%;
     border: 2px solid #c7913e;
   }
   .practitioner-mini-card strong {
@@ -786,6 +789,8 @@ _Please let me know the available time slot and payment details. Thank you._`;
 
   /* Form Card Right */
   .form-card {
+    width: 100%;
+    min-width: 0;
     background: #ffffff;
     color: #18213d;
     border-radius: 12px;
@@ -821,6 +826,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 13px;
+    min-width: 0;
   }
   .form-group-grid.three-col {
     grid-template-columns: repeat(3, 1fr);
@@ -829,6 +835,7 @@ _Please let me know the available time slot and payment details. Thank you._`;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    min-width: 0;
   }
   .input-field label {
     font-size: 12.5px;
@@ -847,6 +854,9 @@ _Please let me know the available time slot and payment details. Thank you._`;
   .input-field input,
   .input-field select,
   .input-field textarea {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 10px 12px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
@@ -857,6 +867,12 @@ _Please let me know the available time slot and payment details. Thank you._`;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
+  .input-field select { overflow: hidden; text-overflow: ellipsis; }
+  .input-field label,
+  .service-guidance,
+  .checkbox-field label { overflow-wrap: anywhere; }
+  .consultation-choice,
+  #lead-birth-details { min-width: 0; }
   .input-field input:focus,
   .input-field select:focus,
   .input-field textarea:focus {
@@ -996,10 +1012,12 @@ _Please let me know the available time slot and payment details. Thank you._`;
 
   @media (max-width: 960px) {
     .booking-card-container {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
+    .booking-section { padding: 64px 0; }
+    .booking-section .wrap { width: min(1120px, calc(100% - 28px)); }
     .form-group-grid,
     .form-group-grid.three-col {
       grid-template-columns: 1fr;
