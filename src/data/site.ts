@@ -32,6 +32,12 @@ export const site = {
   ],
   insights: [
     {
+      date: 'CHHATH PUJA 2026 · PREPARATION',
+      title: 'Chhath Puja 2026: Dates & a Respectful Preparation Guide',
+      summary: 'The four-day Chhath observance, its verified dates and simple, thoughtful preparation guidance.',
+      link: '/blog/chhath-puja-2026-dates-preparation-guide'
+    },
+    {
       date: 'DIWALI 2026 · VASTU',
       title: 'Diwali Vastu Checklist: Prepare Your Home With Intention',
       summary: 'A practical and respectful checklist for preparing your home or workplace before Deepavali.',
