@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run images:check && astro build",
+    "images:check": "node scripts/check-image-performance.mjs",
     "preview": "astro preview",
     "preview:wrangler": "wrangler pages dev dist",
     "deploy": "astro build && wrangler deploy"
