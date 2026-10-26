@@ -1,26 +1,7 @@
 ---
-import HindiSeoPage from '../../layouts/HindiSeoPage.astro';
-
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  name: 'क्लिक ज्योतिष | वैदिक ज्योतिष, वास्तु और हस्तरेखा',
-  inLanguage: 'hi-IN',
-  url: 'https://clickjyotish.in/hi/',
-  isPartOf: { '@type': 'WebSite', name: 'Click Jyotish', url: 'https://clickjyotish.in/' }
-};
+// The Hindi route intentionally reuses the complete homepage. It keeps the
+// full set of tools and sections available while BaseLayout and the homepage
+// language layer render Hindi copy for this route.
+import HomePage from '../index.astro';
 ---
-<HindiSeoPage title="वैदिक ज्योतिष, वास्तु और हस्तरेखा से व्यक्तिगत मार्गदर्शन" description="दीपक महेश्वरी के साथ कुंडली, वास्तु और हस्तरेखा पर स्पष्ट, सम्मानजनक और व्यावहारिक व्यक्तिगत परामर्श।" eyebrow="क्लिक ज्योतिष · वैदिक मार्गदर्शन" {structuredData}>
-  <div class="intro-card"><strong>जीवन के महत्वपूर्ण प्रश्नों के लिए स्पष्टता</strong><p>करियर, संबंध, समय, घर या व्यक्तिगत दिशा—हर परामर्श आपके प्रश्न के अनुसार तैयार किया जाता है। ऑनलाइन परामर्श हिन्दी और English, दोनों में उपलब्ध है।</p></div>
-  <div class="service-grid">
-    <section class="service-card"><h2>वैदिक ज्योतिष और कुंडली</h2><p>जन्म कुंडली, दशा, गोचर, करियर, संबंध और समय से जुड़े प्रश्नों पर केंद्रित मार्गदर्शन।</p><a href="/hi/vedic-astrology-consultation/">कुंडली परामर्श जानें →</a></section>
-    <section class="service-card"><h2>वास्तु परामर्श</h2><p>घर, कार्यालय या व्यावसायिक स्थान के लिए व्यावहारिक वास्तु दृष्टि और गैर-विनाशकारी सुझाव।</p><a href="/hi/vastu-consultation/">वास्तु परामर्श जानें →</a></section>
-    <section class="service-card"><h2>हस्तरेखा परामर्श</h2><p>हाथों की रेखाओं के आधार पर सहज शक्तियों, प्रवृत्तियों और जीवन के प्रश्नों पर विचार।</p><a href="/hi/palmistry-consultation/">हस्तरेखा परामर्श जानें →</a></section>
-  </div>
-  <h2>निःशुल्क दैनिक वैदिक जानकारी</h2>
-  <p>दैनिक राशिफल चंद्र राशि के आधार पर पढ़ें और आज की तिथि, राहु काल, अभिजीत मुहूर्त तथा पर्वों की जानकारी देखें। महत्वपूर्ण अनुष्ठान या निर्णय के लिए अपने स्थान और परंपरा के अनुसार समय की पुष्टि अवश्य करें।</p>
-  <div class="button-row"><a href="/?lang=hi#panchang">आज का पंचांग देखें</a><a href="/?lang=hi#rashifal">दैनिक राशिफल पढ़ें</a></div>
-  <h2>परामर्श कैसे होता है?</h2>
-  <ol><li>अपना प्रश्न और उपयुक्त परामर्श का प्रकार चुनें।</li><li>कुंडली परामर्श के लिए जन्म तिथि, समय और स्थान साझा करें; वास्तु व हस्तरेखा के लिए केवल प्रासंगिक जानकारी पूछी जाती है।</li><li>अपनी सुविधानुसार समय चुनें या WhatsApp पर समय की पुष्टि करें।</li></ol>
-  <div class="button-row"><a href="/?lang=hi#book">परामर्श अनुरोध शुरू करें</a><a href="/hi/faq/">प्रश्नोत्तर देखें</a></div>
-</HindiSeoPage>
+<HomePage />

@@ -83,9 +83,10 @@ const organizationSchema = {
     name: 'Book a consultation'
   }
 };
+const isHindiRoute = Astro.url.pathname.startsWith('/hi');
 ---
 
-<BaseLayout title={`${site.name} | Vedic Astrology, Vastu & Palmistry`} description="Book a personal online Vedic Astrology, Vastu or Palmistry consultation with Deepak Maheshwari. personal guidance in Hindi or English." structuredData={organizationSchema}>
+<BaseLayout title={isHindiRoute ? 'क्लिक ज्योतिष | वैदिक ज्योतिष, वास्तु और हस्तरेखा' : `${site.name} | Vedic Astrology, Vastu & Palmistry`} description={isHindiRoute ? 'दीपक महेश्वरी के साथ कुंडली, वास्तु और हस्तरेखा पर स्पष्ट, सम्मानजनक और व्यावहारिक व्यक्तिगत परामर्श।' : 'Book a personal online Vedic Astrology, Vastu or Palmistry consultation with Deepak Maheshwari. personal guidance in Hindi or English.'} locale={isHindiRoute ? 'hi' : 'en'} structuredData={organizationSchema}>
   <main>
     <!-- Hero Section -->
     <section id="home" class="hero-section">
@@ -478,7 +479,7 @@ const organizationSchema = {
     if (legal) legal.textContent = `© ${new Date().getFullYear()} Click Jyotish. ${text.legal}`;
   };
 
-  const currentHomeLanguage: HomeLanguage = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
+  const currentHomeLanguage: HomeLanguage = document.body.dataset.pageLocale === 'hi' || localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
   applyHomeLanguage(currentHomeLanguage);
   document.addEventListener('click-jyotish-language-change', ((event: Event) => {
     const language = (event as CustomEvent<{ language?: HomeLanguage }>).detail?.language;

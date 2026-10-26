@@ -14,7 +14,7 @@ const {
   title = `${site.name} | ${site.tagline}`,
   description = 'Personal Vedic Astrology, Vastu and Palmistry consultations with Deepak Maheshwari in New Delhi. Online consultations available in Hindi and English.',
   image = '/images/deepak-maheshwari-yellow.jpg',
-  locale = 'en',
+  locale = Astro.url.pathname.startsWith('/hi') ? 'hi' : 'en',
   structuredData
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://clickjyotish.in').toString();
@@ -55,7 +55,7 @@ const hindiUrl = new URL(hindiPath, Astro.site ?? 'https://clickjyotish.in').toS
     <title>{title}</title>
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
-  <body data-page-locale={locale} data-hindi-path={hasHindiTranslation ? hindiPath : undefined} data-english-path={hasHindiTranslation ? englishPath : undefined}><SiteHeader /><slot /></body>
+  <body data-page-locale={locale} data-hindi-path={hasHindiTranslation && !(locale === 'en' && englishPath === '/') ? hindiPath : undefined} data-english-path={hasHindiTranslation ? englishPath : undefined}><SiteHeader /><slot /></body>
 </html>
 <style is:global>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');
