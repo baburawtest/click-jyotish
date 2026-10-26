@@ -5,7 +5,7 @@ pubDate: 2026-10-12
 category: "Festivals & Vastu"
 tags: ["Diwali 2026", "Vastu", "Deepavali", "home preparation"]
 featured: true
-featuredImage: "/images/diwali-vastu-home-preparation.png"
+featuredImage: "/images/diwali-vastu-home-preparation.webp"
 featuredImageAlt: "A clean Indian home entrance with rangoli, diyas and marigolds for Diwali"
 ---
 

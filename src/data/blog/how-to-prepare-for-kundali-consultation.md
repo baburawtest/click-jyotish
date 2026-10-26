@@ -5,7 +5,7 @@ pubDate: 2026-09-18
 category: "Vedic Astrology"
 tags: ["Kundali", "Janam Kundli", "consultation"]
 featured: true
-featuredImage: "/images/kundali-consultation-preparation.png"
+featuredImage: "/images/kundali-consultation-preparation.webp"
 featuredImageAlt: "An open Kundali preparation notebook with pencil, brass compass and chai on a study desk"
 ---
 

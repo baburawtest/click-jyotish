@@ -5,7 +5,7 @@ pubDate: 2026-10-16
 category: "Festivals & Vrat"
 tags: ["Karwa Chauth 2026", "Karva Chauth", "Delhi", "Chandra", "festival guide"]
 featured: true
-featuredImage: "/images/karwa-chauth-2026-moonlit-terrace.png"
+featuredImage: "/images/karwa-chauth-2026-moonlit-terrace.webp"
 featuredImageAlt: "A brass karwa, sieve and diya arranged on a moonlit terrace for Karwa Chauth"
 ---
 

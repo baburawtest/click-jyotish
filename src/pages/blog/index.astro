@@ -10,7 +10,7 @@ const formatDate = (date: Date) => date.toLocaleDateString('en-IN', { day: 'nume
 <BaseLayout title="Vedic Astrology, Vastu & Palmistry Articles | Click Jyotish" description="Read practical Click Jyotish articles about Vedic Astrology, festivals, Vastu, Palmistry, consultation preparation and spiritual living.">
 
   <main class="wrap page"><p class="eyebrow">READING & INSIGHTS</p><h1>Vedic reflections for everyday life</h1><p class="lead">Clear, respectful articles on Jyotish, Vastu, Palmistry, festivals and preparing for a personal consultation.</p>
-    <div class="grid">{posts.map((post) => <article class="card">{post.data.featuredImage && <a class="card-image" href={`/blog/${post.id}`}><img src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? ''} loading="lazy" /></a>}<p class="meta">{post.data.category} · {formatDate(post.data.pubDate)}</p><h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2><p>{post.data.description}</p><a class="read" href={`/blog/${post.id}`}>Read article →</a></article>)}</div>
+    <div class="grid">{posts.map((post) => <article class="card">{post.data.featuredImage && <a class="card-image" href={`/blog/${post.id}`}><img src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? ''} loading="lazy" decoding="async" /></a>}<p class="meta">{post.data.category} · {formatDate(post.data.pubDate)}</p><h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2><p>{post.data.description}</p><a class="read" href={`/blog/${post.id}`}>Read article →</a></article>)}</div>
   </main>
 </BaseLayout>
 <style>

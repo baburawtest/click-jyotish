@@ -5,7 +5,7 @@ pubDate: 2026-10-06
 category: "Palmistry"
 tags: ["Palmistry", "Hastarekha", "online consultation"]
 featured: true
-featuredImage: "/images/online-palmistry-hand-photo-guide.png"
+featuredImage: "/images/online-palmistry-hand-photo-guide.webp"
 featuredImageAlt: "Hands beside a phone prepared for an online palmistry consultation"
 ---
 

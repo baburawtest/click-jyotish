@@ -5,7 +5,7 @@ pubDate: 2026-09-29
 category: "Vastu"
 tags: ["Vastu", "home", "workplace"]
 featured: true
-featuredImage: "/images/vastu-home-consultation-checklist.png"
+featuredImage: "/images/vastu-home-consultation-checklist.webp"
 featuredImageAlt: "A clean and welcoming Indian home entrance with a plant and warm light"
 ---
 

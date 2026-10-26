@@ -5,7 +5,7 @@ pubDate: 2026-07-26
 category: "Festivals"
 tags: ["Guru Purnima", "Vedic festivals", "Jupiter"]
 featured: false
-featuredImage: "/images/guru-purnima-reflection.png"
+featuredImage: "/images/guru-purnima-reflection.webp"
 featuredImageAlt: "A peaceful study space with a book, mala, brass lamp and fading full moon"
 ---
 

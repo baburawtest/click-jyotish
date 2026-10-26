@@ -28,7 +28,7 @@ const structuredData = {
 ---
 <BaseLayout title={`${post.data.title} | Click Jyotish`} description={post.data.description} structuredData={structuredData}>
 
-  <main class="wrap article"><p class="meta">{post.data.category} · {formattedDate}</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p>{post.data.featuredImage && <img class="featured-image" src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? ''} />}<div class="tags">{post.data.tags.map((tag) => <span>{tag}</span>)}</div><article class="prose"><Content /></article>
+  <main class="wrap article"><p class="meta">{post.data.category} · {formattedDate}</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p>{post.data.featuredImage && <img class="featured-image" src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? ''} decoding="async" fetchpriority="high" />}<div class="tags">{post.data.tags.map((tag) => <span>{tag}</span>)}</div><article class="prose"><Content /></article>
     <aside><strong>Need personal guidance?</strong><p>Book a focused online consultation with Deepak Maheshwari, then confirm your preferred time on WhatsApp.</p><div><a class="gold" href={`/?utm_source=blog&utm_medium=article&utm_campaign=${post.id}#book`}>Book consultation</a><a class="wa" href={wa} target="_blank" rel="noreferrer">WhatsApp Deepak</a></div></aside>
     <p class="disclaimer">This article provides general spiritual information. It is not medical, legal, financial or mental-health advice. Please read the <a href="/disclaimer">full disclaimer</a>.</p>
   </main>
