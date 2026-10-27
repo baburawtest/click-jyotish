@@ -239,7 +239,7 @@ async function dailyPanchang(env: Env, cityId: string | null) {
   const { year, iso } = getIstDateParts();
   // Bump this version whenever the normalisation code changes so Cloudflare does
   // not serve an older, incomplete daily result after a Worker deployment.
-  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache-v3?date=${iso}&city=${city.id}`);
+  const cacheKey = new Request(`https://clickjyotish.in/api/panchang-cache-v4?date=${iso}&city=${city.id}`);
   const cached = await caches.default.match(cacheKey);
   if (cached) return cached;
 
@@ -256,18 +256,27 @@ async function dailyPanchang(env: Env, cityId: string | null) {
     const nakshatra = isRecord(panchang.nakshatra) ? panchang.nakshatra : {};
     const fallbackTimings = standardDayPeriods(panchang.sunrise, panchang.sunset, iso);
     const listedFestivals = festivalNames(rawFestivals, iso);
-    const observance = listedFestivals.length ? listedFestivals : [tithiObservance(tithi) ?? 'No major festival listed for New Delhi today'];
+    const observance = listedFestivals.length ? listedFestivals : [tithiObservance(tithi) ?? `No major festival listed for ${city.name} today`];
+    const providerRahuKaal = findPeriod(rawPeriods, ['rahu kaal', 'rahu kalam', 'rahu']);
+    const providerAbhijit = findPeriod(rawPeriods, ['abhijit muhurat', 'abhijit']);
+    const rahuKaal = providerRahuKaal ?? fallbackTimings.rahuKaal;
+    const abhijitMuhurat = providerAbhijit ?? fallbackTimings.abhijitMuhurat;
     const response = json({
       date: iso,
       location: `${city.name}, India (IST)`,
       tithi: { name: tithi.name ?? '—', paksha: tithi.paksha ?? '', endsAt: formatIstTime(tithi.endsAt ?? tithi.end) },
       nakshatra: { name: nakshatra.name ?? '—', endsAt: formatIstTime(nakshatra.endsAt ?? nakshatra.end) },
-      rahuKaal: findPeriod(rawPeriods, ['rahu kaal', 'rahu kalam', 'rahu']) ?? fallbackTimings.rahuKaal,
-      abhijitMuhurat: findPeriod(rawPeriods, ['abhijit muhurat', 'abhijit']) ?? fallbackTimings.abhijitMuhurat,
+      rahuKaal,
+      abhijitMuhurat,
+      timings: {
+        rahuKaal: { value: rahuKaal, basis: providerRahuKaal ? 'provider' : rahuKaal ? 'calculated' : 'unavailable' },
+        abhijitMuhurat: { value: abhijitMuhurat, basis: providerAbhijit ? 'provider' : abhijitMuhurat ? 'calculated' : 'unavailable' }
+      },
       sunrise: formatIstTime(panchang.sunrise),
       sunset: formatIstTime(panchang.sunset),
       festivals: observance,
-      source: 'ShubhAI Panchang'
+      source: 'ShubhAI Panchang',
+      generatedAt: new Date().toISOString()
     }, 200);
     response.headers.set('Cache-Control', 'public, max-age=300, s-maxage=21600');
     await caches.default.put(cacheKey, response.clone());

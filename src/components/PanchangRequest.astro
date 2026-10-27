@@ -43,6 +43,7 @@
           </optgroup>
         </select>
       </label>
+      <p class="city-picker-note" id="panchang-city-note">Your city choice is saved only on this device.</p>
     </div>
 
     <div class="panchang-status" id="panchang-loading" role="status">Loading today’s verified Panchang…</div>
@@ -56,13 +57,13 @@
         <p class="detail" id="panchang-paksha">—</p>
         <small id="panchang-tithi-ends"></small>
       </article>
-      <article class="calendar-card">
+      <article class="calendar-card" id="panchang-rahu-card">
         <span class="card-icon">🪔</span>
         <p class="card-label">RAHU KAAL · राहु काल</p>
         <h3 id="panchang-rahu">—</h3>
         <p class="detail">Traditionally avoided for new beginnings.</p>
       </article>
-      <article class="calendar-card">
+      <article class="calendar-card" id="panchang-abhijit-card">
         <span class="card-icon">✨</span>
         <p class="card-label">ABHIJIT MUHURAT · अभिजित मुहूर्त</p>
         <h3 id="panchang-abhijit">—</h3>
@@ -78,6 +79,8 @@
 
     <div class="panchang-footnote" id="panchang-footnote" hidden>
       <span id="panchang-date"></span><span aria-hidden="true">·</span><span id="panchang-location"></span><span aria-hidden="true">·</span><span id="panchang-sun"></span>
+      <span id="panchang-updated"></span><span aria-hidden="true">·</span><span id="panchang-source"></span>
+      <a id="panchang-correction" href="https://wa.me/917669655530" target="_blank" rel="noreferrer">Report a correction</a>
       <small>For informational use. Local customs and family traditions may vary.</small>
     </div>
   </div>
@@ -87,10 +90,10 @@
   let panchangLanguage: 'en' | 'hi' = localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en';
   const panchangCopy = {
     en: {
-      eyebrow: 'DAINIK PANCHANG · दैनिक पंचांग', title: 'Today’s Panchang for {city}', intro: 'Free daily information. Tithi and timings change by place, so select your city before relying on a Panchang for an important ritual.', location: 'Location · स्थान', loading: 'Loading today’s verified Panchang…', unavailable: 'Panchang is unavailable. Please refresh shortly.', ends: 'Ends at {time}', nakshatra: 'Nakshatra: {name}', nakshatraEnds: ' · ends at {time}', today: 'Today', sunrise: 'Sunrise {time}', sunset: 'Sunset {time}', tithi: 'TITHI · तिथि', rahu: 'RAHU KAAL · राहु काल', abhijit: 'ABHIJIT MUHURAT · अभिजित मुहूर्त', festival: 'TODAY’S FESTIVAL / OBSERVANCE', rahuDetail: 'Traditionally avoided for new beginnings.', abhijitDetail: 'A daily midday Muhurat window.', note: 'For informational use. Local customs and family traditions may vary.'
+      eyebrow: 'DAINIK PANCHANG · दैनिक पंचांग', title: 'Today’s Panchang for {city}', intro: 'Free daily information. Tithi and timings change by place, so select your city before relying on a Panchang for an important ritual.', location: 'Location · स्थान', cityNote: 'Your city choice is saved only on this device.', loading: 'Loading today’s Panchang…', unavailable: 'Panchang is unavailable. Please refresh shortly.', ends: 'Ends at {time}', nakshatra: 'Nakshatra: {name}', nakshatraEnds: ' · ends at {time}', today: 'Today', sunrise: 'Sunrise {time}', sunset: 'Sunset {time}', tithi: 'TITHI · तिथि', rahu: 'RAHU KAAL · राहु काल', abhijit: 'ABHIJIT MUHURAT · अभिजित मुहूर्त', festival: 'TODAY’S FESTIVAL / OBSERVANCE', rahuDetail: 'Traditionally avoided for new beginnings.', abhijitDetail: 'A daily midday Muhurat window.', calculated: 'Calculated from this city’s sunrise and sunset.', updated: 'Updated {time}', source: 'Source: {source}', correction: 'Report a correction', correctionMessage: 'Namaste Deepak, I noticed a possible Panchang correction for {city} on {date}. Please review: ', note: 'For informational use. Times are city-specific; local customs and family traditions may vary.'
     },
     hi: {
-      eyebrow: 'दैनिक पंचांग · DAINIK PANCHANG', title: '{city} के लिए आज का पंचांग', intro: 'निःशुल्क दैनिक जानकारी। तिथि और समय स्थान के अनुसार बदलते हैं, इसलिए महत्वपूर्ण अनुष्ठान के लिए पंचांग पर निर्भर होने से पहले अपना शहर चुनें।', location: 'स्थान', loading: 'आज का सत्यापित पंचांग लोड हो रहा है…', unavailable: 'पंचांग अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद पेज रीफ़्रेश करें।', ends: '{time} तक', nakshatra: 'नक्षत्र: {name}', nakshatraEnds: ' · {time} तक', today: 'आज', sunrise: 'सूर्योदय {time}', sunset: 'सूर्यास्त {time}', tithi: 'तिथि', rahu: 'राहु काल', abhijit: 'अभिजित मुहूर्त', festival: 'आज का पर्व / विशेष दिन', rahuDetail: 'नई शुरुआत के लिए परंपरागत रूप से वर्जित समय।', abhijitDetail: 'दोपहर का दैनिक शुभ मुहूर्त।', note: 'यह केवल जानकारी के लिए है। स्थानीय परंपराएँ और पारिवारिक मान्यताएँ अलग हो सकती हैं।'
+      eyebrow: 'दैनिक पंचांग · DAINIK PANCHANG', title: '{city} के लिए आज का पंचांग', intro: 'निःशुल्क दैनिक जानकारी। तिथि और समय स्थान के अनुसार बदलते हैं, इसलिए महत्वपूर्ण अनुष्ठान के लिए पंचांग पर निर्भर होने से पहले अपना शहर चुनें।', location: 'स्थान', cityNote: 'आपका चुना हुआ शहर केवल इसी डिवाइस में सेव होता है।', loading: 'आज का पंचांग लोड हो रहा है…', unavailable: 'पंचांग अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद पेज रीफ़्रेश करें।', ends: '{time} तक', nakshatra: 'नक्षत्र: {name}', nakshatraEnds: ' · {time} तक', today: 'आज', sunrise: 'सूर्योदय {time}', sunset: 'सूर्यास्त {time}', tithi: 'तिथि', rahu: 'राहु काल', abhijit: 'अभिजित मुहूर्त', festival: 'आज का पर्व / विशेष दिन', rahuDetail: 'नई शुरुआत के लिए परंपरागत रूप से वर्जित समय।', abhijitDetail: 'दोपहर का दैनिक शुभ मुहूर्त।', calculated: 'इस शहर के सूर्योदय और सूर्यास्त से गणना की गई।', updated: '{time} पर अपडेट', source: 'स्रोत: {source}', correction: 'सुधार बताएँ', correctionMessage: 'नमस्ते दीपक, मैंने {city} के लिए {date} के पंचांग में संभावित सुधार देखा है। कृपया जाँच करें: ', note: 'यह केवल जानकारी के लिए है। समय शहर-विशिष्ट होते हैं; स्थानीय परंपराएँ और पारिवारिक मान्यताएँ अलग हो सकती हैं।'
     }
   } as const;
   const setText = (id: string, value: unknown) => {
@@ -103,6 +106,8 @@
     return new Intl.DateTimeFormat(panchangLanguage === 'hi' ? 'hi-IN' : 'en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(date);
   };
 
+  const formatUpdated = (iso: string) => new Intl.DateTimeFormat(panchangLanguage === 'hi' ? 'hi-IN' : 'en-IN', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Kolkata' }).format(new Date(iso));
+
   const applyPanchangLanguage = (language: 'en' | 'hi') => {
     panchangLanguage = language;
     const text = panchangCopy[language];
@@ -110,13 +115,13 @@
     const set = (selector: string, value: string) => { const element = section?.querySelector<HTMLElement>(selector); if (element) element.textContent = value; };
     const picker = section?.querySelector<HTMLSelectElement>('#panchang-city');
     const city = picker?.selectedOptions[0]?.textContent || (language === 'hi' ? 'नई दिल्ली' : 'New Delhi');
-    set('.eyebrow', text.eyebrow); set('#panchang-title', text.title.replace('{city}', city)); set('.section-heading > p:not(.eyebrow)', text.intro); set('.city-picker > span', text.location);
+    set('.eyebrow', text.eyebrow); set('#panchang-title', text.title.replace('{city}', city)); set('.section-heading > p:not(.eyebrow):not(.city-picker-note)', text.intro); set('.city-picker > span', text.location); set('#panchang-city-note', text.cityNote);
     const labels = section?.querySelectorAll<HTMLElement>('.calendar-card .card-label');
     [text.tithi, text.rahu, text.abhijit, text.festival].forEach((value, index) => { if (labels?.[index]) labels[index].textContent = value; });
     const detail = section?.querySelectorAll<HTMLElement>('.calendar-card .detail');
     if (detail?.[1]) detail[1].textContent = text.rahuDetail;
     if (detail?.[2]) detail[2].textContent = text.abhijitDetail;
-    set('.panchang-footnote small', text.note);
+    set('.panchang-footnote small', text.note); set('#panchang-correction', text.correction);
   };
 
   async function loadDailyPanchang(cityId?: string) {
@@ -137,8 +142,18 @@
       setText('panchang-tithi', data.tithi?.name);
       setText('panchang-paksha', data.tithi?.paksha);
       setText('panchang-tithi-ends', data.tithi?.endsAt ? text.ends.replace('{time}', data.tithi.endsAt) : '');
-      setText('panchang-rahu', data.rahuKaal);
-      setText('panchang-abhijit', data.abhijitMuhurat);
+      const setTiming = (cardId: string, valueId: string, detailIndex: number, timing: { value?: unknown; basis?: string } | undefined) => {
+        const card = document.getElementById(cardId);
+        const value = typeof timing?.value === 'string' && timing.value.trim() ? timing.value : null;
+        if (!value) { card?.setAttribute('hidden', ''); return; }
+        card?.removeAttribute('hidden');
+        setText(valueId, value);
+        const details = document.querySelectorAll<HTMLElement>('.panchang-grid .calendar-card .detail');
+        const standardDetail = detailIndex === 1 ? text.rahuDetail : text.abhijitDetail;
+        if (details[detailIndex]) details[detailIndex].textContent = timing?.basis === 'calculated' ? text.calculated : standardDetail;
+      };
+      setTiming('panchang-rahu-card', 'panchang-rahu', 1, data.timings?.rahuKaal ?? { value: data.rahuKaal, basis: 'provider' });
+      setTiming('panchang-abhijit-card', 'panchang-abhijit', 2, data.timings?.abhijitMuhurat ?? { value: data.abhijitMuhurat, basis: 'provider' });
       setText('panchang-festival', Array.isArray(data.festivals) ? data.festivals.join(' · ') : data.festivals);
       setText('panchang-nakshatra', data.nakshatra?.name ? `${text.nakshatra.replace('{name}', data.nakshatra.name)}${data.nakshatra.endsAt ? text.nakshatraEnds.replace('{time}', data.nakshatra.endsAt) : ''}` : '');
       setText('panchang-date', data.date ? formatDate(data.date) : text.today);
@@ -146,6 +161,10 @@
       if (title && data.location) title.textContent = text.title.replace('{city}', String(data.location).replace(', India (IST)', ''));
       const sun = [data.sunrise && text.sunrise.replace('{time}', data.sunrise), data.sunset && text.sunset.replace('{time}', data.sunset)].filter(Boolean).join(' · ');
       setText('panchang-sun', sun);
+      setText('panchang-updated', data.generatedAt ? text.updated.replace('{time}', formatUpdated(data.generatedAt)) : '');
+      setText('panchang-source', data.source ? text.source.replace('{source}', data.source) : '');
+      const correction = document.getElementById('panchang-correction') as HTMLAnchorElement | null;
+      if (correction) correction.href = `https://wa.me/917669655530?text=${encodeURIComponent(text.correctionMessage.replace('{city}', data.location || selectedCity).replace('{date}', data.date ? formatDate(data.date) : text.today))}`;
       loading?.setAttribute('hidden', '');
       dataArea?.removeAttribute('hidden');
       footnote?.removeAttribute('hidden');
@@ -179,7 +198,7 @@
 </script>
 
 <style>
-  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.section-heading{max-width:700px;margin:0 auto 32px;text-align:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.section-heading h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.section-heading p{margin:0;color:#566276;font-size:16px;line-height:1.65}.city-picker{display:inline-flex;align-items:center;gap:9px;margin-top:20px;padding:8px 10px 8px 13px;border:1px solid #dedbd1;border-radius:999px;background:#fffdf9;color:#526178;font-size:13px;font-weight:800}.city-picker select{border:0;border-left:1px solid #dedbd1;padding:2px 26px 2px 11px;background:transparent;color:#18213d;font:inherit;font-weight:800;cursor:pointer}.panchang-status,.panchang-error{max-width:620px;margin:0 auto;padding:16px 18px;text-align:center;border-radius:10px;background:#fffdf7;border:1px solid #e0c995;color:#4e5e73}.panchang-error{background:#fff5f3;border-color:#ecc5bb;color:#8d2d20}.panchang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.calendar-card{min-height:214px;padding:24px 20px;border:1px solid #e2ded5;border-radius:12px;background:#fffdf9;box-shadow:0 8px 24px #3828090b}.calendar-card.featured{background:#18213d;border-color:#18213d;color:#fff}.card-icon{font-size:25px;display:block;margin-bottom:18px}.card-label{margin:0 0 8px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.featured .card-label{color:#e5b364}.calendar-card h3{margin:0 0 9px;color:#18213d;font-size:22px;line-height:1.25}.featured h3{color:#fff}.detail{margin:0;color:#687385;line-height:1.5;font-size:14px}.featured .detail{color:#dbe4f2}.calendar-card small{display:block;margin-top:12px;color:#9cabc1;font-weight:700}.festival-card h3{font-size:19px}.panchang-footnote{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;color:#607087;font-size:13px;text-align:center}.panchang-footnote small{flex-basis:100%;margin-top:3px;color:#7e8792}@media(max-width:900px){.panchang-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.panchang-request{padding:54px 0}.panchang-grid{grid-template-columns:1fr}.calendar-card{min-height:0}.city-picker{display:flex;width:100%;justify-content:space-between}}
+  .panchang-request{padding:76px 0;background:#f7f5ed;border-block:1px solid #dedbd1}.section-heading{max-width:700px;margin:0 auto 32px;text-align:center}.eyebrow{margin:0 0 10px;color:#a86f1e;font-size:12px;font-weight:800;letter-spacing:1.3px}.section-heading h2{margin:0 0 14px;color:#18213d;font-size:clamp(31px,4vw,47px);line-height:1.12}.section-heading p{margin:0;color:#566276;font-size:16px;line-height:1.65}.city-picker{display:inline-flex;align-items:center;gap:9px;margin-top:20px;padding:8px 10px 8px 13px;border:1px solid #dedbd1;border-radius:999px;background:#fffdf9;color:#526178;font-size:13px;font-weight:800}.city-picker select{border:0;border-left:1px solid #dedbd1;padding:2px 26px 2px 11px;background:transparent;color:#18213d;font:inherit;font-weight:800;cursor:pointer}.city-picker-note{margin-top:7px!important;color:#78869a!important;font-size:12px!important}.panchang-status,.panchang-error{max-width:620px;margin:0 auto;padding:16px 18px;text-align:center;border-radius:10px;background:#fffdf7;border:1px solid #e0c995;color:#4e5e73}.panchang-error{background:#fff5f3;border-color:#ecc5bb;color:#8d2d20}.panchang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.calendar-card{min-height:214px;padding:24px 20px;border:1px solid #e2ded5;border-radius:12px;background:#fffdf9;box-shadow:0 8px 24px #3828090b}.calendar-card.featured{background:#18213d;border-color:#18213d;color:#fff}.card-icon{font-size:25px;display:block;margin-bottom:18px}.card-label{margin:0 0 8px;color:#a86f1e;font-size:11px;font-weight:800;letter-spacing:1px}.featured .card-label{color:#e5b364}.calendar-card h3{margin:0 0 9px;color:#18213d;font-size:22px;line-height:1.25}.featured h3{color:#fff}.detail{margin:0;color:#687385;line-height:1.5;font-size:14px}.featured .detail{color:#dbe4f2}.calendar-card small{display:block;margin-top:12px;color:#9cabc1;font-weight:700}.festival-card h3{font-size:19px}.panchang-footnote{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;color:#607087;font-size:13px;text-align:center}.panchang-footnote a{color:#8a5514;font-weight:800;text-decoration:none}.panchang-footnote small{flex-basis:100%;margin-top:3px;color:#7e8792}@media(max-width:900px){.panchang-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.panchang-request{padding:54px 0}.panchang-grid{grid-template-columns:1fr}.calendar-card{min-height:0}.city-picker{display:flex;width:100%;justify-content:space-between}}
   /* Cosmic theme */
-  .panchang-request{background:linear-gradient(145deg,#0a1028,#11183b);border-color:#2c3a69;color:#eaf0ff}.section-heading h2{color:#fffdf7}.section-heading p{color:#c2cceb}.eyebrow{color:#f0c875}.city-picker{background:#111a3a;border-color:#45558a;color:#e9efff}.city-picker select{border-color:#45558a;color:#fff;background:#111a3a}.panchang-status{background:#111a3a;border-color:#58699d;color:#dce5ff}.panchang-grid .calendar-card{background:linear-gradient(145deg,#17224c,#0e1635);border-color:#324474;box-shadow:0 14px 30px #02061742}.panchang-grid .calendar-card:not(.featured) h3{color:#fffdf7}.panchang-grid .card-label{color:#f0c875}.panchang-grid .detail{color:#bdc9e8}.panchang-footnote,.panchang-footnote small{color:#aebcdd}
+  .panchang-request{background:linear-gradient(145deg,#0a1028,#11183b);border-color:#2c3a69;color:#eaf0ff}.section-heading h2{color:#fffdf7}.section-heading p{color:#c2cceb}.city-picker-note{color:#9eadd0!important}.eyebrow{color:#f0c875}.city-picker{background:#111a3a;border-color:#45558a;color:#e9efff}.city-picker select{border-color:#45558a;color:#fff;background:#111a3a}.panchang-status{background:#111a3a;border-color:#58699d;color:#dce5ff}.panchang-grid .calendar-card{background:linear-gradient(145deg,#17224c,#0e1635);border-color:#324474;box-shadow:0 14px 30px #02061742}.panchang-grid .calendar-card:not(.featured) h3{color:#fffdf7}.panchang-grid .card-label{color:#f0c875}.panchang-grid .detail{color:#bdc9e8}.panchang-footnote,.panchang-footnote small{color:#aebcdd}.panchang-footnote a{color:#f0c875}
 </style>
