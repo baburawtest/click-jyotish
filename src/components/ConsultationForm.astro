@@ -230,8 +230,8 @@ const consultationTypes = [
   <div id="booking-success-modal" class="booking-modal" aria-hidden="true" role="dialog">
     <div class="modal-overlay"></div>
     <div class="modal-card">
-      <div class="modal-icon">✅</div>
-      <h3>Consultation Request Prepared!</h3>
+      <div class="modal-icon" id="booking-modal-icon">✅</div>
+      <h3 id="booking-modal-title">Consultation Request Prepared!</h3>
       <p class="modal-msg">
         <span class="modal-msg-before">Thank you</span> <strong id="modal-client-name"></strong>! <span class="modal-msg-after">Your Vedic consultation request has been recorded.</span>
       </p>
@@ -307,10 +307,13 @@ const consultationTypes = [
       processing: 'Processing your request... ⏳',
       modalTitle: 'Consultation Request Prepared!',
       modalGreeting: 'Thank you', modalAfter: 'Your Vedic consultation request has been recorded.',
+      modalFallbackTitle: 'Send your request on WhatsApp',
+      modalFallbackAfter: 'The private online inbox is temporarily unavailable. Please send the prepared WhatsApp message so your request reaches Deepak.',
       modalService: 'Service:', modalFee: 'Consultation Fee:', modalBirth: 'Birth Details:',
       modalWhatsapp: 'Open WhatsApp to Confirm Slot with Deepak 💬',
       modalCalendar: 'View Available Calendar Slots', modalClose: 'Done & Close',
       modalNote: 'After opening WhatsApp, simply send the pre-written message to lock in your preferred session time.',
+      modalFallbackNote: 'Your details are shown above only on this device; they have not been saved online.',
       serviceNames: {
         kundali: 'Vedic Kundali & Dasha Analysis', career: 'Career, Job Change & Business Timing', marriage: 'Kundali Milan & Relationship Harmony', vastu: 'Home & Workplace Vastu Shastra', palmistry: 'Palmistry & Hand Analysis (Hastarekha)'
       }
@@ -348,10 +351,13 @@ const consultationTypes = [
       processing: 'आपका अनुरोध भेजा जा रहा है... ⏳',
       modalTitle: 'परामर्श अनुरोध तैयार है!',
       modalGreeting: 'धन्यवाद', modalAfter: 'आपका वैदिक परामर्श अनुरोध दर्ज हो गया है।',
+      modalFallbackTitle: 'अपना अनुरोध WhatsApp पर भेजें',
+      modalFallbackAfter: 'निजी ऑनलाइन इनबॉक्स अभी उपलब्ध नहीं है। कृपया पहले से तैयार WhatsApp संदेश भेजें, ताकि आपका अनुरोध दीपक तक पहुंच सके।',
       modalService: 'सेवा:', modalFee: 'परामर्श शुल्क:', modalBirth: 'जन्म विवरण:',
       modalWhatsapp: 'दीपक से स्लॉट पक्का करने के लिए WhatsApp खोलें 💬',
       modalCalendar: 'उपलब्ध कैलेंडर स्लॉट देखें', modalClose: 'पूरा हुआ',
       modalNote: 'WhatsApp खुलने पर पहले से लिखा संदेश भेजें और अपना पसंदीदा समय पक्का करें।',
+      modalFallbackNote: 'ऊपर दिए गए विवरण केवल इस डिवाइस पर दिख रहे हैं; वे ऑनलाइन सुरक्षित नहीं हुए हैं।',
       serviceNames: {
         kundali: 'वैदिक कुंडली एवं दशा विश्लेषण', career: 'करियर, नौकरी परिवर्तन एवं व्यवसाय समय', marriage: 'कुंडली मिलान एवं संबंध सामंजस्य', vastu: 'घर एवं कार्यस्थल वास्तु शास्त्र', palmistry: 'हस्तरेखा एवं हाथ विश्लेषण'
       }
@@ -449,7 +455,7 @@ const consultationTypes = [
       setRequiredLabel('label[for="lead-consent"]', text.consent);
       setText('#submit-lead-btn span', text.submit);
       setText('.submit-disclaimer', text.disclaimer);
-      setText('.modal-card h3', text.modalTitle);
+      setText('#booking-modal-title', text.modalTitle);
       setText('.modal-msg-before', text.modalGreeting);
       setText('.modal-msg-after', text.modalAfter);
       const summaryLabels = section?.querySelectorAll<HTMLElement>('.modal-summary-box .ms-row > span:first-child');
@@ -583,6 +589,7 @@ const consultationTypes = [
       };
 
       // Save centrally to the private Click Jyotish lead inbox.
+      let inboxSaved = false;
       try {
         const response = await fetch('/api/leads', {
           method: 'POST',
@@ -591,9 +598,9 @@ const consultationTypes = [
         });
 
         if (!response.ok) throw new Error('Lead inbox could not save the request');
+        inboxSaved = true;
       } catch (err) {
         console.error('Lead save error:', err);
-        alert('We could not save your request at the moment. Please send the WhatsApp message so Deepak can assist you.');
       }
 
       // Format WhatsApp Deep-Link Message
@@ -624,10 +631,19 @@ _Please let me know the available time slot and payment details. Thank you._`;
       const modalBirth = document.getElementById('modal-birth-info');
       const modalWaBtn = document.getElementById('modal-wa-btn') as HTMLAnchorElement;
       const modalPrice = document.getElementById('modal-price') as HTMLElement;
+      const modalIcon = document.getElementById('booking-modal-icon');
+      const modalTitle = document.getElementById('booking-modal-title');
+      const modalAfter = document.querySelector('.modal-msg-after');
+      const modalNote = document.querySelector('.modal-note');
+      const text = bookingText[currentLanguage];
 
       if (modalName) modalName.textContent = name;
       if (modalService) modalService.textContent = service;
       if (modalBirth) modalBirth.textContent = `${dob} | ${leadPayload.tob} | ${pob}`;
+      if (modalIcon) modalIcon.textContent = inboxSaved ? '✅' : '💬';
+      if (modalTitle) modalTitle.textContent = inboxSaved ? text.modalTitle : text.modalFallbackTitle;
+      if (modalAfter) modalAfter.textContent = inboxSaved ? text.modalAfter : text.modalFallbackAfter;
+      if (modalNote) modalNote.textContent = inboxSaved ? text.modalNote : text.modalFallbackNote;
       if (modalPrice) {
         const selectedPrice = serviceSelect?.selectedOptions[0]?.dataset.price || '';
         modalPrice.textContent = selectedPrice === 'Custom quote' ? 'Custom quote after review' : `${selectedPrice} · 15-minute online consultation`;
