@@ -529,14 +529,39 @@ const consultationTypes = [
         const source = params.get('utm_source');
         const medium = params.get('utm_medium');
         const campaign = params.get('utm_campaign');
+        const content = params.get('utm_content');
         const landing = window.location.pathname || '/';
+        const storageKey = 'click-jyotish-lead-attribution';
+        const remember = (value) => {
+          try { window.sessionStorage.setItem(storageKey, value); }
+          catch { /* Tracking should never block a consultation request. */ }
+        };
+        const recalled = () => {
+          try { return window.sessionStorage.getItem(storageKey); }
+          catch { return null; }
+        };
 
         if (source) {
-          return `UTM: ${source}${medium ? ` / ${medium}` : ''}${campaign ? ` / ${campaign}` : ''} · ${landing}`;
+          const value = `UTM: ${[source, medium, campaign, content].filter(Boolean).join(' / ')}`;
+          remember(value);
+          return `${value} · ${landing}`;
         }
-        if (params.get('gclid')) return `Google Ads · ${landing}`;
+        if (params.get('gclid')) {
+          const value = 'Google Ads';
+          remember(value);
+          return `${value} · ${landing}`;
+        }
+        const previousSource = recalled();
+        if (previousSource) return `${previousSource} · ${landing}`;
         if (document.referrer) {
-          try { return `Referral: ${new URL(document.referrer).hostname} · ${landing}`; }
+          try {
+            const referrer = new URL(document.referrer);
+            if (referrer.origin !== window.location.origin) {
+              const value = `Referral: ${referrer.hostname}`;
+              remember(value);
+              return `${value} · ${landing}`;
+            }
+          }
           catch { /* Ignore an invalid referrer. */ }
         }
         return `Direct · ${landing}`;
@@ -580,7 +605,6 @@ I would like to enquire about *${service}*.
 • *Name:* ${name}
 • *Phone:* ${phone}
 ${email ? `• *Email:* ${email}\n` : ''}• *Date of Birth:* ${dob}
-• *Date of Birth:* ${dob}
 • *Time of Birth:* ${leadPayload.tob}
 • *Place of Birth:* ${pob}
 • *Language:* ${language}

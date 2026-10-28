@@ -506,7 +506,7 @@ async function submitLead(request: Request, env: Env, ctx: ExecutionContext) {
     dob: clean(input.dob, 20), tob: clean(input.tob, 60), pob: clean(input.pob, 160),
     service: clean(input.service, 180), language: clean(input.language, 40),
     preferredSlot: clean(input.preferredSlot, 100), question: clean(input.question, 2000),
-    source: clean(input.source, 80) || 'Click Jyotish Website'
+    source: clean(input.source, 180) || 'Click Jyotish Website'
   };
   const needsBirthDetails = !/Vastu|Palmistry/i.test(lead.service);
   const needsServiceQuestion = /Vastu|Palmistry/i.test(lead.service);
