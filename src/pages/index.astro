@@ -95,22 +95,22 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
       <div class="wrap hero-container">
         <!-- Hero Left Content -->
         <div class="hero-content">
-          <div class="hero-trust-pill">
+          <div class="hero-trust-pill" data-reveal style="--reveal-delay: 40ms">
             <span class="pulse-dot"></span>
             <span>ONLINE CONSULTATIONS · HINDI & ENGLISH</span>
           </div>
 
-          <h1 class="hero-heading">
+          <h1 class="hero-heading" data-reveal style="--reveal-delay: 120ms">
             Find clarity.<br />
             Move forward<br />
             with confidence.
           </h1>
 
-          <p class="hero-lead">
+          <p class="hero-lead" data-reveal style="--reveal-delay: 210ms">
             Personal guidance in Vedic Astrology, Vastu Shastra and Palmistry with {site.astrologer}—offered with sincere care, confidentiality and practical perspective.
           </p>
 
-          <div class="hero-cta-group">
+          <div class="hero-cta-group" data-reveal style="--reveal-delay: 300ms">
             <a class="btn btn-gold btn-hero" href="#book">
               Choose consultation
             </a>
@@ -122,7 +122,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
             </a>
           </div>
 
-          <div class="hero-badges-row">
+          <div class="hero-badges-row" data-reveal style="--reveal-delay: 390ms">
             <div class="h-badge-item">
               <span class="hb-icon">🛡️</span>
               <span>100% Confidential</span>
@@ -139,7 +139,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
         </div>
 
         <!-- Hero Right Cosmic Graphic -->
-        <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual" aria-hidden="true" data-reveal style="--reveal-delay: 180ms">
           <div class="cosmic-orbit-system">
             <div class="orbit-ring ring-outer"></div>
             <div class="orbit-ring ring-mid"></div>
@@ -160,7 +160,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     <!-- Highlighted free palm reading entry point -->
     <section class="free-palm-feature" aria-labelledby="free-palm-title">
       <div class="wrap">
-        <div class="free-palm-card">
+        <div class="free-palm-card" data-reveal>
           <div class="free-palm-copy">
             <p class="free-palm-badge"><span aria-hidden="true">✦</span> FREE PALM READING</p>
             <p class="free-palm-eyebrow">HASTAREKHA · सक्रिय हस्तरेखा</p>
@@ -181,29 +181,37 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     </section>
 
     <!-- Moon-sign explanation and free finder -->
-    <MoonRashiFinder />
+    <div data-reveal>
+      <MoonRashiFinder />
+    </div>
 
     <!-- Quick Moon-Rashi compatibility overview -->
-    <RashiCompatibility />
+    <div data-reveal>
+      <RashiCompatibility />
+    </div>
 
     <!-- Daily Rashifal & Horoscope Component -->
-    <DailyRashifal />
+    <div data-reveal>
+      <DailyRashifal />
+    </div>
 
     <!-- Free Daily Panchang Component -->
-    <PanchangRequest />
+    <div data-reveal>
+      <PanchangRequest />
+    </div>
 
     <!-- Services Section -->
     <section id="services" class="section services-section">
       <div class="wrap">
-        <div class="section-header text-center">
+        <div class="section-header text-center" data-reveal>
           <p class="eyebrow-text">OUR CONSULTATION DOMAINS</p>
           <h2>Personalized Guidance & Remedies</h2>
           <p class="section-desc">Grounded in classical Parashari & Jaimini Vedic texts, delivered with modern clarity.</p>
         </div>
 
         <div class="services-grid">
-          {site.services.map((srv) => (
-            <div class="service-card">
+          {site.services.map((srv, index) => (
+            <div class="service-card" data-reveal style={`--reveal-delay: ${index * 85}ms`}>
               <div class="service-icon">{srv.icon}</div>
               <h3>{srv.title}</h3>
               <p>{srv.desc}</p>
@@ -218,16 +226,16 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
 
     <section class="section consultation-expectations">
       <div class="wrap expectations-grid">
-        <div class="expectations-intro">
+        <div class="expectations-intro" data-reveal>
           <p class="eyebrow-text">A CLEAR CONSULTATION EXPERIENCE</p>
           <h2>Personal guidance, without unnecessary complexity.</h2>
           <p>Choose the service that fits your question. We collect only the details that are relevant, confirm the suitable time, and keep the conversation focused on practical clarity.</p>
           <a href="#book" class="text-cta">Start your consultation request →</a>
         </div>
         <div class="expectations-list">
-          <article><span>01</span><div><h3>Choose your focus</h3><p>Kundali, career, relationships, Palmistry or Vastu.</p></div></article>
-          <article><span>02</span><div><h3>Share only relevant details</h3><p>Birth details for Kundali work; property information for Vastu; your question for Palmistry.</p></div></article>
-          <article><span>03</span><div><h3>Confirm your session personally</h3><p>Choose a calendar slot or confirm the best time directly on WhatsApp.</p></div></article>
+          <article data-reveal style="--reveal-delay: 80ms"><span>01</span><div><h3>Choose your focus</h3><p>Kundali, career, relationships, Palmistry or Vastu.</p></div></article>
+          <article data-reveal style="--reveal-delay: 160ms"><span>02</span><div><h3>Share only relevant details</h3><p>Birth details for Kundali work; property information for Vastu; your question for Palmistry.</p></div></article>
+          <article data-reveal style="--reveal-delay: 240ms"><span>03</span><div><h3>Confirm your session personally</h3><p>Choose a calendar slot or confirm the best time directly on WhatsApp.</p></div></article>
         </div>
       </div>
     </section>
@@ -235,7 +243,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     <!-- Meet The Astrologer Section -->
     <section id="about" class="section about-section">
       <div class="wrap about-grid">
-        <div class="about-image-wrapper">
+        <div class="about-image-wrapper" data-reveal>
           <img src="/images/deepak-maheshwari.webp" alt="Deepak Maheshwari - Click Jyotish" class="about-img" width="640" height="1127" loading="lazy" decoding="async" />
           <div class="about-badge">
             <span>Deepak Maheshwari</span>
@@ -243,7 +251,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
           </div>
         </div>
 
-        <div class="about-content">
+        <div class="about-content" data-reveal style="--reveal-delay: 100ms">
           <p class="eyebrow-text">MEET THE PRACTITIONER</p>
           <h2>Clear, Compassionate & Actionable Advice</h2>
           <p>
@@ -276,14 +284,14 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     <!-- Insights / Articles Section -->
     <section id="insights" class="section insights-section">
       <div class="wrap">
-        <div class="section-header text-center">
+        <div class="section-header text-center" data-reveal>
           <p class="eyebrow-text">READING & INSIGHTS</p>
           <h2>Articles & Vedic Reflections</h2>
         </div>
 
         <div class="insights-grid">
-          {site.insights.map((article) => (
-            <div class="insight-card">
+          {site.insights.map((article, index) => (
+            <div class="insight-card" data-reveal style={`--reveal-delay: ${index * 85}ms`}>
               <span class="insight-date">{article.date}</span>
               <h3>{article.title}</h3>
               <p>{article.summary}</p>
@@ -485,6 +493,20 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     const language = (event as CustomEvent<{ language?: HomeLanguage }>).detail?.language;
     applyHomeLanguage(language === 'hi' ? 'hi' : 'en');
   }) as EventListener);
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('motion-ready');
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -24px' });
+
+    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => revealObserver.observe(element));
+  }
 </script>
 
 <style>
@@ -580,6 +602,20 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     padding: 90px 0 110px;
     overflow: hidden;
   }
+  .hero-section::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    right: -90px;
+    bottom: -135px;
+    width: 430px;
+    height: 430px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124, 103, 220, .26) 0%, rgba(83, 155, 255, .1) 40%, transparent 70%);
+    transform: translate3d(0, 0, 0) scale(.92);
+    animation: ambient-drift 11s ease-in-out infinite;
+    pointer-events: none;
+  }
   .dot-grid-pattern {
     position: absolute;
     inset: 0;
@@ -617,6 +653,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     border-radius: 50%;
     background: #22c55e;
     box-shadow: 0 0 8px #22c55e;
+    animation: status-pulse 2.4s ease-in-out infinite;
   }
   .hero-heading {
     font-size: clamp(40px, 5.2vw, 64px);
@@ -727,6 +764,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     align-items: center;
     justify-content: center;
     z-index: 5;
+    animation: moon-hover 6s ease-in-out infinite;
   }
   .om-symbol {
     font-family: "Noto Serif Devanagari", serif;
@@ -737,9 +775,13 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
   .planet { position: absolute; border-radius: 50%; }
   .planet-gold { width: 14px; height: 14px; background: #eab308; top: 55px; left: 70px; box-shadow: 0 0 10px #eab308; }
   .planet-blue { width: 12px; height: 12px; background: #38bdf8; bottom: 75px; right: 55px; box-shadow: 0 0 10px #38bdf8; }
-  .planet-white { width: 8px; height: 8px; background: #ffffff; top: 130px; right: 15px; box-shadow: 0 0 18px #fff; }
+  .planet-white { width: 8px; height: 8px; background: #ffffff; top: 130px; right: 15px; box-shadow: 0 0 18px #fff; animation: star-twinkle 2.8s ease-in-out infinite; }
   @keyframes cosmic-spin { to { transform: rotate(360deg); } }
-  @media (prefers-reduced-motion: reduce) { .ring-outer,.ring-mid,.ring-inner { animation: none; } }
+  @keyframes status-pulse { 0%,100% { transform: scale(1); opacity: .82; } 50% { transform: scale(1.35); opacity: 1; } }
+  @keyframes moon-hover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes star-twinkle { 0%,100% { transform: scale(.85); opacity: .55; } 50% { transform: scale(1.35); opacity: 1; } }
+  @keyframes ambient-drift { 0%,100% { transform: translate3d(0, 0, 0) scale(.92); opacity: .72; } 50% { transform: translate3d(-18px, -14px, 0) scale(1.05); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .hero-section::after,.ring-outer,.ring-mid,.ring-inner,.central-sun,.planet-white,.pulse-dot { animation: none; } }
 
   /* Free Palm Reading highlight */
   .free-palm-feature{padding:54px 0;background:linear-gradient(145deg,#080d23,#142555 50%,#2b1e48)}.free-palm-card{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:32px;min-height:390px;padding:48px 58px;overflow:hidden;border:1px solid rgba(238,194,112,.52);border-radius:22px;background:radial-gradient(circle at 88% 14%,rgba(67,160,255,.29),transparent 17rem),linear-gradient(120deg,#111c41,#1b1742 72%,#162b5c);box-shadow:0 24px 65px rgba(2,6,23,.45)}.free-palm-copy{position:relative;z-index:2}.free-palm-badge{display:inline-flex;align-items:center;gap:8px;margin:0 0 17px;padding:7px 12px;border:1px solid rgba(240,200,117,.55);border-radius:99px;background:rgba(235,183,74,.1);color:#ffe0a3;font-size:11px;font-weight:900;letter-spacing:1.45px}.free-palm-badge span{color:#f9cb60;font-size:16px}.free-palm-eyebrow{margin:0 0 8px;color:#93d7ff;font-size:11px;font-weight:800;letter-spacing:1.65px}.free-palm-copy h2{max-width:620px;margin:0;color:#fffdf7;font-size:clamp(32px,3.7vw,50px)}.free-palm-copy>p:not(.free-palm-badge):not(.free-palm-eyebrow){max-width:575px;margin:16px 0 20px;color:#d6e0f8;font-size:16px;line-height:1.65}.free-palm-steps{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:23px}.free-palm-steps span{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(151,182,233,.34);border-radius:7px;background:#0c1637;color:#d9e6fb;font-size:12px}.free-palm-steps b{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:50%;background:#e5b45f;color:#0d1634;font-size:11px}.free-palm-cta{display:inline-flex;align-items:center;gap:18px;padding:14px 19px;border-radius:8px;background:linear-gradient(135deg,#f1cc78,#cb8c35);color:#07112a;font-size:15px;font-weight:900;box-shadow:0 9px 22px rgba(215,157,56,.24);transition:transform .2s,box-shadow .2s}.free-palm-cta:hover{transform:translateY(-2px);box-shadow:0 13px 28px rgba(215,157,56,.35)}.free-palm-cta span{font-size:22px;line-height:1}.free-palm-copy>small{display:block;margin-top:11px;color:#aec4e7;font-size:11px}.free-palm-visual{position:relative;isolation:isolate;align-self:center;justify-self:end;width:min(100%,368px);height:302px;overflow:visible;animation:palm-photo-float 6s ease-in-out infinite}.free-palm-visual::before{position:absolute;z-index:0;inset:-18px;content:"";border:1px solid rgba(130,197,255,.3);border-radius:24px;transform:rotate(4deg);background:linear-gradient(140deg,rgba(93,147,255,.14),transparent 45%)}.free-palm-photo{position:absolute;z-index:1;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 46%;border:1px solid rgba(204,228,255,.5);border-radius:19px;box-shadow:0 22px 48px rgba(1,5,23,.5)}.palm-photo-glow{position:absolute;z-index:2;inset:1px;border-radius:19px;background:linear-gradient(125deg,rgba(108,211,255,.2),transparent 33%,transparent 67%,rgba(241,190,90,.15));pointer-events:none}.palm-light-sweep{position:absolute;z-index:3;top:-25%;bottom:-25%;left:0;width:28%;pointer-events:none;opacity:.72;background:linear-gradient(90deg,transparent,rgba(144,238,255,.05) 25%,rgba(247,221,159,.64) 51%,rgba(144,238,255,.08) 76%,transparent);filter:blur(2px);transform:translateX(-470%) skewX(-18deg);animation:palm-light-sweep 5.8s cubic-bezier(.22,.8,.3,1) infinite}.palm-photo-caption{position:absolute;z-index:4;right:-20px;bottom:22px;display:flex;align-items:center;gap:10px;max-width:280px;padding:12px 16px;border:1px solid rgba(242,202,122,.68);border-radius:11px;background:rgba(9,16,43,.88);color:#f7f2e8;box-shadow:0 12px 28px rgba(0,0,0,.28);backdrop-filter:blur(9px)}.palm-photo-caption span{color:#ffd070;font-size:21px}.palm-photo-caption small{display:block;margin-bottom:3px;color:#a7d9ff;font-size:9px;font-weight:900;letter-spacing:1.12px}.palm-photo-caption strong{display:block;font-size:12px;line-height:1.3}.free-palm-visual:hover{animation-play-state:paused}.free-palm-visual:hover .palm-light-sweep{animation-play-state:paused}@keyframes palm-photo-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes palm-light-sweep{0%,22%{transform:translateX(-470%) skewX(-18deg);opacity:0}31%{opacity:.82}52%,100%{transform:translateX(520%) skewX(-18deg);opacity:0}}@media (prefers-reduced-motion:reduce){.free-palm-visual,.palm-light-sweep{animation:none}}
@@ -770,14 +812,15 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     border: 1px solid rgba(153,177,240,.28);
     border-radius: 18px;
     padding: 32px 26px;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
-  .service-card:hover {
+  .service-card:hover,.service-card:focus-within {
     transform: translateY(-4px);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
     border-color: #e5b45f;
   }
-  .service-icon { font-size: 34px; margin-bottom: 16px; }
+  .service-icon { font-size: 34px; margin-bottom: 16px; transition: transform .25s ease; }
+  .service-card:hover .service-icon,.service-card:focus-within .service-icon { transform: scale(1.12) rotate(-4deg); }
   .service-card h3 { font-size: 21px; color: #fffdf7; margin: 0 0 12px; }
   .service-card p { font-size: 14.5px; color: #c4cdea; line-height: 1.6; margin-bottom: 20px; }
   .service-link { font-size: 14px; font-weight: 700; color: #f0c875; text-decoration: none; }
@@ -835,7 +878,8 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
 
   /* Insights */
   .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
-  .insight-card { background:linear-gradient(145deg,rgba(27,39,81,.9),rgba(13,20,50,.92)); border: 1px solid rgba(153,177,240,.28); border-radius: 18px; padding: 30px; }
+  .insight-card { background:linear-gradient(145deg,rgba(27,39,81,.9),rgba(13,20,50,.92)); border: 1px solid rgba(153,177,240,.28); border-radius: 18px; padding: 30px; transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease; }
+  .insight-card:hover,.insight-card:focus-within { transform:translateY(-5px); border-color:rgba(229,180,95,.75); box-shadow:0 18px 40px rgba(0,0,0,.24); }
   .insight-date { font-size: 11px; letter-spacing: 1.5px; color: #c7913e; font-weight: 700; }
   .insight-card h3 { font-size: 21px; color: #fffdf7; margin: 10px 0 12px; }
   .insight-card p { font-size: 14.5px; color: #c4cdea; margin-bottom: 20px; }
@@ -897,6 +941,17 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
   .footer-links a:hover { color: #c7913e; }
   .footer-bottom { padding-top: 24px; font-size: 12px; text-align: center; color: #64748b; }
 
+  /* Motion is progressive: without JavaScript every section remains fully visible. */
+  .motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition: opacity .62s cubic-bezier(.2,.75,.3,1), transform .62s cubic-bezier(.2,.75,.3,1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .motion-ready [data-reveal].is-visible { opacity: 1; transform: translate3d(0, 0, 0); will-change: auto; }
+  @media (prefers-reduced-motion: reduce) { .motion-ready [data-reveal] { opacity:1; transform:none; transition:none; } }
+
   /* Responsive */
   @media (max-width: 900px) {
     .hero-section { padding: 48px 0 44px; }
@@ -918,6 +973,7 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
     .consultation-strip-inner { min-height: 48px; font-size: 12px; }
     .free-palm-card { grid-template-columns: 1fr; padding: 36px 30px 26px; gap: 10px; }
     .free-palm-visual { min-height: 240px; max-width: 370px; width: 100%; margin: 0 auto; }
+    .hero-section::after { opacity: .38; }
   }
   @media (max-width: 560px) {
     .consultation-strip-inner { flex-direction: column; justify-content: center; gap: 2px; padding: 7px 0; text-align: center; }
