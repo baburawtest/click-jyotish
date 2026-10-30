@@ -30,32 +30,6 @@ export const site = {
       link: '/palmistry-consultation'
     }
   ],
-  insights: [
-    {
-      date: 'CHHATH PUJA 2026 · PREPARATION',
-      title: 'Chhath Puja 2026: Dates & a Respectful Preparation Guide',
-      summary: 'The four-day Chhath observance, its verified dates and simple, thoughtful preparation guidance.',
-      link: '/blog/chhath-puja-2026-dates-preparation-guide'
-    },
-    {
-      date: 'DIWALI 2026 · VASTU',
-      title: 'Diwali Vastu Checklist: Prepare Your Home With Intention',
-      summary: 'A practical and respectful checklist for preparing your home or workplace before Deepavali.',
-      link: '/blog/diwali-vastu-home-preparation-2026'
-    },
-    {
-      date: 'PALMISTRY · PREPARATION',
-      title: 'Online Palmistry: How to Prepare Your Hand Photos',
-      summary: 'A respectful, practical guide to preparing for an online Palmistry consultation.',
-      link: '/blog/palmistry-online-consultation'
-    },
-    {
-      date: 'VASTU · PRACTICAL GUIDE',
-      title: 'Before a Vastu Consultation: A Simple Home Checklist',
-      summary: 'What to prepare before discussing a home, office or workplace with a Vastu practitioner.',
-      link: '/blog/vastu-consultation-home-checklist'
-    }
-  ]
 };
 
 export const content = {

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 import { site } from '../data/site';
 import DailyRashifal from '../components/DailyRashifal.astro';
 import MoonRashiFinder from '../components/MoonRashiFinder.astro';
@@ -84,6 +85,9 @@ const organizationSchema = {
   }
 };
 const isHindiRoute = Astro.url.pathname.startsWith('/hi');
+const latestInsights = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
 ---
 
 <BaseLayout title={isHindiRoute ? 'क्लिक ज्योतिष | वैदिक ज्योतिष, वास्तु और हस्तरेखा' : `${site.name} | Vedic Astrology, Vastu & Palmistry`} description={isHindiRoute ? 'दीपक महेश्वरी के साथ कुंडली, वास्तु और हस्तरेखा पर स्पष्ट, सम्मानजनक और व्यावहारिक व्यक्तिगत परामर्श।' : 'Book a personal online Vedic Astrology, Vastu or Palmistry consultation with Deepak Maheshwari. personal guidance in Hindi or English.'} locale={isHindiRoute ? 'hi' : 'en'} structuredData={organizationSchema}>
@@ -290,12 +294,12 @@ const isHindiRoute = Astro.url.pathname.startsWith('/hi');
         </div>
 
         <div class="insights-grid">
-          {site.insights.map((article, index) => (
+          {latestInsights.map((article, index) => (
             <div class="insight-card" data-reveal style={`--reveal-delay: ${index * 85}ms`}>
-              <span class="insight-date">{article.date}</span>
-              <h3>{article.title}</h3>
-              <p>{article.summary}</p>
-              <a href={article.link} class="insight-link">Read full article →</a>
+              <span class="insight-date">{article.data.category}</span>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+              <a href={`/blog/${article.id}`} class="insight-link">Read full article →</a>
             </div>
           ))}
         </div>
