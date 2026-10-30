@@ -477,6 +477,22 @@ async function sendLeadAlert(webhookUrl: string, payload: AlertPayload) {
   });
   const responseText = (await response.text()).trim();
   if (!response.ok) throw new Error(`Webhook returned ${response.status}${responseText ? `: ${responseText.slice(0, 240)}` : ''}`);
+  // Apps Script can return HTTP 200 even when its own doPost handler reports
+  // an error. Treat that response as a failed alert so the admin test gives
+  // Deepak the actual problem instead of a false success message.
+  try {
+    const webhookResult: unknown = JSON.parse(responseText);
+    if (isRecord(webhookResult) && webhookResult.ok === false) {
+      const detail = clean(webhookResult.error, 240) || 'The alert service reported an unknown error.';
+      throw new Error(`Webhook reported a failure: ${detail}`);
+    }
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      // Non-JSON webhooks are still supported as long as they return 2xx.
+    } else {
+      throw error;
+    }
+  }
   return responseText.slice(0, 500);
 }
 
