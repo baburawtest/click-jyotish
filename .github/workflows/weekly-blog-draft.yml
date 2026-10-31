@@ -1,9 +1,6 @@
 name: Create weekly Click Jyotish blog draft
 
 on:
-  schedule:
-    # Monday 9:00 AM India Standard Time (03:30 UTC)
-    - cron: '30 3 * * 1'
   workflow_dispatch:
     inputs:
       topic:
