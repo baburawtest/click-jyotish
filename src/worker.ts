@@ -436,7 +436,7 @@ function dashboardHtml() {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Click Jyotish · Lead Inbox</title><style>
 *{box-sizing:border-box}body{margin:0;background:#f6f3ec;color:#18213d;font:15px system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1280px;margin:0 auto;padding:32px 20px}h1{margin:0;font-size:28px}p{color:#566276}.head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}.badge{background:#18213d;color:#fff;border-radius:99px;padding:8px 12px;font-weight:700;font-size:13px}.new-badge{background:#b77a27;margin-right:6px}button,select,input{font:inherit;border:1px solid #d6cfc1;border-radius:7px;padding:8px 10px;background:white;color:#18213d}button{cursor:pointer;background:#b77a27;color:#fff;border:0;font-weight:700}button:hover{background:#8d5e1e}.tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}.tools input{min-width:240px;flex:1}.tools .download{background:#18213d}.tools .download:hover{background:#303c61}.card{background:#fff;border:1px solid #e5dfd3;border-radius:12px;overflow:auto;box-shadow:0 6px 25px #3828090b}table{width:100%;border-collapse:collapse;min-width:1080px}th,td{text-align:left;padding:13px;border-bottom:1px solid #eee8df;vertical-align:top}th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#746c61;background:#fbfaf7}.new-row td{background:#fff8e8}.name{font-weight:800}.muted{color:#687385;font-size:13px}.reply{display:inline-block;margin-top:8px;color:#fff;background:#1eaa59;border-radius:5px;padding:6px 8px;text-decoration:none;font-size:12px;font-weight:800}.reply:hover{background:#158043}.question{max-width:280px;white-space:pre-wrap}.empty{text-align:center;padding:42px;color:#687385}@media(max-width:680px){.head{display:block}.badge{display:inline-block;margin-top:10px}.tools input{min-width:100%}}
-</style></head><body><main class="wrap"><div class="head"><div><h1>Click Jyotish Lead Inbox</h1><p>Private consultation requests from clickjyotish.in</p></div><div><span class="badge new-badge" id="newCount">New: —</span><span class="badge" id="count">Loading…</span> <button id="refresh">Refresh</button></div></div><div class="tools"><input id="search" type="search" placeholder="Search name, phone, email or question"><select id="statusFilter"><option value="new" selected>New leads to reply</option><option value="">All statuses</option><option value="contacted">Contacted</option><option value="booked">Booked</option><option value="closed">Closed</option></select><select id="sourceFilter"><option value="">All sources</option></select><button class="download" id="download">Download CSV</button><button class="download" id="testAlert">Test Google alert</button><span class="muted" id="alertResult" role="status"></span></div><section class="card"><table><thead><tr><th>Received</th><th>Client</th><th>Consultation</th><th>Birth details</th><th>Question</th><th>Source</th><th>Status</th></tr></thead><tbody id="leads"><tr><td colspan="7" class="empty">Loading leads…</td></tr></tbody></table></section></main><script>
+</style></head><body><main class="wrap"><div class="head"><div><h1>Click Jyotish Lead Inbox</h1><p>Private consultation requests from clickjyotish.in</p></div><div><span class="badge new-badge" id="newCount">New: —</span><span class="badge" id="count">Loading…</span> <button id="refresh">Refresh</button></div></div><div class="tools"><input id="search" type="search" placeholder="Search name, phone, email or question"><select id="statusFilter"><option value="new" selected>New leads to reply</option><option value="">All statuses</option><option value="contacted">Contacted</option><option value="booked">Booked</option><option value="closed">Closed</option></select><select id="sourceFilter"><option value="">All sources</option></select><button class="download" id="download">Download CSV</button></div><section class="card"><table><thead><tr><th>Received</th><th>Client</th><th>Consultation</th><th>Birth details</th><th>Question</th><th>Source</th><th>Status</th></tr></thead><tbody id="leads"><tr><td colspan="7" class="empty">Loading leads…</td></tr></tbody></table></section></main><script>
 const body=document.querySelector('#leads'),count=document.querySelector('#count'),newCount=document.querySelector('#newCount'),search=document.querySelector('#search'),statusFilter=document.querySelector('#statusFilter'),sourceFilter=document.querySelector('#sourceFilter');let leads=[];
 const esc=v=>String(v??'');
 const format=v=>v?new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'short'}).format(new Date(v)):'—';
@@ -447,7 +447,7 @@ function updateSources(){const selected=sourceFilter.value;const sources=[...new
 function csv(value){const text=String(value??'');return '"'+text.replace(/"/g,'""')+'"'}
 function downloadCsv(){const columns=['Received at','Name','Phone','Email','Service','Language','Date of birth','Time of birth','Place of birth','Preferred slot','Question','Source','Status'];const rows=leads.map(l=>[l.created_at,l.name,l.phone,l.email,l.service,l.language,l.dob,l.tob,l.pob,l.preferred_slot,l.question,l.source||'Direct',l.status]);const file=[columns,...rows].map(row=>row.map(csv).join(',')).join('\\n');const link=document.createElement('a');link.href=URL.createObjectURL(new Blob([file],{type:'text/csv;charset=utf-8'}));link.download='click-jyotish-leads.csv';link.click();URL.revokeObjectURL(link.href)}
 async function load(){body.innerHTML='<tr><td colspan="7" class="empty">Loading leads…</td></tr>';try{const r=await fetch('/api/leads');if(!r.ok)throw Error();const data=await r.json();leads=data.leads;updateSources();if(!leads.length){body.innerHTML='<tr><td colspan="7" class="empty">No leads yet. New requests will appear here.</td></tr>';count.textContent='0 leads';newCount.textContent='0 new';document.title='Click Jyotish · Lead Inbox';return}render()}catch{body.innerHTML='<tr><td colspan="7" class="empty">Could not load leads. Refresh the page and sign in again if asked.</td></tr>';count.textContent='Unable to load';newCount.textContent='New: —'}}
-document.querySelector('#refresh').onclick=load;document.querySelector('#download').onclick=downloadCsv;document.querySelector('#testAlert').onclick=async()=>{const button=document.querySelector('#testAlert'),result=document.querySelector('#alertResult');button.disabled=true;result.textContent='Sending test…';try{const r=await fetch('/api/leads/test-alert',{method:'POST'}),data=await r.json();if(!r.ok)throw Error(data.details||data.error||'The test alert failed.');result.textContent='✓ '+data.message;load()}catch(error){result.textContent='⚠ '+(error.message||'The test alert failed.')}finally{button.disabled=false}};search.oninput=render;statusFilter.onchange=render;sourceFilter.onchange=render;load();
+document.querySelector('#refresh').onclick=load;document.querySelector('#download').onclick=downloadCsv;search.oninput=render;statusFilter.onchange=render;sourceFilter.onchange=render;load();
 </script></body></html>`;
 }
 
@@ -466,7 +466,6 @@ type AlertPayload = {
   source: string;
   status: string;
   createdAt: string;
-  isTest?: boolean;
 };
 
 async function sendLeadAlert(webhookUrl: string, payload: AlertPayload) {
@@ -494,23 +493,6 @@ async function sendLeadAlert(webhookUrl: string, payload: AlertPayload) {
     }
   }
   return responseText.slice(0, 500);
-}
-
-async function testLeadAlert(env: Env) {
-  if (!env.LEAD_WEBHOOK_URL) return json({ error: 'Lead alert is not configured. Add the LEAD_WEBHOOK_URL secret first.' }, 400);
-  const payload: AlertPayload = {
-    id: 'test', name: 'Click Jyotish test lead', phone: '917669655530', email: 'support@clickjyotish.in',
-    dob: '', tob: '', pob: 'New Delhi, India', service: 'Lead alert connection test', language: 'English',
-    preferredSlot: '', question: 'This is a test alert. No client action is needed.',
-    source: 'Test alert — Click Jyotish', status: 'test', createdAt: new Date().toISOString(), isTest: true
-  };
-  try {
-    const response = await sendLeadAlert(env.LEAD_WEBHOOK_URL, payload);
-    return json({ ok: true, message: 'Google Sheets accepted the test alert. Check for the test row and email now.', response: response || 'No response body returned.' });
-  } catch (error) {
-    console.error('Lead alert test failed', error);
-    return json({ error: 'The alert endpoint did not accept the test.', details: error instanceof Error ? error.message : 'Unknown webhook error.' }, 502);
-  }
 }
 
 async function submitLead(request: Request, env: Env, ctx: ExecutionContext) {
@@ -571,9 +553,6 @@ export default {
     if (url.pathname === '/api/leads' && request.method === 'POST') return submitLead(request, env, ctx);
     if (url.pathname === '/api/leads' && request.method === 'GET') {
       const denied = requireAdmin(request, env); return denied ?? listLeads(request, env);
-    }
-    if (url.pathname === '/api/leads/test-alert' && request.method === 'POST') {
-      const denied = requireAdmin(request, env); return denied ?? testLeadAlert(env);
     }
     const match = url.pathname.match(/^\/api\/leads\/(\d+)$/);
     if (match && request.method === 'PATCH') {
