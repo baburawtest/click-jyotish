@@ -13,7 +13,7 @@ const { Content } = await render(post);
 const formattedDate = post.data.pubDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 const wa = `https://wa.me/${site.phone}?text=${encodeURIComponent(`Namaste Deepak, I read “${post.data.title}” and would like a consultation.`)}`;
 
-const structuredData = {
+const articleStructuredData = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: post.data.title,
@@ -25,6 +25,22 @@ const structuredData = {
   ...(post.data.featuredImage ? { image: `https://clickjyotish.in${post.data.featuredImage}` } : {}),
   mainEntityOfPage: `https://clickjyotish.in/blog/${post.id}`
 };
+const structuredData = post.data.faqs.length
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        articleStructuredData,
+        {
+          '@type': 'FAQPage',
+          mainEntity: post.data.faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: { '@type': 'Answer', text: faq.answer }
+          }))
+        }
+      ]
+    }
+  : articleStructuredData;
 ---
 <BaseLayout title={`${post.data.title} | Click Jyotish`} description={post.data.description} structuredData={structuredData}>
 
