@@ -13,12 +13,14 @@ if (!repository || !githubToken) throw new Error('GITHUB_REPOSITORY and GITHUB_T
 
 const today = new Date().toISOString().slice(0, 10);
 const searches = [
-  { category: 'Vedic astrology', query: 'Vedic astrology moon sign kundali questions Hindi', videos: 3 },
-  { category: 'Palmistry', query: 'Hastrekha palmistry questions Hindi', videos: 3 },
-  { category: 'Vastu', query: 'Vastu Shastra home questions Hindi', videos: 3 }
+  { category: 'Vedic astrology', query: 'Kundali Rashi Nakshatra questions Hindi', videos: 4 },
+  { category: 'Vedic astrology', query: 'Vedic astrology marriage career questions Hindi', videos: 4 },
+  { category: 'Palmistry', query: 'Hastrekha Palmistry lines questions Hindi', videos: 4 },
+  { category: 'Vastu', query: 'Vastu Shastra kitchen bedroom bathroom questions Hindi', videos: 4 }
 ];
 
 const questionWords = /[?？]|\b(what|why|when|where|which|who|how|can|does|do|is|are|will|should|kya|kyun|kaise|kab|kahan|kaun|konsa|konsi|kya)\b|क्या|क्यों|कैसे|कब|कहाँ|कौन|कौनसा|कौनसी|बताइए|बताये|बताओ|समझाइए|समझाएं/i;
+const curiosityWords = /\b(kundali|rashi|moon sign|nakshatra|dasha|marriage|career|job|business|palm|palmistry|hastrekha|hand line|vastu|vaastu|kitchen|bedroom|bathroom|ghar|house|dosh|remedy|please guide|help me)\b|कुंडली|राशि|नक्षत्र|दशा|विवाह|शादी|करियर|नौकरी|हस्तरेखा|हाथ|रेखा|वास्तु|रसोई|बेडरूम|बाथरूम|घर|दोष|उपाय|मार्गदर्शन/i;
 const phoneOrEmail = /(?:\+?\d[\d\s().-]{7,}\d)|(?:[\w.+-]+@[\w-]+\.[\w.-]+)/g;
 
 function cleanQuestion(value) {
@@ -31,7 +33,7 @@ function cleanQuestion(value) {
 }
 
 function isQuestion(value) {
-  return value.length >= 14 && questionWords.test(value);
+  return value.length >= 14 && (questionWords.test(value) || curiosityWords.test(value));
 }
 
 async function youtube(path, params) {
@@ -43,9 +45,10 @@ async function youtube(path, params) {
 }
 
 async function recentVideos(search) {
-  const publishedAfter = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString();
+  const publishedAfter = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString();
   const data = await youtube('search', {
-    part: 'snippet', type: 'video', q: search.query, order: 'date', maxResults: search.videos, publishedAfter
+    part: 'snippet', type: 'video', q: search.query, order: 'viewCount', maxResults: search.videos, publishedAfter,
+    regionCode: 'IN', relevanceLanguage: 'hi'
   });
   return (data.items ?? []).map((item) => item.id?.videoId).filter(Boolean);
 }
@@ -53,7 +56,7 @@ async function recentVideos(search) {
 async function questionsForVideo(videoId, category) {
   try {
     const data = await youtube('commentThreads', {
-      part: 'snippet', videoId, order: 'relevance', textFormat: 'plainText', maxResults: 50
+      part: 'snippet', videoId, order: 'relevance', textFormat: 'plainText', maxResults: 100
     });
     return (data.items ?? []).map((thread) => {
       const comment = thread?.snippet?.topLevelComment?.snippet ?? {};
@@ -86,11 +89,11 @@ for (const candidate of discovered) {
 }
 const candidates = [...unique.values()]
   .sort((a, b) => b.likes - a.likes || a.question.localeCompare(b.question))
-  .slice(0, 15);
+  .slice(0, 18);
 
 function issueBody() {
   if (!candidates.length) {
-    return `# Weekly question discovery\n\nNo usable public questions were found this week. Try again next Monday or run this workflow manually.\n\nThis workflow does not publish content automatically.`;
+    return `# Weekly question discovery\n\nNo usable public curiosity or question signals were found this week. The workflow searched four Hindi/English Vedic astrology, Palmistry and Vastu topics across recent public videos. Try again next Monday or run this workflow manually.\n\nThis workflow does not publish content automatically.`;
   }
   const groups = Object.groupBy(candidates, ({ category }) => category);
   const sections = Object.entries(groups).map(([category, items]) => [
@@ -114,4 +117,5 @@ const issueResponse = await fetch(issueUrl, {
 if (!issueResponse.ok) throw new Error(`Could not ${existing ? 'update' : 'create'} review issue: ${issueResponse.status} ${await issueResponse.text()}`);
 const issue = await issueResponse.json();
 console.log(`QUESTION_CANDIDATES=${candidates.length}`);
+console.log(`VIDEOS_CHECKED=${searches.length} search themes`);
 console.log(`REVIEW_ISSUE=${issue.html_url}`);
