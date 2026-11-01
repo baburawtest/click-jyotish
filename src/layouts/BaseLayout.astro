@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/site';
 import SiteHeader from '../components/SiteHeader.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 
 interface Props {
   title?: string;
@@ -25,6 +26,8 @@ const hasHindiTranslation = translatedPages.has(englishPath);
 const englishUrl = new URL(englishPath, Astro.site ?? 'https://clickjyotish.in').toString();
 const hindiPath = englishPath === '/' ? '/hi/' : `/hi${englishPath}`;
 const hindiUrl = new URL(hindiPath, Astro.site ?? 'https://clickjyotish.in').toString();
+const googleAnalyticsId = String(import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? 'G-X1BM3LJ5CY').trim();
+const hasGoogleAnalytics = /^G-[A-Z0-9]+$/.test(googleAnalyticsId);
 ---
 <!doctype html>
 <html lang={locale} data-locale={locale}>
@@ -55,7 +58,7 @@ const hindiUrl = new URL(hindiPath, Astro.site ?? 'https://clickjyotish.in').toS
     <title>{title}</title>
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
-  <body data-page-locale={locale} data-hindi-path={hasHindiTranslation && !(locale === 'en' && englishPath === '/') ? hindiPath : undefined} data-english-path={hasHindiTranslation ? englishPath : undefined}><SiteHeader /><slot /></body>
+  <body data-page-locale={locale} data-hindi-path={hasHindiTranslation && !(locale === 'en' && englishPath === '/') ? hindiPath : undefined} data-english-path={hasHindiTranslation ? englishPath : undefined}><SiteHeader /><slot />{hasGoogleAnalytics && <GoogleAnalytics measurementId={googleAnalyticsId} />}</body>
 </html>
 <style is:global>
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');

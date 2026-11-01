@@ -1,0 +1,84 @@
+---
+interface Props { measurementId: string }
+const { measurementId } = Astro.props;
+---
+
+<div class="analytics-choice" id="analytics-choice" role="region" aria-label="Analytics preference" hidden>
+  <p>May we use Google Analytics to learn which pages are useful? It is optional, and we do not send your consultation details.</p>
+  <div>
+    <button type="button" data-analytics-decline>Not now</button>
+    <button type="button" data-analytics-accept>Allow analytics</button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ measurementId }}>
+  (() => {
+    const key = 'click-jyotish-analytics-consent-v1';
+    const banner = document.getElementById('analytics-choice');
+    const reopen = document.querySelector('[data-analytics-settings]');
+    let choice;
+    try { choice = localStorage.getItem(key); } catch { choice = null; }
+
+    function enableAnalytics() {
+      const pageLocation = `${location.origin}${location.pathname}`;
+      let pageReferrer = '';
+      try {
+        if (document.referrer) {
+          const referrer = new URL(document.referrer);
+          pageReferrer = `${referrer.origin}${referrer.pathname}`;
+        }
+      } catch { /* Omit an invalid referrer. */ }
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId, {
+        send_page_view: false,
+        page_location: pageLocation,
+        page_referrer: pageReferrer,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+      });
+      const tag = document.createElement('script');
+      tag.async = true;
+      tag.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
+      document.head.appendChild(tag);
+      // Exclude query strings and form values from page-view reporting.
+      window.gtag('event', 'page_view', {
+        page_location: pageLocation,
+        page_referrer: pageReferrer,
+        page_path: location.pathname,
+        page_title: document.title
+      });
+    }
+
+    if (choice === 'accepted') enableAnalytics();
+    else if (!choice && banner) banner.hidden = false;
+
+    if (reopen) {
+      reopen.hidden = false;
+      reopen.addEventListener('click', () => { if (banner) banner.hidden = false; });
+    }
+    banner?.querySelector('[data-analytics-accept]')?.addEventListener('click', () => {
+      try { localStorage.setItem(key, 'accepted'); } catch { /* Session-only choice. */ }
+      banner.hidden = true;
+      if (choice !== 'accepted') enableAnalytics();
+      choice = 'accepted';
+    });
+    banner?.querySelector('[data-analytics-decline]')?.addEventListener('click', () => {
+      try { localStorage.setItem(key, 'declined'); } catch { /* Session-only choice. */ }
+      banner.hidden = true;
+      if (choice === 'accepted') location.reload();
+      choice = 'declined';
+    });
+  })();
+</script>
+
+<style>
+  .analytics-choice { position:fixed; z-index:1100; right:16px; bottom:16px; width:min(440px, calc(100% - 32px)); padding:18px; border:1px solid #7081b1; border-radius:14px; background:#111a3a; color:#f5f7ff; box-shadow:0 14px 40px #020617a6; }
+  .analytics-choice[hidden] { display:none; }
+  p { margin:0 0 14px; font-size:14px; line-height:1.5; }
+  .analytics-choice > div { display:flex; justify-content:flex-end; gap:9px; }
+  button { min-height:40px; padding:8px 13px; border:1px solid #6676a3; border-radius:7px; background:transparent; color:#fff; font:700 13px "DM Sans",sans-serif; cursor:pointer; }
+  [data-analytics-accept] { border-color:#e5b45f; background:#e5b45f; color:#08122b; }
+  @media (max-width:600px) { .analytics-choice { bottom:110px; max-height:calc(100vh - 140px); overflow:auto; } }
+</style>

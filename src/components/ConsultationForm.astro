@@ -648,7 +648,15 @@ _Please let me know the available time slot and payment details. Thank you._`;
         const selectedPrice = serviceSelect?.selectedOptions[0]?.dataset.price || '';
         modalPrice.textContent = selectedPrice === 'Custom quote' ? 'Custom quote after review' : `${selectedPrice} · 15-minute online consultation`;
       }
-      if (modalWaBtn) modalWaBtn.href = waUrl;
+      if (modalWaBtn) {
+        // Keep personal consultation details out of the link URL that analytics
+        // providers may inspect for automatic outbound-click measurement.
+        modalWaBtn.href = `https://wa.me/${astrologerPhone}`;
+        modalWaBtn.onclick = (event) => {
+          event.preventDefault();
+          window.open(waUrl, '_blank', 'noopener,noreferrer');
+        };
+      }
 
       if (modal) {
         modal.classList.add('active');
