@@ -9,6 +9,16 @@
       "binding": "LEADS_DB"
     }
   ],
+  "ratelimits": [
+    {
+      "name": "PALM_RATE_LIMITER",
+      "namespace_id": "20261120",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

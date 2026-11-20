@@ -1,12 +1,17 @@
 interface Env {
   ASSETS: Fetcher;
   LEADS_DB?: D1Database;
+  PALM_RATE_LIMITER?: WorkerRateLimit;
   ADMIN_USERNAME?: string;
   ADMIN_PASSWORD?: string;
   LEAD_WEBHOOK_URL?: string;
   SHUBH_API_KEY?: string;
   GEMINI_API_KEY?: string;
 }
+
+type WorkerRateLimit = {
+  limit(input: { key: string; delta?: number }): Promise<{ success: boolean }>;
+};
 
 type LeadInput = {
   name?: string;
@@ -286,8 +291,24 @@ async function dailyPanchang(env: Env, cityId: string | null) {
   }
 }
 
+function palmClientKey(request: Request) {
+  return request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() || 'unknown';
+}
+
+async function exceedsEdgePalmRateLimit(request: Request, env: Env) {
+  if (!env.PALM_RATE_LIMITER) return false;
+  try {
+    const result = await env.PALM_RATE_LIMITER.limit({ key: palmClientKey(request) });
+    return !result.success;
+  } catch {
+    // Preserve the request path if the optional Cloudflare binding is unavailable.
+    // The local daily limiter below still applies as a fallback.
+    return false;
+  }
+}
+
 function palmRateLimit(request: Request) {
-  const client = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() || 'unknown';
+  const client = palmClientKey(request);
   const now = Date.now();
   const current = palmRequestWindows.get(client);
   if (!current || current.resetAt <= now) {
@@ -394,6 +415,7 @@ async function palmReflection(request: Request, env: Env) {
   if (!env.GEMINI_API_KEY) return json({ error: 'The free palm reflection is being set up. Please try again shortly or request a personal reading.' }, 503);
   const origin = request.headers.get('Origin');
   if (origin && origin !== new URL(request.url).origin) return json({ error: 'This request must come from clickjyotish.in.' }, 403);
+  if (await exceedsEdgePalmRateLimit(request, env)) return json({ error: 'Please wait a minute before requesting another free reflection.' }, 429);
   const retryAfterMinutes = palmRateLimit(request);
   if (retryAfterMinutes !== null) return json({ error: `Please wait about ${retryAfterMinutes} minute${retryAfterMinutes === 1 ? '' : 's'} before another free reflection.` }, 429);
 
