@@ -583,6 +583,19 @@ export default {
     if (url.pathname === '/admin/leads') {
       const denied = requireAdmin(request, env); return denied ?? new Response(dashboardHtml(), { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
     }
+    // Astro publishes directory pages with a trailing slash. Make the alternate
+    // no-slash URLs permanently canonical before the static asset handler issues
+    // its default temporary redirect. This keeps search engines and shared links
+    // on one stable URL without touching API, file, or retired-shop routes.
+    const isPageRequest = (request.method === 'GET' || request.method === 'HEAD')
+      && url.pathname !== '/'
+      && !url.pathname.endsWith('/')
+      && !url.pathname.includes('.')
+      && !url.pathname.startsWith('/api/');
+    if (isPageRequest) {
+      url.pathname = `${url.pathname}/`;
+      return Response.redirect(url.toString(), 308);
+    }
     return env.ASSETS.fetch(request);
   }
 };
