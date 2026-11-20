@@ -1,14 +1,17 @@
 ---
-title: "Vastu Kitchen Direction: A Practical Checklist Before You Change Your Home"
-description: "Looking for Vastu kitchen direction guidance? Start with a simple layout checklist, practical limits and questions to ask before changing your home."
+title: "Kitchen Direction as Per Vastu: South-East and Practical Alternatives"
+description: "Kitchen direction as per Vastu: understand the traditional south-east preference, possible alternatives and safe practical checks before changing your home."
 pubDate: 2026-11-01
+updatedDate: 2026-11-20
 category: "Vastu"
 tags: ["Vastu kitchen direction", "kitchen Vastu", "वास्तु रसोई दिशा", "home Vastu", "Vastu checklist"]
-featuredImage: "/images/vastu-home-consultation-checklist.webp"
-featuredImageAlt: "A calm Indian home entrance prepared for a practical Vastu consultation"
+featuredImage: "/images/vastu-kitchen-direction.webp"
+featuredImageAlt: "A bright, orderly Indian modular kitchen with a cooking hob and natural daylight"
 faqs:
   - question: "Which direction is traditionally preferred for a Vastu kitchen?"
     answer: "Many Vastu traditions associate the south-east, or Agni, area with cooking. A real home may have practical limits, so start with a measured layout and do not make structural changes without appropriate professional advice."
+  - question: "What if the kitchen is not in the south-east?"
+    answer: "Some Vastu traditions discuss the north-west as an alternative when a south-east kitchen is not feasible. The full plan, safety, ventilation and fixed services still matter more than an isolated online rule."
   - question: "Should I rebuild my kitchen because of a Vastu concern?"
     answer: "No. Do not make costly or structural changes based only on a generic online rule. Consider safety, ventilation, plumbing, ownership requirements and qualified architectural or engineering advice before altering a home."
 ---
@@ -16,6 +19,12 @@ faqs:
 Searches for “Vastu kitchen direction” often promise one quick answer. Real homes are rarely that simple. A flat may have fixed plumbing, a rented home may have limited flexibility, and a family still needs a kitchen that is safe, ventilated and easy to use every day.
 
 In many Vastu traditions, the south-east area is associated with Agni, the fire element, so it is commonly discussed as a preferred area for cooking. That is a traditional starting point—not a reason to panic, demolish a wall or make an expensive change without understanding the whole home.
+
+## Which kitchen direction is preferred as per Vastu?
+
+The short answer is **south-east**. In traditional Vastu language, this is the Agni (fire) area and is therefore commonly associated with cooking. If a south-east placement is not feasible, some traditions discuss **north-west** as an alternative. This is not a universal rule that overrides a real floor plan, rental agreement, plumbing route or fire-safety requirement.
+
+In Hindi: **वास्तु में रसोई के लिए दक्षिण-पूर्व दिशा को अक्सर प्राथमिकता दी जाती है।** दक्षिण-पूर्व संभव न हो, तो कुछ परंपराओं में उत्तर-पश्चिम को विकल्प माना जाता है। किसी भी बदलाव से पहले घर का पूरा नक्शा, वेंटिलेशन और सुरक्षा समझना जरूरी है।
 
 ## संक्षेप में
 
