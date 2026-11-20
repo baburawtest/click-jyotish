@@ -1,0 +1,100 @@
+---
+import InfoPageLayout from '../layouts/InfoPageLayout.astro';
+import { site } from '../data/site';
+
+const authorUrl = 'https://clickjyotish.in/about-deepak-maheshwari/';
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: 'About Deepak Maheshwari | Click Jyotish',
+  url: authorUrl,
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${authorUrl}#person`,
+    name: site.astrologer,
+    url: authorUrl,
+    image: 'https://clickjyotish.in/images/deepak-maheshwari-yellow.jpg',
+    jobTitle: 'Vedic Astrology, Vastu and Palmistry practitioner',
+    worksFor: { '@type': 'Organization', name: site.name, url: 'https://clickjyotish.in/' },
+    address: { '@type': 'PostalAddress', addressLocality: 'New Delhi', addressCountry: 'IN' },
+    knowsAbout: ['Vedic Astrology', 'Janam Kundli', 'Vastu Shastra', 'Palmistry'],
+    availableLanguage: ['Hindi', 'English']
+  }
+};
+---
+
+<InfoPageLayout
+  title="About Deepak Maheshwari | Click Jyotish"
+  description="Learn about Deepak Maheshwari and Click Jyotish: personal Vedic Astrology, Vastu and Palmistry guidance from New Delhi in Hindi and English."
+  eyebrow="CLICK JYOTISH · ABOUT THE PRACTITIONER"
+  titleHi="दीपक महेश्वरी के बारे में | Click Jyotish"
+  descriptionHi="नई दिल्ली से हिंदी और अंग्रेज़ी में वैदिक ज्योतिष, वास्तु और हस्तरेखा पर व्यक्तिगत मार्गदर्शन।"
+  eyebrowHi="CLICK JYOTISH · विशेषज्ञ के बारे में"
+  {structuredData}
+>
+  <div class="author-language author-language-en">
+    <p class="notice"><strong>Personal guidance from New Delhi.</strong><br />Consultations are available online in Hindi and English, with the focus kept on your actual question rather than generic predictions.</p>
+
+    <div class="service-summary">
+      <div><span>BASED IN</span><strong>New Delhi, India</strong></div>
+      <div><span>LANGUAGES</span><strong>Hindi & English</strong></div>
+      <div><span>FORMAT</span><strong>Focused personal consultations</strong></div>
+    </div>
+
+    <h2>About Deepak Maheshwari</h2>
+    <p>Deepak Maheshwari offers personal Vedic Astrology, Janam Kundli, Vastu and Palmistry consultations through Click Jyotish. The approach is respectful, confidential and centred on helping visitors understand their question with practical perspective.</p>
+    <p>For a Kundli discussion, the most accurate available birth details are useful. For Vastu, the property type, city and a clear concern help determine the suitable next step. For Palmistry, a personal conversation can consider the visitor’s question alongside the hand-reading tradition.</p>
+
+    <h2>How Click Jyotish content is prepared</h2>
+    <p>Articles on this site provide general spiritual and cultural information. Date-specific festival and Panchang articles identify the relevant city and avoid treating a general article as a personal Muhurat service. Articles are intended to help a reader prepare a question, understand a tradition or decide whether a consultation would be useful.</p>
+    <p>Astrology, Vastu and Palmistry are spiritual guidance practices. They are not substitutes for medical, legal, financial, engineering, safety or mental-health professionals.</p>
+
+    <h2>Explore or request guidance</h2>
+    <ul>
+      <li>Read the <a href="/blog/">Click Jyotish articles and practical guides</a>.</li>
+      <li>Explore <a href="/vedic-astrology-consultation/">Vedic Astrology</a>, <a href="/vastu-consultation/">Vastu</a> or <a href="/palmistry-consultation/">Palmistry</a>.</li>
+      <li>Use the <a href="/?utm_source=author-page&utm_medium=website&utm_campaign=consultation#book">consultation request form</a> or ask on <a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a>.</li>
+    </ul>
+  </div>
+
+  <div class="author-language author-language-hi" hidden>
+    <p class="notice"><strong>नई दिल्ली से व्यक्तिगत मार्गदर्शन।</strong><br />परामर्श हिंदी और अंग्रेज़ी में ऑनलाइन उपलब्ध हैं। उद्देश्य सामान्य भविष्यवाणी नहीं, बल्कि आपके वास्तविक प्रश्न को समझना है।</p>
+
+    <div class="service-summary">
+      <div><span>स्थान</span><strong>नई दिल्ली, भारत</strong></div>
+      <div><span>भाषाएँ</span><strong>हिंदी और अंग्रेज़ी</strong></div>
+      <div><span>प्रारूप</span><strong>केंद्रित व्यक्तिगत परामर्श</strong></div>
+    </div>
+
+    <h2>दीपक महेश्वरी के बारे में</h2>
+    <p>दीपक महेश्वरी, Click Jyotish के माध्यम से वैदिक ज्योतिष, जन्म कुंडली, वास्तु और हस्तरेखा पर व्यक्तिगत परामर्श देते हैं। दृष्टिकोण सम्मानजनक, गोपनीय और आपके प्रश्न को व्यावहारिक दृष्टि से समझने पर केंद्रित है।</p>
+    <p>कुंडली परामर्श के लिए उपलब्ध सबसे सटीक जन्म विवरण उपयोगी होते हैं। वास्तु के लिए संपत्ति का प्रकार, शहर और स्पष्ट प्रश्न सही अगले कदम को तय करने में मदद करते हैं। हस्तरेखा के लिए व्यक्तिगत बातचीत आपके प्रश्न को परंपरागत अध्ययन के साथ समझने का अवसर देती है।</p>
+
+    <h2>Click Jyotish के लेख कैसे तैयार किए जाते हैं</h2>
+    <p>इस साइट के लेख सामान्य आध्यात्मिक और सांस्कृतिक जानकारी देते हैं। तिथि-विशेष पर्व और पंचांग लेख संबंधित शहर बताते हैं और सामान्य लेख को व्यक्तिगत मुहूर्त सेवा की तरह प्रस्तुत नहीं करते। इनका उद्देश्य परंपरा को समझने, प्रश्न तैयार करने या परामर्श की आवश्यकता तय करने में सहायता करना है।</p>
+    <p>ज्योतिष, वास्तु और हस्तरेखा आध्यात्मिक मार्गदर्शन की विधियाँ हैं। वे चिकित्सा, कानूनी, वित्तीय, इंजीनियरिंग, सुरक्षा या मानसिक-स्वास्थ्य विशेषज्ञों का विकल्प नहीं हैं।</p>
+
+    <h2>मार्गदर्शन जानें या अनुरोध करें</h2>
+    <ul>
+      <li><a href="/blog/">Click Jyotish के लेख और व्यावहारिक मार्गदर्शिकाएँ</a> पढ़ें।</li>
+      <li><a href="/vedic-astrology-consultation/">वैदिक ज्योतिष</a>, <a href="/vastu-consultation/">वास्तु</a> या <a href="/palmistry-consultation/">हस्तरेखा</a> जानें।</li>
+      <li><a href="/?utm_source=author-page&utm_medium=website&utm_campaign=consultation#book">परामर्श अनुरोध फॉर्म</a> भरें या <a href={site.whatsappUrl} target="_blank" rel="noreferrer">WhatsApp</a> पर पूछें।</li>
+    </ul>
+  </div>
+</InfoPageLayout>
+
+<script>
+  function setupAuthorLanguage() {
+    const english = document.querySelector<HTMLElement>('.author-language-en');
+    const hindi = document.querySelector<HTMLElement>('.author-language-hi');
+    if (!english || !hindi || english.dataset.languageReady === 'true') return;
+    english.dataset.languageReady = 'true';
+    const apply = (language: 'en' | 'hi') => { english.hidden = language === 'hi'; hindi.hidden = language !== 'hi'; };
+    apply(localStorage.getItem('click-jyotish-language') === 'hi' ? 'hi' : 'en');
+    document.addEventListener('click-jyotish-language-change', ((event: Event) => {
+      apply((event as CustomEvent<{ language?: 'en' | 'hi' }>).detail?.language === 'hi' ? 'hi' : 'en');
+    }) as EventListener);
+  }
+  setupAuthorLanguage();
+  document.addEventListener('astro:page-load', setupAuthorLanguage);
+</script>

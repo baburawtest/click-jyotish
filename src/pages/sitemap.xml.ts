@@ -6,6 +6,7 @@ const siteUrl = 'https://clickjyotish.in';
 const staticPaths = [
   '/',
   '/hi/',
+  '/about-deepak-maheshwari/',
   '/astrologer-in-new-delhi/',
   '/hi/astrologer-in-new-delhi/',
   '/faq/',
