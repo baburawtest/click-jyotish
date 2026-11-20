@@ -23,7 +23,7 @@ const articleStructuredData = {
   author: { '@type': 'Person', name: site.astrologer },
   publisher: { '@type': 'Organization', name: site.name, logo: { '@type': 'ImageObject', url: 'https://clickjyotish.in/images/click-jyotish-logo.jpg' } },
   ...(post.data.featuredImage ? { image: `https://clickjyotish.in${post.data.featuredImage}` } : {}),
-  mainEntityOfPage: `https://clickjyotish.in/blog/${post.id}`
+  mainEntityOfPage: `https://clickjyotish.in/blog/${post.id}/`
 };
 const structuredData = post.data.faqs.length
   ? {
@@ -42,7 +42,15 @@ const structuredData = post.data.faqs.length
     }
   : articleStructuredData;
 ---
-<BaseLayout title={`${post.data.title} | Click Jyotish`} description={post.data.description} structuredData={structuredData}>
+<BaseLayout
+  title={`${post.data.title} | Click Jyotish`}
+  description={post.data.description}
+  image={post.data.featuredImage}
+  pageType="article"
+  publishedTime={post.data.pubDate.toISOString()}
+  modifiedTime={(post.data.updatedDate ?? post.data.pubDate).toISOString()}
+  structuredData={structuredData}
+>
 
   <main class="wrap article"><p class="meta">{post.data.category} · {formattedDate}</p><h1>{post.data.title}</h1><p class="lead">{post.data.description}</p>{post.data.featuredImage && <img class="featured-image" src={post.data.featuredImage} alt={post.data.featuredImageAlt ?? ''} decoding="async" fetchpriority="high" />}<div class="tags">{post.data.tags.map((tag) => <span>{tag}</span>)}</div><article class="prose"><Content /></article>
     <aside><strong>Need personal guidance?</strong><p>Book a focused online consultation with Deepak Maheshwari, then confirm your preferred time on WhatsApp.</p><div><a class="gold" href={`/?utm_source=blog&utm_medium=article&utm_campaign=${post.id}#book`}>Book consultation</a><a class="wa" href={wa} target="_blank" rel="noreferrer">WhatsApp Deepak</a></div></aside>

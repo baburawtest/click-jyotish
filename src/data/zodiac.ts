@@ -55,8 +55,8 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'लाल व सिंदूरी',
     luckyDirection: 'East',
     overview: {
-      en: 'Favorable planetary alignment infuses you with high energy and decisiveness today. Trust your intuition when initiating new endeavors.',
-      hi: 'आज ग्रहों की स्थिति आपको नई ऊर्जा और दृढ़ संकल्प प्रदान कर रही है। नए कार्यों की शुरुआत के लिए समय अनुकूल है।'
+      en: 'Mesha is traditionally associated with initiative and decisiveness. Balance enthusiasm with a thoughtful pause before new endeavors.',
+      hi: 'मेष राशि को परंपरागत रूप से पहल और दृढ़ता से जोड़ा जाता है। नए काम में उत्साह के साथ सोच-समझकर कदम बढ़ाएँ।'
     },
     career: {
       en: 'Pending work gains momentum. Leadership qualities will be recognized by senior colleagues. Avoid impulsive arguments in meetings.',
@@ -93,11 +93,11 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'हल्का गुलाबी व श्वेत',
     luckyDirection: 'South-East',
     overview: {
-      en: 'A stable and productive day for financial planning and aesthetic pursuits. Patience brings rewarding results.',
-      hi: 'वित्तीय योजना और रचनात्मक कार्यों के लिए आज का दिन अत्यंत शुभ व स्थिर रहेगा। धैर्य से काम लें।'
+      en: 'Vrishabha is often associated with steadiness, patience and appreciation of beauty. Take a measured approach to plans.',
+      hi: 'वृषभ राशि को स्थिरता, धैर्य और सौंदर्य-बोध से जोड़ा जाता है। योजनाओं में संतुलित दृष्टिकोण रखें।'
     },
     career: {
-      en: 'Great day for long-term investments, trade negotiations, and finishing artistic or analytical projects.',
+      en: 'For long-term plans or negotiations, review the practical details carefully rather than relying on a sign description.',
       hi: 'व्यापार में नए समझौते और दीर्घकालिक निवेश के लिए शुभ संकेत हैं। आर्थिक मामलों में समझदारी लाभ देगी।'
     },
     health: {
@@ -131,8 +131,8 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'हरा व पन्ना रंग',
     luckyDirection: 'North',
     overview: {
-      en: 'Your intellectual curiosity and communication abilities shine today. Ideal for writing, networking, and studies.',
-      hi: 'आपकी बुद्धि, संवाद कौशल और नेटवर्किंग आज सबसे आगे रहेगी। अध्ययन और लेखन के लिए उत्तम समय है।'
+      en: 'Mithuna is traditionally linked with curiosity and communication. Writing, study and thoughtful conversation may suit this temperament.',
+      hi: 'मिथुन राशि को जिज्ञासा और संवाद से जोड़ा जाता है। लेखन, अध्ययन और विचारपूर्ण बातचीत इस स्वभाव से मेल खा सकती है।'
     },
     career: {
       en: 'Excellent clarity for negotiations, interviews, and digital marketing. Verify document details before signing.',
@@ -245,7 +245,7 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'पिस्ता हरा व बादामी',
     luckyDirection: 'North',
     overview: {
-      en: 'Precision, problem-solving, and practical logic are at their peak. A wonderful day to organize your schedule.',
+      en: 'Kanya is traditionally associated with precision and practical problem-solving. A clear schedule can help organize your priorities.',
       hi: 'विश्लेषणात्मक क्षमता और योजना निर्माण में सफलता मिलेगी। पुराने अटके मामलों का समाधान निकलेगा।'
     },
     career: {
@@ -325,7 +325,7 @@ export const zodiacSigns: ZodiacSign[] = [
       hi: 'गहन चिंतन और एकाग्रता का लाभ मिलेगा। गूढ़ विषयों और शोध कार्यों में प्रगति होगी।'
     },
     career: {
-      en: 'Research, risk analysis, and strategic problem-solving produce breakthrough outcomes today.',
+      en: 'Vrishchika is traditionally associated with depth and persistence. Research and careful analysis may help clarify complex questions.',
       hi: 'गुप्त शत्रुओं पर विजय मिलेगी और जटिल समस्याओं का तुरंत हल खोज पाएंगे।'
     },
     health: {
@@ -435,7 +435,7 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'आसमानी व नेवी ब्लू',
     luckyDirection: 'West',
     overview: {
-      en: 'Innovative thinking, community focus, and unconventional solutions spark inspiration today.',
+      en: 'Kumbha is traditionally associated with original thinking and concern for the wider community. Consider ideas from more than one perspective.',
       hi: 'नए और अनोखे विचार मन में आएंगे। सामाजिक और जनकल्याणकारी कार्यों में सक्रियता रहेगी।'
     },
     career: {
@@ -473,7 +473,7 @@ export const zodiacSigns: ZodiacSign[] = [
     luckyColorHi: 'सुनहरा पीला व समुद्री हरा',
     luckyDirection: 'North-East',
     overview: {
-      en: 'Spiritual awareness, artistic creativity, and compassionate healing energy surround you today.',
+      en: 'Meena is traditionally associated with imagination and compassion. Creative or reflective practices may appeal to this temperament.',
       hi: 'आध्यात्मिक चिंतन, रचनात्मकता और मानसिक शांति से परिपूर्ण दिन रहेगा। अंतर्मन प्रसन्न रहेगा।'
     },
     career: {

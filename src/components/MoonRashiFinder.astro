@@ -3,7 +3,7 @@
     <div class="moon-rashi-copy">
       <p class="moon-rashi-eyebrow">CHANDRA RASHI · जन्म राशि</p>
       <h2 id="moon-rashi-title">Do you know your Moon sign?</h2>
-      <p class="moon-rashi-intro">Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.</p>
+      <p class="moon-rashi-intro">Explore your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.</p>
       <p class="moon-rashi-privacy">🔒 Your details are calculated only in this browser. Click Jyotish does not save them.</p>
     </div>
     <form id="moon-rashi-form" class="moon-rashi-form">
@@ -16,7 +16,7 @@
     <div id="moon-rashi-result" class="moon-rashi-result" hidden aria-live="polite">
       <p class="moon-result-label">YOUR JANMA RASHI · आपकी जन्म राशि</p>
       <h3 id="moon-rashi-result-title"></h3><p id="moon-rashi-result-copy"></p>
-      <a id="moon-rashi-read-link" href="#rashifal">Read my Rashifal ↓</a>
+      <a id="moon-rashi-read-link" href="#rashifal">Explore my Rashi guide ↓</a>
     </div>
     <details class="moon-rashi-name-help">
       <summary>Birth time not known? Find your Naam Rashi</summary>
@@ -76,33 +76,33 @@
   const moonCopy = {
     en: {
       eyebrow: 'CHANDRA RASHI · जन्म राशि', title: 'Do you know your Moon sign?',
-      intro: 'Daily Rashifal is read from your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.',
+      intro: 'Explore your <strong>Janma Rashi</strong>—the sidereal sign occupied by Chandra at birth, not your Western Sun sign.',
       privacy: '🔒 Your details are calculated only in this browser. Click Jyotish does not save them.',
       labels: ['Date of birth', 'Time of birth', 'Place of birth (India)'], place: 'e.g. New Delhi', submit: 'Know my Chandra Rashi →',
       outside: 'For births outside India or an uncertain birth time, request a personal check below.', resultLabel: 'YOUR JANMA RASHI · आपकी जन्म राशि',
-      read: 'Read my Rashifal ↓', unknown: 'Birth time not known? Find your Naam Rashi',
+      read: 'Explore my Rashi guide ↓', unknown: 'Birth time not known? Find your Naam Rashi',
       nameHelp: 'Enter the first sound of the name given at <em>Namkaran</em> for an instant traditional <strong>Naam Rashi</strong> clue. It is not an exact Chandra Rashi; names and regional naming charts can vary.',
       namePlaceholder: 'e.g. Rahul / राहुल', ask: 'Find my Naam Rashi →', nameResultLabel: 'TRADITIONAL NAAM RASHI',
       nameResult: 'The opening sound “{sound}” traditionally maps to {name} ({hi}) · {english}. For an exact Chandra Rashi, use your birth date, time and place above.',
       nameAmbiguous: 'The opening sound “{sound}” appears in more than one traditional naming chart: {options}. For an exact Chandra Rashi, use birth details above.',
       nameNoMatch: 'We could not match the opening sound. Try the name as pronounced at Namkaran, in Hindi if possible.', nameExact: 'Use birth details for exact Chandra Rashi ↑', letterGuide: 'View the traditional Naam Rashi letter guide', letterGuideCopy: 'These common naming syllables are a helpful reference only. Customs and pronunciations differ by family and region.',
       boundary: 'This result is close to a Rashi boundary. For an important decision, request a precision Kundli review with the most accurate available birth time.',
-      result: 'Use {name} / {hi} to read your Daily Rashifal below. This is a sidereal Lahiri Moon-Rashi calculation for the entered India (IST) birth time.'
+      result: 'Use {name} / {hi} to explore the general Rashi guide below. This is a sidereal Lahiri Moon-Rashi calculation for the entered India (IST) birth time.'
     },
     hi: {
       eyebrow: 'चंद्र राशि · जन्म राशि', title: 'क्या आप अपनी चंद्र राशि जानते हैं?',
-      intro: 'दैनिक राशिफल आपकी <strong>जन्म राशि</strong> से पढ़ा जाता है—जन्म के समय चंद्रमा जिस राशि में था, उससे; आपकी पश्चिमी सूर्य राशि से नहीं।',
+      intro: 'अपनी <strong>जन्म राशि</strong> जानें—जन्म के समय चंद्रमा जिस राशि में था, उससे; आपकी पश्चिमी सूर्य राशि से नहीं।',
       privacy: '🔒 आपकी जानकारी केवल इसी ब्राउज़र में गणना होती है। Click Jyotish इसे सुरक्षित नहीं करता।',
       labels: ['जन्म तिथि', 'जन्म समय', 'जन्म स्थान (भारत)'], place: 'उदाहरण: नई दिल्ली', submit: 'मेरी चंद्र राशि जानें →',
       outside: 'भारत के बाहर जन्म या जन्म समय निश्चित न होने पर नीचे व्यक्तिगत जाँच का अनुरोध करें।', resultLabel: 'आपकी जन्म राशि',
-      read: 'मेरा राशिफल पढ़ें ↓', unknown: 'जन्म समय नहीं पता? अपनी नाम राशि जानें',
+      read: 'चंद्र राशि मार्गदर्शिका देखें ↓', unknown: 'जन्म समय नहीं पता? अपनी नाम राशि जानें',
       nameHelp: 'नामकरण में रखे गए नाम की पहली ध्वनि डालें और पारंपरिक <strong>नाम राशि</strong> का संकेत तुरंत पाएं। यह सटीक चंद्र राशि नहीं है; नाम और क्षेत्रीय परंपराएँ अलग हो सकती हैं।',
       namePlaceholder: 'उदाहरण: राहुल / Rahul', ask: 'मेरी नाम राशि जानें →', nameResultLabel: 'पारंपरिक नाम राशि',
       nameResult: 'नाम की पहली ध्वनि “{sound}” के अनुसार पारंपरिक नाम राशि {name} ({hi}) · {english} है। सटीक चंद्र राशि के लिए ऊपर जन्म तिथि, समय और स्थान भरें।',
       nameAmbiguous: 'पहली ध्वनि “{sound}” एक से अधिक पारंपरिक नामकरण तालिकाओं में आती है: {options}। सटीक चंद्र राशि के लिए ऊपर जन्म विवरण भरें।',
       nameNoMatch: 'पहली ध्वनि का मिलान नहीं हुआ। नामकरण में बोली जाने वाली ध्वनि लिखें—संभव हो तो हिंदी में।', nameExact: 'सटीक चंद्र राशि के लिए जन्म विवरण भरें ↑', letterGuide: 'पारंपरिक नाम राशि अक्षर तालिका देखें', letterGuideCopy: 'ये सामान्य नामकरण ध्वनियाँ केवल सहायक संदर्भ हैं। परिवार और क्षेत्र के अनुसार उच्चारण व परंपरा अलग हो सकती है।',
       boundary: 'यह परिणाम राशि की सीमा के बहुत निकट है। महत्वपूर्ण निर्णय के लिए सबसे सटीक उपलब्ध जन्म समय के साथ कुंडली की व्यक्तिगत जाँच लें।',
-      result: 'नीचे अपना दैनिक राशिफल पढ़ने के लिए {name} / {hi} राशि चुनें। यह दर्ज किए गए भारत (IST) जन्म समय के आधार पर सायडीरियल लाहिड़ी चंद्र राशि गणना है।'
+      result: 'नीचे सामान्य राशि मार्गदर्शिका देखने के लिए {name} / {hi} राशि चुनें। यह दर्ज किए गए भारत (IST) जन्म समय के आधार पर सायडीरियल लाहिड़ी चंद्र राशि गणना है।'
     }
   } as const;
   function lahiriAyanamsa(date: Date) { const jd = date.getTime() / 86400000 + 2440587.5; return 23.85675 + ((jd - 2451545) / 365.2425) * 0.013968; }

@@ -6,10 +6,10 @@ import { site } from '../data/site';
 <section id="rashifal" class="section rashifal-section">
   <div class="wrap">
     <div class="section-header text-center">
-      <p class="eyebrow-text">DAILY HOROSCOPE · दैनिक राशिफल</p>
-      <h2>Today's Chandra Rashi Insights</h2>
-      <p class="section-desc">Daily guidance for all 12 Rashis, viewed through your Janma Rashi (Moon sign).</p>
-      <p class="moon-sign-note"><strong>Choose your Moon sign, not your Sun sign.</strong> In Vedic Jyotish, daily Rashifal is generally read from the Rashi occupied by Chandra (the Moon) at the time of birth. Your date-of-birth Sun-sign range is not used here.</p>
+      <p class="eyebrow-text">CHANDRA RASHI GUIDE · चंद्र राशि मार्गदर्शिका</p>
+      <h2>Explore Your Chandra Rashi</h2>
+      <p class="section-desc">General reflections for all 12 Rashis, viewed through your Janma Rashi (Moon sign).</p>
+      <p class="moon-sign-note"><strong>Choose your Moon sign, not your Sun sign.</strong> This is a general, evergreen guide—not a date-specific daily forecast. In Vedic Jyotish, Janma Rashi is the sign occupied by Chandra (the Moon) at birth. Do not use these reflections for medical or financial decisions.</p>
     </div>
 
     <!-- Zodiac Sign Grid Selector -->
@@ -83,7 +83,7 @@ import { site } from '../data/site';
             <div class="pred-box pred-overview">
               <div class="pred-title">
                 <span class="p-icon">✨</span>
-                <h4>Today's Cosmic Overview (दैनिक प्रभाव)</h4>
+                <h4>General Reflection (सामान्य संकेत)</h4>
               </div>
               <p class="pred-en">{z.overview.en}</p>
               <p class="pred-hi">{z.overview.hi}</p>
@@ -120,7 +120,7 @@ import { site } from '../data/site';
           <!-- Vedic Remedy & Mantra -->
           <div class="remedy-mantra-banner">
             <div class="remedy-col">
-              <span class="rm-tag">VEDIC REMEDY · आज का उपाय</span>
+              <span class="rm-tag">TRADITIONAL PRACTICE · पारंपरिक अभ्यास</span>
               <p class="rm-text">{z.remedy.en}</p>
               <p class="rm-text-hi">{z.remedy.hi}</p>
             </div>
@@ -151,18 +151,18 @@ import { site } from '../data/site';
 <script>
   const rashifalCopy = {
     en: {
-      eyebrow: 'DAILY HOROSCOPE · दैनिक राशिफल', title: "Today's Chandra Rashi Insights", description: 'Daily guidance for all 12 Rashis, viewed through your Janma Rashi (Moon sign).',
-      note: '<strong>Choose your Moon sign, not your Sun sign.</strong> In Vedic Jyotish, daily Rashifal is generally read from the Rashi occupied by Chandra (the Moon) at the time of birth. Your date-of-birth Sun-sign range is not used here.',
+      eyebrow: 'CHANDRA RASHI GUIDE · चंद्र राशि मार्गदर्शिका', title: 'Explore Your Chandra Rashi', description: 'General reflections for all 12 Rashis, viewed through your Janma Rashi (Moon sign).',
+      note: '<strong>Choose your Moon sign, not your Sun sign.</strong> This is a general, evergreen guide—not a date-specific daily forecast. In Vedic Jyotish, Janma Rashi is the sign occupied by Chandra (the Moon) at birth. Do not use these reflections for medical or financial decisions.',
       chip: 'Janma Rashi · Moon Sign', read: 'Read this guidance from your Janma Rashi (Moon sign).', stats: ['Lucky Number', 'Lucky Color', 'Direction'],
-      predictions: ['Today\'s Cosmic Overview (दैनिक प्रभाव)', 'Career & Wealth (कार्यक्षेत्र व वित्त)', 'Health & Energy (स्वास्थ्य व ऊर्जा)', 'Relationships & Family (प्रेम व परिवार)'],
-      remedy: 'VEDIC REMEDY · आज का उपाय', mantra: 'PLANETARY BEEJ MANTRA', chant: 'Chant 11 or 108 times with pure intention', cta: 'Want a personalized deep-dive into your <strong>Janma Kundli</strong> and Dasha cycles?', button: 'Request Kundali Reading →'
+      predictions: ['General Reflection (सामान्य संकेत)', 'Career & Wealth (कार्यक्षेत्र व वित्त)', 'Health & Energy (स्वास्थ्य व ऊर्जा)', 'Relationships & Family (प्रेम व परिवार)'],
+      remedy: 'TRADITIONAL PRACTICE · पारंपरिक अभ्यास', mantra: 'PLANETARY BEEJ MANTRA', chant: 'Chant 11 or 108 times with pure intention', cta: 'Want a personalized deep-dive into your <strong>Janma Kundli</strong> and Dasha cycles?', button: 'Request Kundali Reading →'
     },
     hi: {
-      eyebrow: 'दैनिक राशिफल · DAILY HOROSCOPE', title: 'आज की चंद्र राशि जानकारी', description: 'आपकी जन्म राशि (चंद्र राशि) के आधार पर सभी 12 राशियों के लिए दैनिक मार्गदर्शन।',
-      note: '<strong>सूर्य राशि नहीं, अपनी चंद्र राशि चुनें।</strong> वैदिक ज्योतिष में दैनिक राशिफल जन्म के समय चंद्रमा जिस राशि में हो, उस राशि से पढ़ा जाता है। यहाँ जन्म तिथि की सूर्य राशि का उपयोग नहीं होता।',
+      eyebrow: 'चंद्र राशि मार्गदर्शिका · CHANDRA RASHI GUIDE', title: 'अपनी चंद्र राशि के बारे में जानें', description: 'जन्म राशि के आधार पर सभी 12 राशियों के लिए सामान्य विचार।',
+      note: '<strong>सूर्य राशि नहीं, अपनी चंद्र राशि चुनें।</strong> यह सामान्य, स्थायी मार्गदर्शिका है—किसी विशेष दिन का राशिफल नहीं। जन्म राशि जन्म के समय चंद्रमा की राशि होती है। इन सामान्य विचारों के आधार पर चिकित्सा या वित्तीय निर्णय न लें।',
       chip: 'जन्म राशि · चंद्र राशि', read: 'यह मार्गदर्शन अपनी जन्म राशि (चंद्र राशि) से पढ़ें।', stats: ['शुभ अंक', 'शुभ रंग', 'दिशा'],
-      predictions: ['आज का समग्र प्रभाव', 'करियर एवं धन', 'स्वास्थ्य एवं ऊर्जा', 'संबंध एवं परिवार'],
-      remedy: 'वैदिक उपाय · आज का उपाय', mantra: 'ग्रह बीज मंत्र', chant: 'शुद्ध भावना से 11 या 108 बार जप करें', cta: 'क्या आप अपनी <strong>जन्म कुंडली</strong> और दशा का व्यक्तिगत विश्लेषण चाहते हैं?', button: 'कुंडली विश्लेषण का अनुरोध करें →'
+      predictions: ['सामान्य संकेत', 'करियर एवं धन', 'स्वास्थ्य एवं ऊर्जा', 'संबंध एवं परिवार'],
+      remedy: 'पारंपरिक अभ्यास', mantra: 'ग्रह बीज मंत्र', chant: 'शुद्ध भावना से 11 या 108 बार जप करें', cta: 'क्या आप अपनी <strong>जन्म कुंडली</strong> और दशा का व्यक्तिगत विश्लेषण चाहते हैं?', button: 'कुंडली विश्लेषण का अनुरोध करें →'
     }
   } as const;
 
